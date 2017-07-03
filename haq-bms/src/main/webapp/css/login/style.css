@@ -1,0 +1,557 @@
+img {
+    width: 100%;
+}
+.hidden {
+    display: none;
+}
+.fixed { position: fixed; }
+.absolute {position: absolute;}
+.diyAlertBg{left:0px;top:0px;height: 100%;width: 100%;background: rgba(0,0,0,0.5);z-index: 99998;}
+.diyAlaertText{width: 80%;left:10%;top: 50%;-webkit-transform: translateY(-50%);text-align: center;color:#000;background: #fff;border-radius: 10px;z-index: 99999; font-size: 28px;position: fixed;}
+.diyAlaertText .htmlAlert{ line-height: 44px;padding:40px 0;letter-spacing: -1px;}
+.diyAlaertText .diyAlertClose{line-height: 70px;border-top: 2px solid #ccc;height: 70px;color:#2a87e8;display: block;}
+.diyLoading {
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: url(../images/loading.gif) center center no-repeat rgba(0,0,0,.8);
+    z-index: 99999;
+}
+.wrapper {
+    width: 100%;
+    height: 100%;
+    max-width: 640px;
+    min-height: 834px;
+    position: relative;
+    margin: 0 auto;
+}
+#index {
+    background: #fff3da;
+}
+#index .wrapper {
+    background: #fff3da url(../images/bgTop.jpg) no-repeat top;
+    background-size: contain;
+    min-height: 1040px;
+}
+#index .thumb {
+    position: absolute;
+    width: 607px;
+    height: 332px;
+    background: url(../images/pane.png) no-repeat;
+    background-size: contain;
+    left: 0;
+    right: 0;
+    margin: auto;
+    top: 355px;
+}
+#index .thumb .note {
+    font-size: 24px;
+    color: #8d5e00;
+    text-align: left;
+    position: absolute;
+    top: 24px;
+    left: 130px;
+    line-height: 34px;
+}
+#index .thumb .note i {
+    font-size: 36px;
+    color: #ff2c2c;
+    line-height: 34px;
+    vertical-align: middle;
+    font-style: normal;
+}
+#index .thumb .note span {
+    color: #232c65;
+}
+#index .thumb .note em {
+    color: #ff2c2c;
+    font-style: normal;
+    font-weight: bold;
+}
+#index .thumb .mine {
+    font-size: 60px;
+    color: #fff;
+    position: absolute;
+    left: 32%;
+    top: 70%;
+}
+#index .shareBtn {
+    position: absolute;
+    width: 276px;
+    height: 88px;
+    border: 4px solid #ffdf9f;
+    border-radius: 25px;
+    background: #0bb7ff;
+    color: #fff;
+    font-size: 30px;
+    line-height: 88px;
+    box-shadow: 0 4px 0 #d8f1ff inset;
+    top: 720px;
+    left: 4%;
+}
+#index .exchangeBtn {
+   /* position: absolute;*/
+    width: 276px;
+    height: 88px;
+    border: 4px solid #9b9b9b;
+    border-radius: 25px;
+    background: #a6a6a6;
+    color: #fff;
+    font-size: 30px;
+    line-height: 88px;
+    box-shadow: 0 4px 0 #dedede inset;
+    top: 720px;
+    right: 4%;
+}
+#index .exchangeBtn.alt {
+    background: #ffc000;
+    border: 4px solid #ffdf9f;
+    box-shadow: 0 4px 0 #fff7dd inset;
+}
+#index .exchangeBtn:after, #index .exchangeBtn.alt:after {
+    content: '兑换流量卡';
+}
+#index .exchangeBtn.exchanged:after {
+    content: '已兑换';
+}
+#index .anchorBox {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
+    top: 850px;
+    font-size: 24px;
+}
+#index .anchorBox a {
+    width: 96px;
+    border-bottom: 1px solid;
+    display: inline-block;
+    text-align: right;
+    position: relative;
+}
+#index .anchorBox .rankList {
+    color: #ff2c2c;
+    margin-right: 40px;
+    font-weight: bold;
+    width: 75px;
+}
+#index .anchorBox .rankList:before {
+    content: '';
+    position: absolute;
+    width: 92px;
+    height: 55px;
+    left: -80px;
+    top: -10px;
+    background: url(../images/top.png);
+}
+#index .anchorBox .rankList:after {
+    content: '';
+    background: #666;
+    width: 1px;
+    height: 40px;
+    position: absolute;
+    top: 0;
+    right: -24px;
+}
+#index .anchorBox .ruleBtn {
+    color: #666666;
+}
+#index .donerList {
+    position: absolute;
+    width: 595px;
+    /*height: 95px;*/
+    left: 0;
+    right: 0;
+    top: 915px;
+    margin: auto;
+    background: #fbdb9b;
+    border: 4px solid #f3cd82;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    font-size: 22px;
+    padding-top: 20px;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    overflow-scrolling: touch;
+    color: #af7b13;
+}
+#index .donerList li {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    text-align: left;
+    margin-left: 4%;
+}
+#index .donerList li span {
+    color: #ff2c2c;
+}
+#index .donerList li .date {
+    margin-right: 10px;
+}
+#index .pop {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(0,0,0,.7);
+}
+#index .pop .ruleBox {
+    position: absolute;
+    width: 470px;
+    height: 80%;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    background: #fff2f0;
+    border: 4px solid #ff2c2c;
+    border-radius: 20px;
+    font-size: 24px;
+    text-align: left;
+    padding: 50px 30px;
+}
+#index .pop .ruleBox .closeBtn {
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    top: -18px;
+    right: -15px;
+}
+#index .pop .ruleBox .arrow {
+    position: absolute;
+    width: 43px;
+    height: 29px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    bottom: 14px;
+}
+#index .pop .ruleBox .ruleText {
+    height: 100%;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    overflow-scrolling: touch;
+    line-height: 26px;
+}
+#index .pop .ruleBox .ruleText h2 {
+  font-size: 24px;
+  color: #ff2c2c;
+}
+#index .pop .ruleBox .ruleText span {
+    margin-left: 24px;
+    position: relative;
+}
+#index .pop .ruleBox .ruleText span:before {
+    content: '';
+    width: 10px;
+    height: 10px;
+    background: #ff2c2c;
+    display: inline-block;
+    position: absolute;
+    top: 9px;
+    left: -17px;
+    border-radius: 100%;
+}
+#index .pop .shareImg {
+    position: absolute;
+    width: 373px;
+    height: 267px;
+    top: 30px;
+    right: 60px;
+}
+#index .pop .exchangeBox {
+    position: absolute;
+    width: 512px;
+    height: 429px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    background: url(../images/card.png) no-repeat;
+    background-size: contain;
+}
+#index .pop .exchangeBox .closeBtn {
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    top: -15px;
+    right: -15px;
+}
+#index .pop .exchangeBox .openBtn {
+    position: absolute;
+    width: 275px;
+    height: 88px;
+    line-height: 88px;
+    font-size: 30px;
+    color: #ff2c2c;
+    background: #ffc000;
+    border: 4px solid #e83620;
+    border-radius: 25px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    bottom: 40px;
+    box-shadow: 0 4px 0 #fff7dd inset;
+    font-weight: bold;
+}
+
+#share .wrapper {
+    background: #fff3da url(../images/bgTop.jpg) no-repeat top;
+    background-size: contain;
+    min-height: 950px;
+}
+#share .head {
+    font-size: 30px;
+    color: #ff2c2c;
+    font-weight: bold;
+    line-height: 34px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
+    top: 375px;
+}
+#share .thumb {
+    position: absolute;
+    width: 601px;
+    height: 308px;
+    background: url(../images/thumb.png) no-repeat;
+    background-size: contain;
+    left: 20px;
+    right: 0;
+    margin: auto;
+    top: 423px;
+}
+#share .thumb p {
+    color: #fff;
+    font-size: 24px;
+    text-align: left;
+    position: absolute;
+    left: 20%;
+    top: 41%;
+}
+#share .thumb p em {
+    color: #ffd540;
+    font-style: normal;
+    font-weight: bold;
+}
+#share .thumb p span {
+    color: #ffd540;
+}
+#share .thumb .avatar {
+    position: absolute;
+    width: 90px;
+    height: 90px;
+    border-radius: 100%;
+    overflow: hidden;
+    border: 2px #ce1f09 solid;
+    top: 44%;
+    right: 20%;
+}
+#share .note {
+    color: #232c65;
+    font-size: 24px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
+    top: 730px;
+}
+#share .goBtn {
+    position: absolute;
+    width: 410px;
+    height: 88px;
+    background: #0bb7ff;
+    border: 4px solid #ffdf9f;
+    border-radius: 25px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    top: 828px;
+    line-height: 88px;
+    font-size: 30px;
+    color: #fff;
+    box-shadow: 0 4px 0 #ffebe9 inset;
+    font-weight: bold;
+}
+#share .tip {
+    position: absolute;
+    color: #ccc;
+    font-size: 18px;
+    bottom: 10px;
+    right: 20px;
+}
+
+#rank .top {
+    position: relative;
+    height: 75px;
+    background: #47ace6;
+    font-size: 30px;
+    color: #fff;
+}
+#rank .top span {
+    font-weight: bold;
+    line-height: 75px;
+    float: left;
+    margin-left: 50px;
+}
+#rank .top .backToIndex {
+    color: #fff;
+    line-height: 75px;
+    float: right;
+    margin-right: 38px;
+}
+#rank .bottom {
+    position: absolute;
+    height: 126px;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    background: #ffd540;
+    overflow: hidden;
+}
+#rank .bottom .share {
+    content: '';
+    width: 113px;
+    height: 78px;
+    position: absolute;
+    background: url(../images/tip.png);
+    top: 0;
+    right: 60px;
+}
+#rank .bottom .mine {
+    float: left;
+    margin: 18px 0 0 45px;
+}
+#rank .bottom .mine .avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 7px;
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: bottom;
+}
+#rank .bottom .mine .text {
+    font-size: 30px;
+    color: #333333;
+    line-height: 50px;
+    display: inline-block;
+    vertical-align: bottom;
+}
+#rank .bottom .mine .text .amount {
+    font-size: 50px;
+    line-height: 50px;
+    vertical-align: bottom;
+}
+#rank .bottom .note {
+    width: 100%;
+    float: left;
+    font-size: 20px;
+    color: #333333;
+    margin-top: 15px;
+}
+#rank .bottom .note span {
+    color: #fa543f;
+    font-weight: bold;
+}
+#rank .rankBox {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 75px;
+    bottom: 126px;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    overflow-scrolling: touch;
+    counter-reset: sectioncounter;
+    list-style-type: none;
+}
+#rank .rankBox li {
+    height: 120px;
+    border-bottom: 2px solid #ddd;
+    line-height: 120px;
+    text-align: left;
+}
+#rank .rankBox li:before {
+    content: counter(sectioncounter);
+    counter-increment: sectioncounter;
+    font-size: 56px;
+    color: #67c4ff;
+    float: left;
+    height: 50px;
+    width: 65px;
+    line-height: 50px;
+    text-align: center;
+    margin: 40px 0 0 40px;
+}
+#rank .rankBox li:nth-child(1):before, #rank .rankBox li:nth-child(2):before, #rank .rankBox li:nth-child(3):before {
+    background: #ff2c2c;
+    color: #fff;
+    width: 50px;
+    margin: 40px 5px 0 50px;
+    border-radius: 7px;
+}
+#rank .rankBox .avatar {
+    display: inline-block;
+    width: 61px;
+    height: 61px;
+    border: 6px solid #e6e6e6;
+    border-radius: 7px;
+    vertical-align: middle;
+    margin-left: 40px;
+}
+#rank .rankBox .avatar img {
+    display: block;
+}
+#rank .rankBox .name {
+    font-size: 30px;
+    color: #666666;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 24px;
+    max-width: 220px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+#rank .rankBox .pIndex {
+    display: inline-block;
+    font-size: 48px;
+    color: #333333;
+    vertical-align: middle;
+    width: 100px;
+    text-align: center;
+    float: right;
+    margin-right: 75px;
+    position: relative;
+    top: 20px;
+}
+#rank .rankBox .pIndex:before {
+    content: '最高人气';
+    font-size: 20px;
+    color: #666;
+    position: absolute;
+    top: -40px;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+#rank .pop {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(0,0,0,.7);
+}
+#rank .pop .shareImg {
+    position: absolute;
+    width: 373px;
+    height: 267px;
+    top: 30px;
+    right: 60px;
+}

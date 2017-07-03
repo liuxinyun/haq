@@ -1,0 +1,283 @@
+<div class="col-md-12">
+    <div class="box border lite" data-url="/haq-bms/user/list" data-template-id="template-list">
+        <div class="box-title">
+            <h4><i class="fa fa-navicon"></i>用户管理</h4>
+            <div class="tools">
+                <a href="javascript:;" title="新增" class="config" data-template-id="#template-user-add" data-url="/haq-bms/user/get" data-param="{type:1}">
+                    <i class="fa fa-plus-square"></i>
+                </a>
+                <a href="javascript:;" title="刷新" class="reload">
+                    <i class="fa fa-refresh"></i>
+                </a>
+                <a href="javascript:;" title="折叠" class="collapse">
+                    <i class="fa fa-chevron-down"></i>
+                </a>
+                <a href="javascript:;" title="删除" class="remove" data-template-id="#template-delete" data-del-url="/haq-bms/user/delUser">
+                    <i class="fa fa-times"></i>
+                </a>
+            </div>
+        </div>
+        <div class="box-body"></div>
+    </div>
+</div>
+<script type="text/x-dot-template" id="template-list">
+    <div class="container-fluid">
+        <form role="form">
+            <div class="form-group">
+                <div class="col-sm-1 control-label">名称</div>
+                <div class="col-sm-3">
+                    <input type="text" name="name" class="form-control" placeholder="名称" value="{{=$.wipeNull(it.queryEntity.name)}}">
+                </div>
+                <div class="col-sm-3">
+                   <button class="btn btn-primary" type="button">查询</button>
+                </div>
+            </div>
+            <input type="hidden" name="pageSize" value="10">
+            <input type="hidden" name="pageNum" value="1">
+        </form>
+    </div>
+    <hr>
+    {{? it.count <= 0}}
+    <p class="alert alert-danger" role="alert"><i class="fa fa-info-circle"></i>&nbsp;没有相关数据</p>
+    {{?}}
+    {{? it.count > 0}}
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>姓名</th>
+                <th>类型</th>
+                <th>电话</th>
+                <th>邮箱</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+        {{for (var key in it.list) {}}
+            <tr data-id="{{=it.list[key].id}}" data-name="{{=it.list[key].name}}">
+                <td><button class="btn btn-link" data-url="/haq-bms/user/{{=it.list[key].id}}" data-template-id="template-user-info">{{=it.list[key].name}}</button></td>
+                <td>{{=it.list[key].userType}}</td>
+                <td>{{=it.list[key].mobile}}</td>
+                <td>{{=it.list[key].email}}</td>
+                <th><button class="btn btn-link" data-url="/haq-bms/user/edit/{{=it.list[key].id}}" data-template-id="template-user-edit"><span class="fa fa-edit"></span></button></th>
+            </tr>
+        {{}}}
+        </tbody>
+    </table>
+    {{?}}
+    <div class="container-fluid page" data-num="{{=it.queryEntity.pageNum}}" data-size="{{=it.queryEntity.pageSize}}" data-count="{{=it.count}}">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="pull-left">
+                </div>
+                <div class="pull-right">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-dot-template" id="template-user-add">
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">添加用户</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" role="form" action="/haq-bms/user/add" method="post">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">姓名</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="name" class="validate[required,maxSize[100]] form-control" placeholder="用户名称">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">昵称</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="nickName" class="validate[required,maxSize[100]] form-control" placeholder="昵称">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">性别</label>
+                        <div class="col-sm-10">
+                            <select name="sex" class="validate[required] form-control">
+                                <option value="0" selected="selected">未知</option>
+                                <option value="1">男</option>
+                                <option value="2">女</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">密码</label>
+                        <div class="col-sm-10">
+                            <input id="loginpwd" type="text" name="password" class="validate[required,minSize[6],maxSize[18]] form-control" placeholder="******">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">确认密码</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="validate[required,equals[loginpwd]] form-control" placeholder="密码确认">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">电话</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="mobile" class="validate[required,custom[mobile]] form-control" placeholder="联系电话">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">邮箱</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="email" class="validate[required,custom[email]] form-control" placeholder="联系邮箱">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">用户类型</label>
+                        <div class="col-sm-10">
+                            <select name="roleId" class="validate[required] form-control">
+                                <option value="0"> 请选择 </option>
+                                {{for (var key in it.roleList){}}
+                                <option value="{{=it.roleList[key].id }}">{{=it.roleList[key].name }}</option>
+                                {{} }}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12 error-msg"></div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary">添加</button>
+            </div>
+        </div>
+    </div>
+</div>
+</script>
+
+<script type="text/x-dot-template" id="template-user-info">
+    <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel1">用户详情</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" role="form" action="/haq-bms/user/add" method="post">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">用户名称</label>
+                            <label class="col-sm-10 control-label tl">
+                                {{=it.user.name}}
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">用户昵称</label>
+                            <label class="col-sm-10 control-label tl">
+                                {{=it.user.nickName}}
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">性别</label>
+                            <label class="col-sm-10 control-label tl">
+                                {{=it.user.sexStr}}
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">联系电话</label>
+                            <label class="col-sm-10 control-label tl">
+                                {{=it.user.mobile}}
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">联系邮箱</label>
+                            <label class="col-sm-10 control-label tl">
+                                {{=it.user.email}}
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">用户类型</label>
+                            <label class="col-sm-10 control-label tl">
+                                {{=it.user.userType}}
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12 error-msg"></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-dot-template" id="template-user-edit">
+    <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel2">编辑用户</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" role="form" action="/haq-bms/user/update" method="post">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">用户名称</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="name" class="validate[required,maxSize[100]] form-control" placeholder="用户名称" value="{{=it.user.name}}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">用户昵称</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="nickName" class="validate[required,maxSize[100]] form-control" placeholder="用户昵称" value="{{=it.user.nickName}}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">联系电话</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="mobile" class="validate[required,custom[mobile]] form-control" placeholder="联系电话" value="{{=it.user.mobile}}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">联系邮箱</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="email" class="validate[required,custom[email]] form-control" placeholder="联系邮箱" value="{{=it.user.email}}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">登录密码</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="password" class="validate[required,minSize[6],maxSize[18]] form-control" value="******">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">性别</label>
+                            <div class="col-sm-9">
+                                <select name="sex" class="validate[required] form-control">
+                                    {{for (var key in it.sex){}}
+                                    <option value="{{=it.sex[key].code }}" {{? it.user.sex == it.sex[key].code }}selected="selected"{{? }}>{{=it.sex[key].desc }}</option>
+                                    {{} }}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="hidden" name="id" placeholder="ICON" value="{{=it.user.id}}">
+                            <div class="col-sm-12 error-msg"></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>

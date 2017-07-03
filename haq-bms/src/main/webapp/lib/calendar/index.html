@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<!--<link rel="stylesheet" href="css/default.css">-->
+	<link rel="stylesheet" href="css/jquery.e-calendar.css">
+	<link rel="stylesheet" href="css/normalize.css">
+	<script type="text/javascript" src="js/jquery-1.12.0.min.js"></script>
+    <script type="text/javascript" src="js/jquery.e-calendar.js"></script>
+</head>
+<body>
+	<div id="calendar">
+		
+	</div>
+</body>
+<script>
+	$(function(){
+		
+		var events = [];
+		for(var i=1; i<10; i++){
+			var ds = "2017-03-2"+i+" 1"+i+":2"+i+":3"+i;
+			var event = {title:'标题'+i,description:'内容'+i,datetime:parseDate(ds)};
+			events.push(event);
+		}
+	
+		$('#calendar').eCalendar({
+			weekDays: ['日','一', '二', '三', '四', '五', '六'],
+			months: ['一月', '二月', '三月', '四月', '五月', '六月',
+			 '七月', '八月', '九月', '十月', '十一月', '十二月'],
+			eventTitle: '待办事项',
+			url: '', 
+			events: events
+		});
+		
+		$("#calendar").on('click', '.c-pad-top', function() {
+			var day=$(this).attr("data-event-day");
+			if(day){ 
+				$(this).addClass('bg_rgb').siblings().removeClass('bg_rgb');
+				$(".c-event-list").children().hide();
+				$('.c-event-list .c-event-item[data-event-day='+day+']').show();
+			}
+			// else{
+			// 	$(".c-event-list").children().hide();
+			// }
+		});
+		
+    $("#calendar").on('click', '.myBanLi', function() {
+        $(this).addClass('myYiBan');
+    })
+	})
+	
+	function parseDate(str) {
+		if (typeof str == 'string') {
+			var results = str.match(/^ *(\d{4})-(\d{1,2})-(\d{1,2}) *$/);
+			if (results && results.length > 3) 
+				return new Date(parseInt(results[1]), parseInt(results[2]), parseInt(results[3]));
+			results = str.match(/^ *(\d{4})-(\d{1,2})-(\d{1,2}) +(\d{1,2}):(\d{1,2}):(\d{1,2}) *$/);
+			if (results && results.length > 6) 
+				return new Date(parseInt(results[1]), parseInt(results[2]), parseInt(results[3]), parseInt(results[4]), parseInt(results[5]), parseInt(results[6]));
+			results = str.match(/^ *(\d{4})-(\d{1,2})-(\d{1,2}) +(\d{1,2}):(\d{1,2}):(\d{1,2})\.(\d{1,9}) *$/);
+			if (results && results.length > 7) 
+			return new Date(parseInt(results[1]), parseInt(results[2]), parseInt(results[3]), parseInt(results[4]), parseInt(results[5]), parseInt(results[6]), parseInt(results[7]));
+		}
+		return null;
+	}
+	
+	
+</script>
+</html>

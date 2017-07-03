@@ -1,0 +1,446 @@
+/* CSS Document */
+body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li,
+	pre, form, fieldset, legend, button, input, textarea, th, td {
+	margin: 0;
+	padding: 0;
+}
+body{
+	background-color: #fefefe;
+}
+body, button, input, select, textarea {
+	font: 12px "Microsoft YaHei", Arial, Helvetica, sans-serif;
+}
+
+button, input, select, textarea {
+	outline: none;
+}
+
+textarea {
+	resize: none
+}
+
+address, cite, dfn, em, var {
+	font-style: normal;
+}
+
+ul, ol {
+	list-style: none;
+}
+
+a, u {
+	text-decoration: none;
+	outline: medium none;
+	outline: none;
+}
+
+a:hover {
+	outline: medium none;
+	outline: none;
+}
+
+img {
+	border: 0 none;
+}
+
+button, input, select, textarea {
+	font-size: 100%;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+.fl {
+	float: left;
+}
+
+.fr {
+	float: right;
+}
+
+.clr::after {
+	clear: both;
+	content: ".";
+	display: block;
+	height: 0;
+	overflow: hidden;
+}
+
+.clr {
+	*zoom: 1;
+}
+/* header top */
+.loghead {
+	height: 74px;
+	width: 100%;
+	border-bottom: solid 1px #e3e3e3;
+	background: #fff;
+}
+/*  */
+.y-row {
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 1200px;
+	min-width: 1000px;
+}
+
+.content {
+	margin-top: 60px;
+	min-height: 425px;
+	position: relative;
+	vertical-align: middle;
+}
+/* login left */
+.content #login-banner {
+	float: right;
+	margin-right: 628px;
+}
+/* login right */
+.content #login-module {
+	background: rgba(255, 255, 255, 0.3);
+	border: 1px solid #d4d4d4;
+	margin-bottom: 10px;
+	min-height: 360px;
+	width: 292px;
+	padding-top: 20px;
+	position: absolute;
+	right: 160px;
+	z-index: 2;
+}
+
+.content #login-module #alibaba-login-iframe {
+	overflow: hidden;
+	padding: 10px 20px;
+	position: relative;
+}
+
+.fm-label {
+	padding: 8px 0 2px;
+}
+
+.fm-label-extra {
+	float: right;
+}
+
+.fm-label-extra a {
+	color: #00a2ca;
+}
+
+.fm-label label {
+	font-weight: 700;
+}
+
+.fm-field {
+	padding: 2px 0 8px;
+}
+
+.fm-field-wrap {
+	padding-right: 14px;
+}
+
+.fm-text, .fm-textarea {
+	background: #fff;
+	border: 1px solid #ccc;
+	box-shadow: 0 1px 0 #ececec inset;
+	color: #595959;
+	float: left;
+	font-size: 12px;
+	line-height: 17px;
+	padding: 4px 6px;
+	vertical-align: middle;
+}
+
+.fm-text {
+	background: transparent;
+	border-radius: 3px;
+	font-size: 14px;
+	line-height: 16px;
+	margin-top: 5px;
+	padding: 8px 5px;
+	width: 100%;
+}
+
+.fm-checkcode {
+	float: left;
+	width: 100px;
+}
+
+.fm-checkcode-img {
+	cursor: pointer;
+	float: left;
+	height: 35px;
+	margin: 5px 6px 0;
+	opacity: 0.7;
+	width: 83px;
+}
+
+.fm-checkcode-update {
+	color: #00a2ca;
+	margin-top: 10px;
+	white-space: nowrap;
+	word-break: keep-all;
+	float: left;
+	line-height: 27px;
+}
+/* button */
+.fm-button {
+	box-shadow: 0 1px 1px #ebe7e6;
+	background: #00a2ca;
+	border: medium none;
+	border-radius: 4px;
+	color: #fff;
+	cursor: pointer;
+	display: inline-block;
+	font-size: 14px;
+	height: 36px;
+	line-height: 32px;
+	min-width: 140px;
+	outline: medium none;
+	padding: 0 30px 1px;
+	text-align: center;
+	margin-top: 10px;
+	width: 100%;
+}
+
+.fm-button:hover {
+	background: #33b5d4;
+	border: medium none;
+}
+
+.fm-button:active {
+	background: #008fb2;
+	border-color: #008fb2;
+}
+/* 错误信息 */
+.notice {
+	font-family: Tahoma, Helvetica, Arial, 宋体;
+	line-height: 18px;
+	padding: 4px 12px;
+}
+
+.notice-error, .notice-forbid {
+	background: #fceee8;
+	border: 1px solid #f6c8b5;
+}
+
+.form-error {
+	padding-left: 32px;
+}
+
+.icon, .icon-notice, .icon-site {
+	background-color: transparent;
+	background-image: url("../../images/icon.png");
+	background-repeat: no-repeat;
+	display: inline-block;
+	margin-right: 6px;
+	overflow: hidden;
+	vertical-align: -2px;
+}
+
+.icon-notice {
+	background-image: url("../../images/newimg/notice.png");
+}
+
+.icon-error {
+	background-position: -30px -34px;
+	height: 14px;
+	width: 14px;
+}
+
+.icon-notice {
+	background-color: #f1f6fa;
+}
+
+.icon-error {
+	background-color: #fff3e7;
+}
+
+.form-error .icon-error {
+	margin-left: -20px;
+}
+/* 注册登录条款 */
+.content #login-module .agreement {
+	bottom: 19px;
+	left: 20px;
+	position: absolute;
+	width: 240px;
+}
+
+.content #login-module .agreement input {
+	height: 13px;
+	margin-right: 5px;
+	margin-top: 2px;
+	vertical-align: middle;
+	float: left;
+}
+
+.agreement label {
+	float: left;
+}
+
+.agreement label a {
+	color: #00a2ca;
+}
+
+/* 提示信息 */
+.box-login {
+	width: 1000px;
+	margin: 0 auto;
+}
+
+.center {
+	width: 100%;
+	position: fixed;
+	top: 50px;
+	z-index: 1000;
+}
+/* hader top */
+.header {
+	height: 40px;
+	background: #09c;
+	position: relative;
+}
+
+.logo {
+	height: 40px;
+	display: inline-block;
+	float: left;
+	padding: 4px;
+}
+
+.error {
+	padding-top: 100px;
+}
+
+.error h2 {
+	color: #0099ff;
+	font-size: 40px;
+}
+
+.error p {
+	color: #555;
+	padding: 15px;
+}
+
+.error p a {
+	color: blue;
+}
+
+/****------------------
+	footer 底部
+-------*****/
+.footer {
+	width: 100%;
+	text-align: center;
+	margin-top: 15px;
+	border-top: solid 1px #ddd;
+	padding: 10px 0;
+	line-height: 24px;
+	background: #fff;
+}
+
+textarea:focus, input[type='password']:focus, input[type='text']:focus {
+	border-color: #66afe9;
+	outline: 0;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px
+		rgba(102, 175, 233, .6);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px
+		rgba(102, 175, 233, .6);
+}
+
+.wx-content {
+	border: 2px solid #d4d4d4;
+	width: 70%;
+	margin: 0 15%;
+	height: 550px;
+	text-align: center;
+	background-color: #ffffff;
+}
+
+.wx-money {
+	width: 100%;
+	height: 80px;
+	display: inline-block;
+	font-size: 15px;
+	text-align: left;
+}
+
+.wx-money .label {
+	font-size: 18px;
+	margin-top: 20px;
+	margin-left: 30px;
+	display: inline-block;
+	color: #555;
+}
+
+.wx-money .time {
+	font-size: 14px;
+	background: #f8f8f8;
+	padding: 5px 10px;
+	color: #30a230;
+	border-radius: 2px;
+}
+
+.wx-money .time em {
+	border-bottom: 1px solid #eee;
+	padding: 0 1px;
+}
+
+.wx-money.bd {
+	background-color: #f2f2f2;
+	border-bottom: 1px solid #ddd;
+	border-top: 1px solid #ddd;
+	margin-bottom: 30px;
+}
+
+.wx-money .left {
+	margin-top: 20px;
+	margin-left: 20px;
+	float: left;
+	color: #414141;
+}
+
+.wx-money .right {
+	margin-top: 30px;
+	margin-right: 20px;
+	float: right;
+	font-size: 20px;
+	color: #e1a001;
+}
+
+.content {
+	margin-top: 30px;
+}
+
+.wx-qrcode .info{
+	font-size: 16px;
+    padding: 10px;
+    margin: 80px;
+}
+
+.wx-qrcode .info em{
+	width: 26px;
+	height: 26px;
+	display: inline-block;
+	vertical-align: middle;
+	margin-right: 5px;
+}
+.wx-qrcode .info.right{
+	 color: #5cb85c;
+}
+.wx-qrcode .info.error{
+	 color: #f4c600;
+}
+.wx-qrcode .info.msg{
+	 color: #5bc0de;
+}
+.wx-qrcode .info.right em{
+	background:url("../images/right.png");
+}
+.wx-qrcode .info.error em {
+	background:url("../images/error.png");
+}
+.wx-qrcode .info.msg em {
+	background:url("../images/info.png");
+}

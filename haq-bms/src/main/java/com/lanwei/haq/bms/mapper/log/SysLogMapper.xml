@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanwei.haq.bms.dao.log.SysLogDao">
+
+	<sql id="comField">
+		description,url,param,userId,username,ip,creater,created,modifier,modified
+	</sql>
+
+	<!-- 新增日志 -->
+	<insert id="add" parameterType="com.lanwei.haq.bms.entity.log.SysLogEntity" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+		INSERT INTO sys_log
+		<trim prefix="(" suffix=")">
+			<include refid="comField"/>
+		</trim>
+		VALUES
+		<trim prefix="(" suffix=")">
+			#{description},#{url},#{param},#{userId},#{username},#{ip},#{creater},NOW(),#{modifier},NOW()
+		</trim>
+	</insert>
+
+	<!-- 删除日志 -->
+	<delete id="del" parameterType="com.lanwei.haq.bms.entity.log.SysLogEntity">
+		DELETE FROM sys_log WHERE id = #{id}
+	</delete>
+
+	<!-- 分页查询机构 -->
+	<select id="query" parameterType="com.lanwei.haq.bms.entity.log.SysLogEntity" resultType="com.lanwei.haq.bms.entity.log.SysLogEntity">
+		SELECT id,<include refid="comField"/>
+		FROM
+		sys_log sl
+		<where>
+			<if test="description!=null and description!=''">
+				AND sl.`description` LIKE  CONCAT('%', #{description},'%')
+			</if>
+		</where>
+		ORDER BY sl.created DESC
+		LIMIT
+		#{pageStart},#{pageSize};
+	</select>
+
+	<!-- 查询数量，用于分页 -->
+	<select id="count" parameterType="com.lanwei.haq.bms.entity.log.SysLogEntity" resultType="int">
+		SELECT
+		COUNT(1)
+		FROM
+		sys_log sl
+		<where>
+			<if test="description!=null and description!=''">
+				AND sl.`description` LIKE  CONCAT('%', #{description},'%')
+			</if>
+		</where>
+	</select>
+
+	<!-- 批量删除 -->
+	<delete id="delList">
+		DELETE FROM sys_log
+		WHERE id in
+		<foreach collection="idArr" open="(" close=")" separator="," item="id">
+			#{id}
+		</foreach>
+	</delete>
+
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

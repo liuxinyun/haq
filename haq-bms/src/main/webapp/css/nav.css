@@ -1,0 +1,460 @@
+/* CSS Document */
+body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, form, fieldset, legend, button, input, textarea, th, td {
+	margin: 0;
+	padding: 0;
+}
+body, button, input, select, textarea {
+	font: 14px "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", STHeiti, "Microsoft YaHei";
+}
+button, input, select, textarea {
+	outline: none;
+}
+textarea {
+	resize: none
+}
+address, cite, dfn, em, var {
+	font-style: normal;
+}
+ul, ol {
+	list-style: none;
+}
+a, u {
+	text-decoration: none;
+	outline: medium none;
+	outline: none;
+}
+a:hover {
+	outline: medium none;
+	outline: none;
+}
+img {
+	border: 0 none;
+}
+button, input, select, textarea {
+	font-size: 100%;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+.fl {
+	float: left;
+}
+.fr {
+	float: right;
+}
+.clr::after {
+	clear: both;
+	content: ".";
+	display: block;
+	height: 0;
+	overflow: hidden;
+}
+.clr {
+ *zoom: 1;
+}
+*, *::before, *::after {
+	box-sizing: border-box;
+}
+
+
+textarea:focus,input[type='password']:focus,input[type='text']:focus{ border-color: #66afe9;outline: 0;-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6); box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);} 
+
+
+/* 框架部分 */
+.y-mian {
+	background-color: #000;
+	bottom: 0;
+	position: absolute;
+	top: 40px;
+	width: 100%;
+	z-index: 100;
+}
+/* left */
+.yfl-sidebar {
+	background-color: #293038;
+	bottom: 0;
+	display: none;
+	overflow-x: hidden;
+	position: fixed;
+	top: 40px;
+	width: 0;
+	z-index: 102;
+}
+.menu-sidebar .yfl-sidebar {
+	display: block;
+	width: 180px;
+}
+.yfl-sidebar .sidebar-content {
+	height: 100%;
+	overflow-x: hidden;
+	overflow-y: auto;
+	width: 200px;
+}
+.bg-icon {
+	background: url(../images/menu/leftnav.png) no-repeat;
+}
+/* top nav but  顶部but */
+.sidebar-fold {
+	-moz-user-select: none;
+	background-color: #394555;
+	color: #aeb9c2;
+	cursor: pointer;
+	font-size: 12px;
+	height: 30px;
+	line-height: 30px !important;
+	text-align: center;
+	width: 180px;
+	background-position: 70px -5px;
+}
+.sidebar-fold:hover {
+	background-color: #37424f;
+}
+/* left nav chiled  一级nav */
+.yfl-sidebar .sidebar-nav {
+	width: 180px;
+}
+.yfl-sidebar .sidebar-nav .sidebar-title {
+	-moz-user-select: none;
+	background: #22282e;
+	color: #fff;
+	cursor: pointer;
+	height: 40px;
+	line-height: 40px;
+	position: relative;
+}
+.yfl-sidebar .sidebar-nav-fold .sidebar-title {
+	background: #37424f;
+	border-bottom: 1px solid #414d5c;
+}
+.yfl-sidebar .sidebar-nav .sidebar-title:hover {
+	background: #414d5c;
+}
+/*---- 左侧三角 -----*/
+.yfl-sidebar .sidebar-nav .sidebar-title-icon {
+	display: inline-block;
+	width: 40px;
+	height: 40px;
+	float: left;
+	transition: transform 0.12s ease 0s;
+	background-position: 5px -80px;
+}
+.yfl-sidebar .sidebar-nav-fold .sidebar-title-icon {
+	/*   transform: rotate(-90deg);*/
+	background-position: 5px -120px;
+}
+.ng-binding {
+	float: left;
+	display: inline-block;
+	height: 40px;
+	line-height: 40px;
+}
+.sidebar-title-text {
+	color: #fff !important;
+}
+/* 一级 nav 右侧 设置 */
+.yfl-sidebar .sidebar-manage {
+	height: 40px;
+	position: absolute;
+	right: 0;
+	vertical-align: middle;
+	width: 40px;
+}
+.yfl-sidebar .sidebar-manage a {
+	color: #a0abb3;
+	display: block;
+	font-size: 14px;
+	height: 100%;
+	line-height: 40px;
+	text-align: center;
+	text-decoration: none;
+	width: 100%;
+}
+/* 二级nav */
+.yfl-sidebar .sidebar-nav li a {
+	display: block;
+	height: 40px;
+	line-height: 40px;
+	overflow: hidden;
+	width: 100%;
+}
+.yfl-sidebar .sidebar-trans {
+	transition: all 0.12s ease 0s, all 0.12s ease 0s;
+}
+.yfl-sidebar .sidebar-nav .nav-icon, .yfl-sidebar .sidebar-nav .nav-icon span {
+	color: #aeb9c2;
+	float: left;
+	font-size: 16px;
+	text-align: center;
+	width: 50px;
+	height: 40px;
+}
+.menu-sidebar .yfl-sidebar .sidebar-nav .nav-icon, .yfl-sidebar .sidebar-nav .nav-icon span {
+	width: 40px;
+	margin: auto 8px;
+	line-height:40px;
+}
+.menu-sidebar.min .yfl-sidebar .sidebar-nav .nav-icon,.menu-sidebar.min .yfl-sidebar .sidebar-nav .nav-icon span {
+	width: 50px;
+	margin-left: 0;
+	line-height:40px;
+}
+.yfl-sidebar .sidebar-nav .nav-title {
+	color: #fff;
+	display: block;
+	float: left;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	width: 120px;
+}
+.yfl-sidebar .sidebar-nav li a:hover {
+	background: #37424f;
+}
+.sidebar-nav li.active a, .sidebar-nav li.active a:hover {
+	background: #0099cc;
+}
+.yfl-sidebar .sidebar-nav li.active a .nav-icon span {
+	color: #fff;
+}
+/* left nav 点击后缩略样式  */
+.menu-sidebar.min .sidebar-fold {
+	background-position: 5px -45px;
+}
+.menu-sidebar.min .yfl-sidebar, .menu-sidebar.min .sidebar-fold {
+	display: block;
+	width: 50px;
+}
+.menu-sidebar.min .sidebar-content {
+	display: block;
+	width: 70px;
+}
+.menu-sidebar.min .yfl-sidebar .sidebar-nav .nav-title, .menu-sidebar.min .sidebar-title-text, .menu-sidebar.min .sidebar-manage {
+	display: none;
+}
+.sidebar-trans li{
+	display: none;
+}
+/* 子导航的展开与收起 */
+.yfl-sidebar .sidebar-nav-fold ul {
+	overflow: hidden;
+}
+/* right */
+.yfr-product {
+	background: #fff;
+	bottom: 0;
+	left: 0;
+	overflow: hidden;
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: auto;
+}
+/*  left nav 默认展开宽度效果 右侧距离左边距离  */
+.menu-sidebar .yfr-product {
+	left: 180px;
+}
+.yfr-product {
+	background: #eaedf1;
+}
+/* left nav 点击后图标效果 吧y-sidebar-full替换成 y-sidebar-mini  */
+
+.menu-sidebar.min .yfr-product {
+	left: 50px;
+}
+/* 
+	鼠标覆盖 title
+ */
+.sidebar-title-rig {
+	height: 40px;
+	line-height: 40px;
+	padding: 0 8px;
+	background: #536072;
+	position: absolute;
+	left: 180px;
+	top: 80px;
+	z-index: 200;
+}
+.sidebar-title-rig i {
+	height: 10px;
+	width: 8px;
+	display: inline-block;
+	position: absolute;
+	left: -8px;
+	top: 15px;
+	background: url(../../images/newimg/lf-sj.png) no-repeat right top;
+}
+.sidebar-title-rig p {
+	color: #fff;
+	font-size: 14px;
+}
+/* 
+ End 鼠标覆盖 title
+ */
+.product-navbar {
+	background-color: #eaedf1;
+	bottom: 0;
+	float: left;
+	overflow: hidden;
+	position: absolute;
+	top: 0;
+	transition: all 0.2s ease 0s;
+	width: 0;
+	z-index: 2;
+}
+.viewFramework-product-col-1 .product-navbar {
+	width: 180px;
+}
+.product-nav-stage {
+	bottom: 0;
+	overflow: hidden;
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 180px;
+}
+.product-nav-scene {
+	bottom: 0;
+	position: absolute;
+	top: 0;
+	transition: position 0s ease 0s, all 0.2s ease 0s, all 0s linear 0s;
+	width: 180px;
+	left: 0px;
+}
+.product-nav-title {
+	background: #d9dee4 none repeat scroll 0 0;
+	height: 70px;
+	line-height: 70px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	width: 180px;
+	font-weight: bold;
+	text-indent: 20px;
+	color: #333;
+}
+.product-nav-list {
+	bottom: 0;
+	left: 0;
+	overflow-x: hidden;
+	overflow-y: auto;
+	position: absolute;
+	right: 0;
+	top: 70px;
+}
+.product-nav-list li a {
+	display: inline-block;
+	height: 40px;
+	line-height: 40px;
+	width: 180px;
+	color: #333;
+}
+.product-nav-list li.active a {
+	background: #fff;
+}
+.product-nav-list .nav-icon {
+	color: #333;
+	float: left;
+	font-size: 16px;
+	height: 40px;
+	text-align: center;
+	width: 30px;
+}
+.product-navbar .product-nav-list .nav-title {
+	float: left;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	width: 138px;
+	font-size: 13px;
+}
+/* 三级导航的展开与收起 */
+.product-navbar-collapse {
+	height: 50px;
+	left: 0;
+	position: absolute;
+	top: 50%;
+	transition: all 0.2s ease 0s;
+	width: 20px;
+	z-index: 3;
+}
+.product-navbar-collapse-inner {
+	overflow: hidden;
+	position: relative;
+	top: -50%;
+}
+.product-navbar-collapse-in {
+	cursor: pointer;
+	height: 56px;
+	left: -7px;
+	position: relative;
+	text-align: center;
+	transition: all 0.1s ease 0s, all 0.1s ease 0s;
+}
+.product-navbar-collapse-in span {
+	width: 20px;
+	height: 56px;
+	display: inline;
+	background: url(../images/menu/nav-collapse.png) no-repeat;
+	display: inline-block;
+}
+.product-navbar-collapse-in .icon-collapse-left {
+	background-position: 0 0;
+}
+.product-navbar-collapse-in .icon-collapse-left.covs  {
+	background-position: 0 -56px;
+}
+.product-navbar-collapse:hover .product-navbar-collapse-in {
+	left: 0px;
+}
+.viewFramework-product-col-1 .product-navbar-collapse .product-navbar-collapse-in {
+	left: auto;
+	right: -7px;
+}
+.viewFramework-product-col-1 .product-navbar-collapse:hover .product-navbar-collapse-in {
+	left: auto;
+	right: 0;
+}
+.viewFramework-product-col-1 .product-navbar-collapse {
+	left: 160px;
+}
+/* right 内容部分 */
+.viewFramework-product-body {
+	bottom: 0;
+	left: 0;
+	overflow-x: hidden;
+	overflow-y: auto;
+	position: absolute;
+	right: 0;
+	top: 0;
+	transition: all 0.2s ease 0s;
+	width: auto;
+}
+.viewFramework-product-col-1 .viewFramework-product-body {
+	left: 180px;
+}
+/* ie7 兼容图标 */
+/*-------- 二级导航 icon  
+		图片缩略后模块宽度为50px  
+		图片集w:40px 每个图片占比H:40px;  此宽度高度是根据行高来定义的
+		故此在定位时左偏5px; background-position:5px -**px; 使整体图片适应宽度40px与50px的图片在一条线上
+						---------*/
+.iconfont {
+ *background: url(../../images/newimg/leftnav.png) no-repeat;
+}
+/*  */	
+.icon-shezhi {
+ *background-position: 0px -160px;
+}
+.icon-account {
+ *background-position: 5px -200px;
+}
+.icon-xiaoxi {
+ *background-position: 5px -240px;
+}
+.icon-noc {
+ *background-position: -5px -284px;
+}
+.icon-add {
+ *background-position: -5px -324px;
+}

@@ -1,0 +1,134 @@
+<div class="col-md-12">
+    <div class="box border lite" data-url="/haq-bms/log/list" data-template-id="template-list">
+        <div class="box-title">
+            <h4><i class="fa fa-navicon"></i>日志管理</h4>
+            <div class="tools">
+                <a href="javascript:;" class="reload">
+                    <i title="刷新" class="fa fa-refresh"></i>
+                </a>
+                <a href="javascript:;" class="collapse">
+                    <i title="折叠" class="fa fa-chevron-down"></i>
+                </a>
+                <a href="javascript:;"  title="删除"  class="remove" data-template-id="#template-delete" data-del-url="/haq-bms/log/delBatch">
+                    <i class="fa fa-times"></i>
+                </a>
+            </div>
+        </div>
+        <div class="box-body"></div>
+    </div>
+</div>
+<script type="text/x-dot-template" id="template-list">
+    <form id="queryForm" role="form">
+        <div class="container-fluid">
+            <div class="form-group row">
+                <div class="col-sm-1 control-label" style="width:auto !important;">描&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;述</div>
+                <div class="col-sm-3">
+                    <input type="text" name="discription" class="form-control" placeholder="描述" value="{{=$.wipeNull(it.queryEntity.description)}}">
+                </div>
+                <div class=" col-sm-4">
+                   <button class="btn btn-primary" type="button">查询</button>
+                </div>
+            </div>
+            <input type="hidden" name="pageSize" value="10">
+            <input type="hidden" name="pageNum" value="1">
+        </div>
+    </form>
+    <hr>
+    {{? it.count <= 0}}
+    <p class="alert alert-danger" role="alert"><i class="fa fa-info-circle"></i>&nbsp;没有相关数据</p>
+    {{?}}
+    {{? it.count > 0}}
+    <table class="table table-hover" style="">
+        <thead>
+            <tr>
+                <th>描述</th>
+                <th>请求接口</th>
+                <th>操作人</th>
+                <th>ip</th>
+                <th>时间</th>
+            </tr>
+        </thead>
+        <tbody>
+        {{for (var key in it.list) {}}
+            <tr data-id="{{=it.list[key].id}}" data-name="{{=it.list[key].description}}">
+                <td title="{{=it.list[key].description}}"><button class="btn btn-link" data-url="/haq-bms/log/{{=it.list[key].id}}" data-template-id="template-log-info">{{=it.list[key].description}}</button></td>
+                <td>{{=it.list[key].url}}</td>
+                <td>{{=it.list[key].username}}</td>
+                <td>{{=it.list[key].ip}}</td>
+                <td>{{=it.list[key].createdStr}}</td>
+            </tr>
+        {{}}}
+        </tbody>
+    </table>
+    {{?}}
+    <div class="container-fluid page" data-num="{{=it.queryEntity.pageNum}}" data-size="{{=it.queryEntity.pageSize}}" data-count="{{=it.count}}">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="pull-left">
+                </div>
+                <div class="pull-right">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-dot-template" id="template-log-info">
+    <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel1">日志详情</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" role="form" method="post">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">描述</label>
+                            <label class="col-sm-10 control-label tl">
+                                {{=it.log.description}}
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">请求IP</label>
+                            <label class="col-sm-10 control-label tl">
+                                {{=it.log.ip}}
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">请求接口</label>
+                            <label class="col-sm-10 control-label tl">
+                                {{=it.log.url}}
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">请求参数</label>
+                            <label class="col-sm-10 control-label tl">
+                                {{=it.log.param}}
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">操作人</label>
+                            <label class="col-sm-10 control-label tl">
+                                {{=it.log.username}}
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">时间</label>
+                            <label class="col-sm-10 control-label tl">
+                                {{=it.log.createdStr}}
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12 error-msg"></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>

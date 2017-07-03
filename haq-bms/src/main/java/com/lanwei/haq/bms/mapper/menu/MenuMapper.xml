@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanwei.haq.bms.dao.menu.MenuDao">
+
+    <sql id="comField">
+      name,type,url,icon,sort,moduleId,moduleName,menuId,menuName,isLast,creater,created,modifier,modified,isDel
+	</sql>
+
+    <!-- 新增菜单  -->
+    <insert id="add" parameterType="com.lanwei.haq.bms.entity.menu.MenuEntity" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO sys_menu
+        <trim prefix="(" suffix=")">
+          <include refid="comField"/>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")">
+            #{name},#{type},#{url},#{icon},#{sort},#{moduleId}, #{moduleName}, #{menuId},#{menuName}, #{isLast}, #{creater},#{created},#{modifier},#{modified},#{isDel}
+        </trim>
+    </insert>
+        
+    <select id="query" parameterType="com.lanwei.haq.bms.entity.menu.MenuEntity" resultType="com.lanwei.haq.bms.entity.menu.MenuEntity">
+        SELECT id,<include refid="comField"/>
+        FROM sys_menu
+        WHERE isDel = 'F'
+        <if test="id !=0 ">
+        AND  id = #{id}
+        </if>
+        <if test="type != 0">
+        AND type = #{type}
+        </if>
+        <if test="null != name and '' != name ">
+            AND  name LIKE CONCAT('%',#{name},'%')
+        </if>
+        <if test="null != moduleId and '' != moduleId ">
+            AND  moduleId = #{moduleId}
+        </if>
+        ORDER BY type, sort, created DESC
+        LIMIT #{pageStart},#{pageSize}
+    </select>
+
+    <select id="count" parameterType="com.lanwei.haq.bms.entity.menu.MenuEntity" resultType="int">
+        SELECT COUNT(id)
+        FROM sys_menu
+        WHERE isDel = 'F'
+        <if test="id !=0 ">
+            AND  id = #{id}
+        </if>
+        <if test="type != 0">
+            AND type = #{type}
+        </if>
+        <if test="null != name and '' != name ">
+            AND  name LIKE CONCAT('%',#{name},'%')
+        </if>
+    </select>
+    
+    <select id="getMenuByRoleId" parameterType="int" resultType="com.lanwei.haq.bms.entity.menu.MenuEntity">
+        SELECT m.*, f.sort fSort
+        FROM  sys_menu m
+        INNER JOIN sys_role_menu_rel r ON m.id = r.menuId AND r.isDel = 'F'
+        INNER JOIN sys_role s ON s.id = r.roleId AND s.isDel = 'F'
+        INNER JOIN sys_menu f ON m.moduleId = f.id AND f.isDel = 'F'
+        WHERE r.roleId = #{roleId}
+        AND m.isDel = 'F'
+
+        UNION
+        SELECT m.*,m.sort fSort
+        FROM  sys_menu m
+        WHERE m.id IN (
+            SELECT DISTINCT  m.menuId
+            FROM  sys_menu m
+            INNER JOIN sys_role_menu_rel r ON m.id = r.menuId AND r.isDel = 'F'
+            INNER JOIN sys_role s ON s.id = r.roleId AND s.isDel = 'F'
+            INNER JOIN sys_menu f ON m.moduleId = f.id AND f.isDel = 'F'
+            WHERE r.roleId = #{roleId}
+            AND m.isDel = 'F'
+            AND m.isLast= 'T'
+        )
+
+        UNION
+        SELECT m.*,m.sort fSort
+        FROM  sys_menu m
+        WHERE m.id IN (
+            SELECT DISTINCT  m.moduleId
+            FROM  sys_menu m
+            INNER JOIN sys_role_menu_rel r ON m.id = r.menuId AND r.isDel = 'F'
+            INNER JOIN sys_role s ON s.id = r.roleId AND s.isDel = 'F'
+            INNER JOIN sys_menu f ON m.moduleId = f.id AND f.isDel = 'F'
+            WHERE r.roleId = #{roleId}
+            AND m.isDel = 'F'
+        )
+        ORDER BY fSort,sort,created
+    </select>
+    
+    <update id="delList">
+      UPDATE sys_menu
+      SET
+        isDel = 'T',
+        modified = NOW(),
+        modifier = #{userId}
+      WHERE isDel = 'F'
+      AND id in
+      <foreach collection="idArr" open="(" close=")" separator="," item="id">
+        #{id}
+      </foreach>
+    </update>
+
+    <update id="update" parameterType="com.lanwei.haq.bms.entity.menu.MenuEntity">
+        UPDATE sys_menu
+        SET
+        <if test="null != name">
+            name = #{name},
+        </if>
+        <if test="null != url">
+            url = #{url},
+        </if>
+        <if test="null != icon">
+            icon = #{icon},
+        </if>
+        <if test="null != isLast">
+            isLast = #{isLast},
+        </if>
+            sort = #{sort},
+            menuId = #{menuId},
+            menuName = #{menuName},
+            moduleId = #{moduleId},
+            moduleName = #{moduleName},
+            modified = #{modified},
+            modifier = #{modifier}
+        WHERE isDel = 'F'
+        AND id = #{id}
+    </update>
+
+    <select id="getRoleMenu" resultType="com.lanwei.haq.bms.entity.menu.MenuEntity">
+      SELECT m.*,r.roleId
+      FROM sys_menu m
+      LEFT JOIN sys_role_menu_rel r ON  r.menuId = m.id AND r.isDel = 'F' AND r.roleId = #{roleId}
+      WHERE m.isDel = 'F'
+      AND m.isLast = #{isLast}
+    </select>
+
+    <update id="updateIsLast" parameterType="com.lanwei.haq.bms.entity.menu.MenuEntity">
+        UPDATE sys_menu
+        SET
+        isLast = #{isLast}
+        WHERE isDel = 'F'
+        AND id = #{id}
+    </update>
+</mapper>

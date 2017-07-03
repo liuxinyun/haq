@@ -1,0 +1,63 @@
+<div class="col-md-12">
+    <div class="box border lite" data-url="/haq-bms/dev/system/tables" data-template-id="template-table-id">
+        <div class="box-title">
+            <h4><i class="fa fa-table"></i>系统数据库表</h4>
+            <div class="tools">
+                <a href="javascript:;" title="刷新" class="reload">
+                    <i class="fa fa-refresh"></i>
+                </a>
+                <a href="javascript:;" title="折叠" class="collapse">
+                    <i class="fa fa-chevron-down"></i>
+                </a>
+            </div>
+        </div>
+        <div class="box-body">
+
+        </div>
+    </div>
+</div>
+<script type="text/x-dot-template" id="template-table-id">
+{{? it.list.length == 0 }}
+    <p class="alert alert-danger" role="alert"><i class="fa fa-info-circle"></i>&nbsp;没有相关数据</p>
+{{?}}
+{{? it.list.length > 0 }}
+<div class="panel-group" id="accordion">
+    {{for(var key in it.list){ }}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse{{=key}}">{{=it.list[key].name}}</a>
+            </h3>
+        </div>
+        <div id="collapse{{=key}}" class="panel-collapse collapse" style="height: auto;">
+            <div class="panel-body">
+                <table class="table table-hover">
+                    <thead><tr>
+                        <th>Field</th>
+                        <th>Type</th>
+                        <th>Null</th>
+                        <th>Key</th>
+                        <th>Default</th>
+                        <th>Extra</th>
+                    </tr></thead>
+                    <tbody>
+                    {{for(var k in it.list[key].list){}}
+                    <tr>
+                        <td>{{=it.list[key].list[k].field}}</td>
+                        <td>{{=it.list[key].list[k].type}}</td>
+                        <td>{{=it.list[key].list[k].isNull}}</td>
+                        <td>{{=it.list[key].list[k].key}}</td>
+                        <td>{{=it.list[key].list[k].default}}</td>
+                        <td>{{=it.list[key].list[k].extra}}</td>
+                    </tr>
+                    {{} }}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {{} }}
+</div>
+{{?}}
+</script>
+

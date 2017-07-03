@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+ <mapper namespace="com.lanwei.haq.bms.dao.dev.TableDao">
+	
+	<resultMap id="TableFieldMap" type="com.lanwei.haq.bms.entity.dev.TableFieldEntity" autoMapping="true">
+		<result column="NULL" property="isNull"/>
+	</resultMap>
+	
+	
+	<select id="showTables" resultType="string">
+		SHOW TABLES
+	</select>
+
+	<select id="desc" parameterType="string" resultMap="TableFieldMap">
+		DESC ${t_name};
+	</select>
+
+ </mapper>

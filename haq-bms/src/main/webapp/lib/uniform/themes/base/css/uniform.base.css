@@ -1,0 +1,163 @@
+/* uniform */
+
+.checker, .radio, .ui-slider-handle {
+	*display: inline;
+	*zoom: 1;
+	background: #fff; /* Old browsers */
+	border: 1px solid #CBCBCB;
+	border-radius: 3px;
+	height: 16px;
+	width: 16px;
+	-webkit-box-shadow: 0 1px 0 #ffffff, 0 1px 0 #ffffff inset;
+	box-shadow: 0 1px 0 #ffffff, 0 1px 0 #ffffff inset;
+	margin: auto;
+	display: inline-block;
+	vertical-align: middle;
+}
+td .checker{
+	display: block;
+}
+
+input[type="checkbox"], input[type="radio"] {
+	width: 16px;
+	height: 16px;
+	cursor: pointer;
+}
+
+.radio, .ui-slider-handle {
+	border-radius: 10px;
+}
+
+.checker>span, .radio>span {
+	height: 16px;
+	width: 16px;
+	display: block;
+}
+
+.checker.disabled, .radio.disabled {
+	opacity: 0.5;
+}
+
+.checker .checked {
+	background: url("../images/i_16_checked.png") no-repeat center center
+		scroll transparent;
+}
+
+.radio .checked {
+	background: url("../images/i_16_radio.png") no-repeat center center
+		scroll transparent;
+}
+
+.ui-tabs-hide {
+	display: none;
+}
+
+.ui-state-active {
+	background-color: #F2F2F2;
+}
+
+.simple_buttons, .selector, .dtPagination a, .ui-button {
+	display: inline-block;
+	*display: inline;
+	*zoom: 1;
+	background: #fff; /* Old browsers */
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	height: 26px;
+	line-height: 26px;
+	box-shadow: 0 1px 0 #ffffff, 0 1px 0 #ffffff inset;
+	font-family: Oswald;
+	color: #696969;
+	font-size: 13px;
+	box-shadow: 0 2px 3px #EAEAEA;
+	cursor: pointer;
+}
+
+.submitIt {
+	padding: 0 20px;
+}
+
+.simple_buttons div {
+	padding: 0 15px;
+	display: inline-block;
+	*display: inline;
+	*zoom: 1;
+	float: left;
+}
+
+div.bwIcon {
+	display: inline-block;
+	padding-left: 30px;
+	background-position: 7px 6px;
+	*display: inline;
+	*zoom: 1;
+}
+
+div.buttons_arrow {
+	border-left: 1px solid #dadada;
+	height: 26px;
+	padding: 0 12px;
+	background: url("../images/i_16_bottom_arrow.png") no-repeat center
+		center scroll transparent;
+	position: relative;
+}
+
+.selector.hover select {
+	cursor: pointer;
+}
+
+div.buttons_arrow:hover, .selector.hover span {
+	background-color: rgba(255, 255, 255, 0.6);
+	cursor: pointer;
+}
+
+.selector {
+	position: relative;
+	box-shadow: 0 1px 3px #EEEEEE;
+	margin-right: 12px;
+}
+
+.selector span {
+	display: block;
+	padding: 0 40px 0 15px;
+	background: url("../images/i_16_selector.png") no-repeat right center
+		transparent;
+}
+
+.selector select {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 28px;
+	width: 100%;
+}
+
+div.uploader span.filename {
+    padding: 0px 20px 0px 10px;
+    float: left;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    background: url("../images/i_16_add.png") no-repeat scroll right center transparent;
+    background-position-x: 97%;
+}
+.uploader {
+	position: relative;
+	cursor: pointer;
+}
+
+.uploader input , .uploader .action{
+	display: inline-block;
+	*display: inline;
+	*zoom: 1;
+	width:100%;
+	height: 28px;
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+
+.uploader .action {
+	display: none;
+}

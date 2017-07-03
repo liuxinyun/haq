@@ -1,0 +1,143 @@
+<div class="col-md-12">
+    <div class="box border lite" data-url="/haq-bms/dev/role/list" data-template-id="template-list">
+        <div class="box-title">
+            <h4><i class="fa fa-navicon"></i>角色管理</h4>
+            <div class="tools">
+                <a href="javascript:;" title="新增" class="config" data-template-id="#template-role-add">
+                    <i class="fa fa-plus-square"></i>
+                </a>
+                <a href="javascript:;" title="刷新" class="reload">
+                    <i class="fa fa-refresh"></i>
+                </a>
+                <a href="javascript:;" title="折叠" class="collapse">
+                    <i class="fa fa-chevron-down"></i>
+                </a>
+                <a href="javascript:;" title="删除" class="remove" data-template-id="#template-delete" data-del-url="/haq-bms/dev/role/del">
+                    <i class="fa fa-times"></i>
+                </a>
+            </div>
+        </div>
+        <div class="box-body"></div>
+    </div>
+</div>
+
+<script type="text/x-dot-template" id="template-list">
+    {{? it.count <= 0}}
+    <p class="alert alert-danger" role="alert"><i class="fa fa-info-circle"></i>&nbsp;没有相关数据</p>
+    {{?}}
+    {{? it.count > 0}}
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>名称</th>
+                <th>类型</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+        {{for (var key in it.list) {}}
+            <tr data-id="{{=it.list[key].id}}" data-name="{{=it.list[key].name}}">
+                <td>{{=it.list[key].name}}</td>
+                <td>{{=it.list[key].typeStr}}</td>
+                <td><button class="btn btn-link" type="button" data-template-id="template-role-config" data-url="/haq-bms/dev/role/menu" data-param="{id:{{=it.list[key].id}}}"><span class="fa fa-cog"></span></button></td>
+            </tr>
+        {{}}}
+        </tbody>
+    </table>
+    {{?}}
+</script>
+
+<script type="text/x-dot-template" id="template-role-add">
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">添加角色</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" role="form" action="/haq-bms/dev/role/add" method="post">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">名称</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="name" class="form-control" placeholder="名称">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">类型</label>
+                        <div class="col-sm-10">
+                            <select name="type" class="form-control" >
+                                <option value="1">开发人员权限组</option>
+                                <option value="2">用户权限组</option>
+                                <option value="3">后台管理人员</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12 error-msg"></div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary">添加</button>
+            </div>
+        </div>
+    </div>
+</div>
+</script>
+
+<script type="text/x-dot-template" id="template-role-config">
+    <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel1">编辑权限菜单</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" action="/haq-bms/dev/role/config" method="post">
+                        <div class="container-fluid">
+                            <input type="hidden" value="{{=it.roleId}}" name="roleId">
+                            {{? it.list.length <= 0}}
+                            <p class="alert alert-danger" role="alert"><i class="fa fa-info-circle"></i>&nbsp;没有相关数据</p>
+                            {{?}}
+                            {{? it.list.length > 0}}
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th>名称</th>
+                                    <th>地址</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {{for (var key in it.list) {}}
+                                <tr data-id="{{=it.list[key].id}}" data-name="{{=it.list[key].name}}">
+                                    <td>{{=it.list[key].name}}</td>
+                                    <td>{{=it.list[key].url}}</td>
+                                    {{? it.list[key].roleId != 0}}
+                                    <td><input type="checkbox" checked value="{{=it.list[key].id}}" name="menuId"></td>
+                                    {{?}}
+                                    {{? it.list[key].roleId == 0}}
+                                    <td><input type="checkbox" value="{{=it.list[key].id}}" name="menuId"></td>
+                                    {{?}}
+                                </tr>
+                                {{}}}
+                                </tbody>
+                            </table>
+                            {{?}}
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12 error-msg"></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>

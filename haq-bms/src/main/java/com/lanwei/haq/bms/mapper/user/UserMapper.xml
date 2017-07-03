@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanwei.haq.bms.dao.user.UserDao">
+
+    <sql id="comField">
+        name,nickName,mobile,sex,password,headImage,email,roleId,creater,created,modifier,modified,isDel
+    </sql>
+
+    <select id="query" parameterType="com.lanwei.haq.bms.entity.user.UserEntity" resultType="com.lanwei.haq.bms.entity.user.UserEntity">
+        SELECT su.*,sr.name userType,sr.type roleType
+        FROM sys_user su
+        INNER JOIN sys_role sr ON sr.id = su.roleId
+        WHERE su.isDel = 'F'
+        AND sr.type != ${roleType}
+        <if test="id!=null and id!=0">
+            AND su.id = #{id}
+        </if>
+        <if test="null!=email and ''!=email">
+            AND su.email = #{email}
+        </if>
+        <if test="null!=name and ''!= name">
+            AND su.name LIKE CONCAT('%',#{name},'%')
+        </if>
+        ORDER BY su.created desc
+        LIMIT #{pageStart},#{pageSize};
+    </select>
+
+    <!-- 查询数量，用于分页 -->
+    <select id="count"  parameterType="com.lanwei.haq.bms.entity.user.UserEntity" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM sys_user su
+        INNER JOIN sys_role sr ON sr.id = su.roleId
+        WHERE su.isDel = 'F'
+        AND sr.type != ${roleType}
+        <if test="id!=null and id!=0">
+            AND su.id = #{id}
+        </if>
+        <if test="null!=email and ''!=email">
+            AND su.email = #{email}
+        </if>
+        <if test="null!=name and ''!= name">
+            AND su.name LIKE CONCAT('%',#{name},'%')
+        </if>
+    </select>
+
+    <!-- 新增用户 -->
+    <insert id="add" parameterType="com.lanwei.haq.bms.entity.user.UserEntity" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO `sys_user`
+        <trim prefix="(" suffix=")">
+            <include refid="comField"/>
+        </trim>
+        VALUES (#{name},#{nickName},#{mobile},#{sex},#{password},#{headImage},#{email},#{roleId},#{creater},NOW(),#{modifier},Now(),'F')
+    </insert>
+
+    <!--批量新增用户-->
+    <insert id="addList" parameterType="com.lanwei.haq.bms.entity.user.UserEntity">
+        INSERT INTO `sys_user`
+        <trim prefix="(" suffix=")">
+            <include refid="comField"/>
+        </trim>
+        VALUES
+        <foreach collection="list" separator="," item="user">
+            (#{user.name},#{user.nickName},#{user.mobile},#{user.sex},#{user.password},#{user.headImage},#{user.email},#{user.roleId},#{user.creater},NOW(),#{user.modifier},Now(),'F')
+        </foreach>
+    </insert>
+
+    <!-- 更新用户 -->
+    <update id="update" parameterType="com.lanwei.haq.bms.entity.user.UserEntity">
+        UPDATE
+        `sys_user`
+        SET
+        <if test="null != name and ''!= name">
+            name = #{name},
+        </if>
+        <if test="null != nickName and ''!= nickName">
+            nickName = #{nickName},
+        </if>
+        <if test="null != mobile and ''!= mobile">
+            mobile = #{mobile},
+        </if>
+        <if test="null != sex and ''!= sex">
+            sex = #{sex},
+        </if>
+        <if test="null != password and ''!= password">
+            password = #{password},
+        </if>
+        <if test="null != email and ''!= email">
+            email = #{email},
+        </if>
+        `modifier` = #{modifier},
+        `modified` = NOW()
+        WHERE id=#{id}
+    </update>
+
+    <!-- 删除 -->
+    <update id="del" parameterType="com.lanwei.haq.bms.entity.user.UserEntity">
+        UPDATE
+        sys_user
+        SET
+        isDel = 'T',
+        modifier = #{modifier},
+        modified = NOW()
+        WHERE
+        id = #{id}
+    </update>
+
+    <!--修改密码-->
+    <update id="updatePassword" parameterType="com.lanwei.haq.bms.entity.user.UserEntity">
+        UPDATE sys_user SET
+          password = #{password},
+          modifier = #{modifier},
+          modified = NOW()
+        WHERE
+        id = #{id}
+    </update>
+
+    <!--批量删除-->
+    <update id="delList">
+        UPDATE sys_user
+        SET
+        isDel = 'T',
+        modified = NOW(),
+        modifier = #{userId}
+        WHERE isDel = 'F'
+        AND id in
+        <foreach collection="idArr" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </update>
+
+
+
+</mapper>

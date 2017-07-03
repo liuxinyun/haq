@@ -1,0 +1,344 @@
+/* CSS Document */
+.header {
+	height: 40px;
+	background: #09c;
+	position:fixed;
+	top:0px;
+	left:0px;
+	right:0px;
+	z-index:10001;
+	min-width: 1100px;
+	width: 100%;
+}
+.logo {
+	height: 40px;
+	display: inline-block;
+	float: left;
+	padding: 0px 15px;
+}
+.topbar-left {
+	margin-left: 20px;
+	display: inline;
+}
+.topnav {
+	height: 40px;
+}
+.topnav a {
+	height: 40px;
+	line-height: 40px;
+	color: #fff !important;
+	font-size: 14px;
+	display: inline-block;
+	padding: 0 30px;
+	float: left;
+	border-right: 1px solid #008fbf;
+}
+.topnav a:LAST-CHILD{
+	border-right: 0;
+}
+.topnav a:hover, .topnav a.active {
+	background: #008fbf;
+	border-bottom: 2px solid #eaedf1;
+    height: 38px;
+    line-height: 38px;
+}
+.bd-right{
+	border-right: 1px solid #008fbf !important;
+}
+/*****--------
+	头部下拉展开
+---------------*****/
+.topdown {
+	background: transparent;
+	position: relative;
+	z-index: 2;
+}
+.topdown-toggle {
+	padding: 0 36px;
+	height: 40px;
+	line-height: 40px;
+	display: inline-block;
+	color: #fff;
+	font-size: 14px;
+	float: left;
+}
+.topdown-toggle:hover {
+	background: #008fbf;
+}
+.topdown-toggle span {
+	display: inline-block;
+	float: left;
+	height: 40px;
+	cursor: pointer;
+	color: #fff;
+}
+
+.header .icon-arrow-down {
+	transition: transform 0.2s ease 0s, vertical-align 0.2s ease 0s;
+	width: 8px;
+	font-size: 0px;
+	margin-left: 9px;
+	background: url(../images/top/dowsj.png) no-repeat left 18px;
+}
+/****-----
+	下拉展开效果
+------*****/
+.open .topdown-toggle, .open .topdown-toggle:hover {
+	background: #fff;
+	color: #333;
+}	
+.open .topdown-toggle span{
+	color: #1E5494;
+}
+.open .topdown-toggle .icon-arrow-down {
+	background: url(../images/top/upsj.png) no-repeat left 18px;
+	transform: rotate(360deg);
+}
+.dropdown-menu {
+	background: #fff;
+	z-index: 100;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	position: absolute;
+	top: 39px;
+	left: 0px;
+	width: 100%;
+	display: none;
+}
+.open .dropdown-menu {
+	display: block;
+	border-top: solid 1px #eaedf1;
+}
+.topbar-nav-list a {
+	height: 40px;
+	line-height: 40px;
+	width: 100%;
+	display: block;
+	text-align: left;
+	text-indent: 15px;
+	color: #333;
+	border-bottom: solid 1px #eaedf1;
+}
+.topbar-nav-list a:hover {
+	background-color: #f5f5f5;
+}
+/****-----
+ End	下拉展开效果
+------*****/
+/*********-----------
+	消息
+-----------********/
+.topinfoicon {
+	position: relative;
+}
+.topinfoicon a {
+	padding: 0 14px;
+	margin-left: 1px;
+}
+.infoicon {
+	width: 12px;
+	height: 40px;
+	background: url(../images/top/infoicon.png) no-repeat 0 13px;
+	display: inline-block;
+	float: left;
+}
+.infonum {
+	width: 18px;
+	height: 20px;
+	line-height: 20px;
+	background: #0087b4;
+	display: inline-block;
+	float: left;
+	margin-left: 8px;
+	border-radius: 2px;
+	color: #fff;
+	text-align: center;
+	margin-top: 10px;
+	overflow: hidden;
+	word-break: normal;
+}
+.topbar-btn-notice .infonum {
+	background: #ff9900;
+}
+.infopop-pane {
+	width: 440px;
+	position: absolute;
+	top: 40px;
+	background: #fff;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.176);
+	left: -270px;
+	z-index: 150;
+	display: none;
+}
+.topbar-notice-arrow {
+	height: 6px;
+	background: url(../images/notice-arrow.png) no-repeat;
+	position: absolute;
+	top: -6px;
+	width: 11px;
+	left: 50%;
+	margin-left: 77px;
+}
+.infopop-notice-head {
+	height: 40px;
+	line-height: 40px;
+	padding: 0 15px;
+	background: #eaedf1;
+}
+.ng-binding {
+	color: #333;
+	display: inline-block;
+}
+a.pull-right {
+	color: #06c;
+	background: none;
+	float: right !important;
+	padding: 0;
+	margin-right: 0;
+}
+a.pull-right:hover {
+	background: none;
+}
+.infopop-notice-body {
+	min-height: 300px;
+	font-size: 12px;
+	overflow-y: hidden;
+	background: #fff;
+}
+.ng-scope {
+	border-bottom: solid 1px #eaedf1;
+	min-height: 60px;
+	line-height: 20px;
+}
+.infopop-notice-body li a {
+	height: auto;
+	min-height: 40px;
+	padding: 10px;
+	display: block;
+	color: #333;
+	background: #fff;
+	line-height: normal;
+	float: none;
+}
+.inline-block {
+	display: inline-block;
+	vertical-align: middle;
+}
+.topbar-notice-link {
+	/*color: #06c;*/
+	display: block;
+	max-width: 300px;
+	/*	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;*/
+	font-size: 12px;
+	line-height: 20px;
+}
+.topbar-notice-time {
+	line-height: 20px;
+	font-size: 12px;
+}
+.topbar-notice-class {
+	float: right;
+	padding: 8px 0;
+	vertical-align: middle;
+	display: inline-block;
+}
+.topbar-notice-class-name {
+	background: #eaedf1;
+	border-radius: 3px;
+	display: block;
+	height: 24px;
+	line-height: 24px;
+	width: 66px;
+	text-align: center;
+	font-size: 12px;
+}
+.infopop-notice-body li a:hover {
+	background: #f9f9f9;
+}
+.topbar-notice-empty {
+	color: #666;
+	margin-top: 80px;
+	text-align: center;
+	line-height: 28px;
+}
+.topbar-notice-foot {
+	text-align: center;
+	height: 50px;
+	line-height: 50px;
+	background: #F8F8F9;
+	border-top: 1px solid #f3f3f3;
+}
+.topbar-notice-foot a {
+	color: #666;
+	padding: 0;
+	background: none;
+	float: none;
+	font-size: 12px;
+}
+.topbar-notice-foot a:hover {
+	background: none;
+}
+.open .infopop-pane {
+	display: block;
+}
+.infored .topbar-notice-link { color:#F00;}
+/*****--------
+ 	End	头部下拉展开
+---------------*****/
+
+/****------------------
+	footer 底部
+-------*****/
+.footer {
+	width: 100%;
+	text-align: center;
+	margin-top: 15px;
+	border-top: solid 1px #ddd;
+	padding: 10px 0;
+	line-height: 24px;
+	background: #fff;
+}
+/*
+	消息分页样式修改
+*/
+.pagelist {
+	text-align: center;
+	height: 24px;
+	line-height: 24px;
+}
+.pagelist font {
+	color: #F00;
+	margin: 0 4px;
+}
+.pagelist a {
+	background: none;
+	height: 24px;
+	line-height: 24px;
+	padding: 0;
+	float: none;
+	font-size: 12px;
+	color: #666;
+}
+.pagelist a font {
+	color: #666;
+}
+.pagelist a:hover {
+	background: none;
+}
+/*
+	top up 
+ */
+.topup {
+	width: 50px;
+	height: 50px;
+	display: inline-block;
+	position: fixed;
+	right: 10px;
+	bottom: 20px;
+	background: url(../images/topup.png) no-repeat;
+}
+
+.listyle {
+	cursor: pointer;
+}

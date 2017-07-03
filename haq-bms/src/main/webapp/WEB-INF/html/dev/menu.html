@@ -1,0 +1,302 @@
+<div class="col-md-12">
+    <div class="box border lite" data-url="/haq-bms/dev/menu/list" data-template-id="template-list">
+        <div class="box-title">
+            <h4><i class="fa fa-navicon"></i>菜单管理</h4>
+            <div class="tools">
+                <a href="javascript:;" title="新增" class="config" data-template-id="#template-menu-add" data-url="/haq-bms/menu/get" data-param="{type:1}">
+                    <i class="fa fa-plus-square"></i>
+                </a>
+                <a href="javascript:;" title="刷新" class="reload">
+                    <i class="fa fa-refresh"></i>
+                </a>
+                <a href="javascript:;" title="折叠" class="collapse">
+                    <i class="fa fa-chevron-down"></i>
+                </a>
+                <a href="javascript:;"  title="删除"  class="remove" data-template-id="#template-delete" data-del-url="/haq-bms/dev/menu/del">
+                    <i class="fa fa-times"></i>
+                </a>
+            </div>
+        </div>
+        <div class="box-body"></div>
+    </div>
+</div>
+<script type="text/x-dot-template" id="template-list">
+    <div class="container-fluid">
+        <form role="form">
+            <div class="form-group">
+                <div class="col-sm-1 control-label">名称</div>
+                <div class="col-sm-3">
+                    <input type="text" name="name" class="form-control" placeholder="名称" value="{{=$.wipeNull(it.queryEntity.name)}}">
+                </div>
+                <div class="col-sm-3">
+                   <button class="btn btn-primary" type="button">查询</button>
+                </div>
+            </div>
+            <input type="hidden" name="pageSize" value="10">
+            <input type="hidden" name="pageNum" value="1">
+        </form>
+    </div>
+    <hr>
+    {{? it.count <= 0}}
+    <p class="alert alert-danger" role="alert"><i class="fa fa-info-circle"></i>&nbsp;没有相关数据</p>
+    {{?}}
+    {{? it.count > 0}}
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th width="20%">名称</th>
+                <th width="30%">地址</th>
+                <th width="10%">图标</th>
+                <th width="10%">类型</th>
+                <th width="20%">模块</th>
+                <th width="20%">菜单</th>
+                <th width="10%">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+        {{for (var key in it.list) {}}
+            <tr data-id="{{=it.list[key].id}}" data-name="{{=it.list[key].name}}">
+                <td title="{{=it.list[key].name}}"><button class="btn btn-link" data-url="/menu/{{=it.list[key].id}}" data-template-id="template-menu-info">{{=it.list[key].name}}</button></td>
+                <td title="{{=it.list[key].url}}">{{=it.list[key].url}}</td>
+                <td><i class="fa {{=it.list[key].icon}}"></i></td>
+                <td>{{=it.list[key].typeStr}}</td>
+                <td>{{=it.list[key].moduleName}}</td>
+                <td>{{=it.list[key].menuName}}</td>
+                <th><button class="btn btn-link" data-url="/menu/{{=it.list[key].id}}" data-template-id="template-menu-edit"><span class="fa fa-edit"></span></button></th>
+            </tr>
+        {{}}}
+        </tbody>
+    </table>
+    {{?}}
+    <div class="container-fluid page" data-num="{{=it.queryEntity.pageNum}}" data-size="{{=it.queryEntity.pageSize}}" data-count="{{=it.count}}">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="pull-left">
+                </div>
+                <div class="pull-right">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-dot-template" id="template-menu-add">
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">添加菜单</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" role="form" action="/haq-bms/dev/menu/add" method="post">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">名称</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="name" class="form-control validate[required]" maxlength="20" placeholder="名称">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">URL</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="url" class="form-control" placeholder="菜单地址">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">ICON</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="icon" class="form-control" placeholder="ICON">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">模块</label>
+                        <div class="col-sm-10">
+                            <select name="moduleId" class="form-control moduleSelect">
+                                <option value="0">模块</option>
+                                {{for (var key in it.list){}}
+                                <option value="{{=it.list[key].id }}">{{=it.list[key].name }}</option>
+                                {{} }}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group menuList">
+
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">排序码</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="sort" class="form-control" placeholder="请输入排序码，大于0的整数">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12 error-msg"></div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary">添加</button>
+            </div>
+        </div>
+    </div>
+</div>
+</script>
+
+<script type="text/x-dot-template" id="template-menu-info">
+    <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel1">菜单详情</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" role="form" action="/haq-bms/dev/menu/add" method="post">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">名称</label>
+                            <label class="col-sm-10 control-label tl">
+                                {{=it.menu.name}}
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">URL</label>
+                            <label class="col-sm-10 control-label tl">
+                                {{=it.menu.url}}
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">ICON</label>
+                            <label class="col-sm-10 control-label tl">
+                                <span class="fa {{=it.menu.icon}}"></span>
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">模块</label>
+                            <label class="col-sm-10 control-label tl">
+                                {{=it.menu.moduleName}}
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">菜单</label>
+                            <label class="col-sm-10 control-label tl">
+                                {{=it.menu.menuName}}
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">排序码</label>
+                            <label class="col-sm-10 control-label tl">
+                                {{=it.menu.sort}}
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12 error-msg"></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-dot-template" id="template-menu-edit">
+    <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel2">编辑菜单</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" role="form" action="/haq-bms/dev/menu/update" method="post">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">名称</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="name" class="form-control" placeholder="名称" value="{{=it.menu.name}}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">URL</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="url" class="form-control" placeholder="菜单地址" value="{{=it.menu.url}}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">ICON</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="icon" class="form-control" placeholder="ICON" value="{{=it.menu.icon}}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">模块</label>
+                            <div class="col-sm-10">
+                                <select name="moduleId" class="form-control moduleSelect" >
+                                    <option value="0">模块</option>
+                                    {{for (var key in it.list){}}
+                                    <option value="{{=it.list[key].id }}" {{? it.menu.moduleId == it.list[key].id }}selected="selected"{{? }}>{{=it.list[key].name }}</option>
+                                    {{} }}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group menuList">
+                            <label class="col-sm-2 control-label">菜单</label>
+                            <div class="col-sm-10">
+                                <select name="menuId" class="form-control" >
+                                    <option value="0">菜单</option>
+                                    {{for (var key in it.list1){}}
+                                    <option value="{{=it.list1[key].id }}" {{? it.menu.menuId == it.list1[key].id }}selected="selected"{{? }}>{{=it.list1[key].name }}</option>
+                                    {{} }}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">排序码</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="sort" class="form-control" placeholder="请输入排序码，大于0的整数" value="{{=it.menu.sort}}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="hidden" name="id" placeholder="ICON" value="{{=it.menu.id}}">
+                            <div class="col-sm-12 error-msg"></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-dot-template" id="template-item-list">
+    <label class="col-sm-2 control-label">菜单</label>
+    <div class="col-sm-10">
+        <select name="menuId" class="form-control" >
+            <option value="0">菜单</option>
+            {{for (var key in it.list){}}
+            <option value="{{=it.list[key].id }}">{{=it.list[key].name }}</option>
+            {{} }}
+        </select>
+    </div>
+</script>
+
+<script>
+    require(['jquery', 'app'], function ($, app) {
+        $('body').off('change','.moduleSelect').on('change','.moduleSelect',function () {
+            var moduleId = $(this).val();
+            if(moduleId==0){
+                $('body').find('.menuList').html('');
+            }else{
+                app.ajax('/menu/get',{moduleId:moduleId,type:2},function (data) {
+                    var arrText = app.template($('#template-item-list').text(),data);
+                    $('body').find('.menuList').html(arrText);
+                });
+            }
+        });
+    });
+</script>

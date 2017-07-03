@@ -1,0 +1,281 @@
+<div class="col-md-12">
+    <div class="box border lite" data-url="/haq-bms/web/list" data-template-id="template-list">
+        <div class="box-title">
+            <h4><i class="fa fa-navicon"></i>网站管理</h4>
+            <div class="tools">
+                <a href="javascript:;" title="新增" class="config" data-template-id="#template-web-add" data-param="{type:1}">
+                    <i class="fa fa-plus-square"></i>
+                </a>
+                <a href="javascript:;" title="刷新" class="reload">
+                    <i class="fa fa-refresh"></i>
+                </a>
+                <a href="javascript:;" title="折叠" class="collapse">
+                    <i class="fa fa-chevron-down"></i>
+                </a>
+                <a href="javascript:;" title="删除" class="remove" data-template-id="#template-delete" data-del-url="/haq-bms/web/delWeb">
+                    <i class="fa fa-times"></i>
+                </a>
+            </div>
+        </div>
+        <div class="box-body"></div>
+    </div>
+</div>
+<script type="text/x-dot-template" id="template-list">
+    <div class="container-fluid">
+        <form role="form">
+            <div class="form-group row">
+                <div class="col-sm-3 control-label">自动检测时间间隔（单位：分钟）</div>
+                <div class="col-sm-1">
+                    <select>
+                        <option value="0">30</option>
+                        <option value="1">15</option>
+                        <option value="2">45</option>
+                        <option value="3">60</option>
+                        <option value="4">120</option>
+                    </select>
+                </div>
+                <div class="col-sm-1 control-label">爬取速度</div>
+                <div class="col-sm-1">
+                    <select>
+                        <option value="0">中速</option>
+                        <option value="1">低速</option>
+                        <option value="2">高速</option>
+                    </select>
+                </div>
+                <div class="col-sm-3">
+                    <button class="btn btn-purple spider-now" type="button">立即生效</button>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-1 control-label">名称</div>
+                <div class="col-sm-3">
+                    <input type="text" name="webname" class="form-control" placeholder="名称" value="{{=$.wipeNull(it.queryEntity.webname)}}">
+                </div>
+                <div class="col-sm-3">
+                   <button class="btn btn-primary" type="button">查询</button>
+                </div>
+            </div>
+            <input type="hidden" name="pageSize" value="10">
+            <input type="hidden" name="pageNum" value="1">
+        </form>
+    </div>
+    <hr>
+    {{? it.count <= 0}}
+    <p class="alert alert-danger" role="alert"><i class="fa fa-info-circle"></i>&nbsp;没有相关数据</p>
+    {{?}}
+    {{? it.count > 0}}
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>名称</th>
+                <th>网址</th>
+                <th>标题选择器</th>
+                <th>内容选择器</th>
+                <th>正则表达式</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+        {{for (var key in it.list) {}}
+            <tr data-id="{{=it.list[key].id}}" data-name="{{=it.list[key].webname}}">
+                <td><button class="btn btn-link" data-url="/haq-bms/web/{{=it.list[key].id}}" data-template-id="template-web-info">{{=it.list[key].webname}}</button></td>
+                <td>{{=it.list[key].weburl}}</td>
+                <td>{{=it.list[key].titleSelect}}</td>
+                <td>{{=it.list[key].contentSelect}}</td>
+                <td>{{=it.list[key].regex}}</td>
+                <th>
+                    <button class="btn btn-link" data-url="/haq-bms/web/{{=it.list[key].id}}" data-template-id="template-web-edit"><span class="fa fa-edit"></span></button>
+                </th>
+            </tr>
+        {{}}}
+        </tbody>
+    </table>
+    {{?}}
+    <div class="container-fluid page" data-num="{{=it.queryEntity.pageNum}}" data-size="{{=it.queryEntity.pageSize}}" data-count="{{=it.count}}">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="pull-left">
+                </div>
+                <div class="pull-right">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-dot-template" id="template-web-add">
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">添加网站</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" role="form" action="/haq-bms/web/add" method="post">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">网站名称</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="webname" class="validate[required,maxSize[100]] form-control" placeholder="网站名称">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">网址</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="weburl" class="validate[required,maxSize[100]] form-control" placeholder="网址">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">标题选择器</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="titleSelect" class="validate[required,maxSize[100]] form-control" placeholder="请填写标题的css表达式">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">内容选择器</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="contentSelect" class="validate[required,maxSize[100]] form-control" placeholder="请填写内容的css表达式">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">正则表达式</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="regex" class="validate[required,maxSize[100]] form-control" placeholder="网址的正则表达式">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12 error-msg"></div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary">添加</button>
+            </div>
+        </div>
+    </div>
+</div>
+</script>
+
+<script type="text/x-dot-template" id="template-web-info">
+    <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel1">网站详情</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" role="form" action="/haq-bms/web/add" method="post">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">网站名称</label>
+                            <label class="col-sm-10 control-label tl">
+                                {{=it.web.webname}}
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">网站地址</label>
+                            <label class="col-sm-10 control-label tl">
+                                {{=it.web.weburl}}
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">标题选择器</label>
+                            <label class="col-sm-10 control-label tl">
+                                {{=it.web.titleSelect}}
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">内容选择器</label>
+                            <label class="col-sm-10 control-label tl">
+                                {{=it.web.contentSelect}}
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">正则表达式</label>
+                            <label class="col-sm-10 control-label tl">
+                                {{=it.web.regex}}
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12 error-msg"></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-dot-template" id="template-web-edit">
+    <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel2">编辑网站</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" role="form" action="/haq-bms/web/update" method="post">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">网站名称</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="webname" class="validate[required,maxSize[100]] form-control" placeholder="网站名称" value="{{=it.web.webname}}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">网站地址</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="weburl" class="validate[required,maxSize[100]] form-control" placeholder="网站地址" value="{{=it.web.weburl}}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">标题选择器</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="titleSelect" class="validate[required,maxSize[100]] form-control" placeholder="标题选择表达式" value="{{=it.web.titleSelect}}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">内容选择器</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="contentSelect" class="validate[required,maxSize[100]] form-control" placeholder="内容选择表达式" value="{{=it.web.contentSelect}}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">正则表达式</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="regex" class="validate[required,maxSize[100]] form-control" placeholder="网址正则表达式" value="{{=it.web.regex}}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="hidden" name="id" placeholder="ICON" value="{{=it.web.id}}">
+                            <div class="col-sm-12 error-msg"></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script>
+    require(['jquery', 'app'], function ($, app) {
+        $("body").on("click",".spider-now",function () {
+            app.ajax('/haq-bms/web/now',{},function(data){
+                if(data.code == 200){
+                    alert("操作成功");
+                }else {
+                    alert("操作失败，请稍后重试。");
+                }
+            })
+        })
+    })
+</script>
