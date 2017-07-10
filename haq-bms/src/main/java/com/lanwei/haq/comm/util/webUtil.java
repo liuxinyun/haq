@@ -1,63 +1,40 @@
 package com.lanwei.haq.comm.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.servlet.http.HttpServletRequest;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
- * @类名：webUtil.java
- * @作者：one
- * @时间：2016年3月31日 上午10:19:01
- * @版权：pengkaione@icloud.com
- * @描述：
+ * @作者：刘新运
+ * @日期：2017/7/2 20:59
+ * @描述：网络工具类
  */
-public class webUtil {
 
-    private static final Logger logger = LoggerFactory.getLogger(webUtil.class);
+public class WebUtil {
 
-    /**
-     * 从request对象中获取客户端真实的ip地址
-     *
-     * @param request request对象
-     * @return 客户端的IP地址
-     */
-    public static String getIpAddr(HttpServletRequest request) {
-        if (request == null) return null;
-        String ip = request.getHeader("X-Real-IP");
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("x-forwarded-for");
-        }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("Proxy-Client-IP");
-        }
-        if (ip == null || ip.length() == 0 || "unknow".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("WL-Proxy-Client-IP");
-        }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("http_client_ip");
-        }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("HTTP_X_FORWARDED_FOR");
-        }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getRemoteAddr();
-        }
-        // 如果是多级代理，那么取第一个ip为客户ip
-        if (ip != null && ip.indexOf(",") != -1) {
-            ip = ip.substring(ip.lastIndexOf(",") + 1, ip.length()).trim();
-        }
-        return ip;
-    }
+    private static final String REGEX = "[0-9a-zA-Z]+((\\.com)|(\\.cn)|(\\.org)|(\\.net)|(\\.edu)|(\\.com.cn)|(\\.xyz)|(\\.xin)|(\\.club)|(\\.shop)|(\\.site)|(\\.wang)" +
+            "|(\\.top)|(\\.win)|(\\.online)|(\\.tech)|(\\.store)|(\\.bid)|(\\.cc)|(\\.ren)|(\\.lol)|(\\.pro)|(\\.red)|(\\.kim)|(\\.space)|(\\.link)|(\\.click)|(\\.news)|(\\.news)|(\\.ltd)|(\\.website)" +
+            "|(\\.biz)|(\\.help)|(\\.mom)|(\\.work)|(\\.date)|(\\.loan)|(\\.mobi)|(\\.live)|(\\.studio)|(\\.info)|(\\.pics)|(\\.photo)|(\\.trade)|(\\.vc)|(\\.party)|(\\.game)|(\\.rocks)|(\\.band)" +
+            "|(\\.gift)|(\\.wiki)|(\\.design)|(\\.software)|(\\.social)|(\\.lawyer)|(\\.engineer)|(\\.org)|(\\.net.cn)|(\\.org.cn)|(\\.gov.cn)|(\\.name)|(\\.tv)|(\\.me)|(\\.asia)|(\\.co)|(\\.press)|(\\.video)|(\\.market)" +
+            "|(\\.games)|(\\.science)|(\\.中国)|(\\.公司)|(\\.网络)|(\\.pub)" +
+            "|(\\.la)|(\\.auction)|(\\.email)|(\\.sex)|(\\.sexy)|(\\.one)|(\\.host)|(\\.rent)|(\\.fans)|(\\.cn.com)|(\\.life)|(\\.cool)|(\\.run)" +
+            "|(\\.gold)|(\\.rip)|(\\.ceo)|(\\.sale)|(\\.hk)|(\\.io)|(\\.gg)|(\\.tm)|(\\.com.hk)|(\\.gs)|(\\.us))";
+
+    private static final String UNKNOWN = "unknown";
 
     /**
-     * 从request对象中获取客户端
-     *
-     * @param request request对象
-     * @return 客户端的浏览器信息
+     * 根据网址获取一级域名
+     * @param url
+     * @return
      */
-    public static String getUserAgent(HttpServletRequest request) {
-        if (request == null) return null;
-        return request.getHeader("user-agent");
+    public static String getDomain(String url){
+        Pattern p = Pattern.compile(REGEX);
+        Matcher m = p.matcher(url);
+        String domain = UNKNOWN;
+        //获取一级域名
+        while(m.find()){
+            domain = m.group();
+        }
+        return domain;
     }
+
 }
