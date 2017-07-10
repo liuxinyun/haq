@@ -24,26 +24,24 @@
     <div class="container-fluid">
         <form role="form">
             <div class="form-group row">
-                <div class="col-sm-3 control-label">自动检测时间间隔（单位：分钟）</div>
-                <div class="col-sm-1">
-                    <select>
-                        <option value="0">30</option>
-                        <option value="1">15</option>
-                        <option value="2">45</option>
-                        <option value="3">60</option>
-                        <option value="4">120</option>
+                <div class="col-md-3">自动检测时间间隔（单位：分钟）</div>
+                <div class="col-md-1">
+                    <select id="spider_cron">
+                        {{for (var key in it.cron) {}}
+                            <option value="{{=it.cron[key].id}}" {{? it.cron[key].status ==1 }} selected {{? }}>{{=it.cron[key].data}}</option>
+                        {{}}}
                     </select>
                 </div>
-                <div class="col-sm-1 control-label">爬取速度</div>
-                <div class="col-sm-1">
-                    <select>
-                        <option value="0">中速</option>
-                        <option value="1">低速</option>
-                        <option value="2">高速</option>
+                <div class="col-md-1">爬取速度</div>
+                <div class="col-md-1">
+                    <select id="spider_speed">
+                        {{for (var key in it.speed) {}}
+                        <option value="{{=it.speed[key].id}}" {{? it.speed[key].status ==1 }} selected {{? }}>{{=it.speed[key].desc}}</option>
+                        {{}}}
                     </select>
                 </div>
-                <div class="col-sm-3">
-                    <button class="btn btn-purple spider-now" type="button">立即生效</button>
+                <div class="col-md-3">
+                    <button class="btn btn-purple spider-now" type="button">保存并立即生效</button>
                 </div>
             </div>
             <div class="form-group row">
@@ -84,7 +82,8 @@
                 <td>{{=it.list[key].contentSelect}}</td>
                 <td>{{=it.list[key].regex}}</td>
                 <th>
-                    <button class="btn btn-link" data-url="/haq-bms/web/{{=it.list[key].id}}" data-template-id="template-web-edit"><span class="fa fa-edit"></span></button>
+                    <button class="btn btn-link" data-url="/haq-bms/web/{{=it.list[key].id}}" data-template-id="template-web-edit"><span title="编辑" class="fa fa-edit"></span></button>
+                    <button class="btn spider-id" data-url="/haq-bms/web/now/{{=it.list[key].id}}"><span title="立即爬虫" class="fa fa-flash"></span></button>
                 </th>
             </tr>
         {{}}}
@@ -269,12 +268,17 @@
 <script>
     require(['jquery', 'app'], function ($, app) {
         $("body").on("click",".spider-now",function () {
-            app.ajax('/haq-bms/web/now',{},function(data){
-                if(data.code == 200){
-                    alert("操作成功");
-                }else {
-                    alert("操作失败，请稍后重试。");
-                }
+            var configIds = new Array();
+            configIds.push($("#spider_cron").val(),$("#spider_speed").val());
+            alert(JSON.stringify(configIds));
+            app.ajax('/haq-bms/web/now/0',{configIds:configIds},function(data){
+                alert(data.msg);
+            })
+        })
+        $("body").on("click",".spider-id",function () {
+            var url = $(this).data("url");
+            app.ajax(url,{},function(data){
+                alert(data.msg);
             })
         })
     })

@@ -8,6 +8,7 @@ import com.lanwei.haq.bms.service.log.SysLogService;
 import com.lanwei.haq.bms.service.menu.MenuService;
 import com.lanwei.haq.bms.service.role.RoleService;
 import com.lanwei.haq.bms.service.user.UserService;
+import com.lanwei.haq.bms.service.web.ConfigService;
 import com.lanwei.haq.bms.service.web.WebService;
 import com.lanwei.haq.comm.annotation.AddEntity;
 import com.lanwei.haq.comm.annotation.CurrentUser;
@@ -40,16 +41,18 @@ public class UserController {
     private final RoleService roleService;
     private final SysLogService sysLogService;
     private final WebService webService;
+    private final ConfigService configService;
 
     @Autowired
     public UserController(UserService userService, MenuService menuService,
                           RoleService roleService, SysLogService sysLogService,
-                          WebService webService) {
+                          WebService webService, ConfigService configService) {
         this.userService = userService;
         this.menuService = menuService;
         this.roleService = roleService;
         this.sysLogService = sysLogService;
         this.webService = webService;
+        this.configService = configService;
     }
 
     /**
@@ -115,6 +118,8 @@ public class UserController {
         resultMap.put("menu", menuService.getUserMenu(userEntity));
         //获取当前网站数量
         resultMap.put("webCount", webService.getWebCount());
+        //获取当前正在使用的网站配置
+        resultMap.putAll(configService.getCurrentUse());
 
         return resultMap;
     }

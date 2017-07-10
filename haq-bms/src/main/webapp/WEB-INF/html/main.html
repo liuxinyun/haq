@@ -117,25 +117,25 @@
         <div class="col-lg-3 col-xs-6">
             <div class="small-box bg-aqua">
                 <div class="inner">
-                    <h3 id="webCount">{{=it.webCount}}</h3>
+                    <h3>{{=it.webCount}}</h3>
                     <p>监察网站数量</p>
                 </div>
-                <div class="icon"> <i class="fa fa-binoculars"></i> </div>
+                <div class="icon"> <i class="fa fa-eye"></i> </div>
             </div>
         </div>
         <div class="col-lg-3 col-xs-6">
             <div class="small-box bg-green">
                 <div class="inner">
-                    <h3>良好</h3>
-                    <p>系统运行压力</p>
+                    <h3>{{=it.cron}}min</h3>
+                    <p>爬虫间隔时间</p>
                 </div>
-                <div class="icon"> <i class="fa fa-tasks"></i> </div>
+                <div class="icon"> <i class="fa fa-history"></i> </div>
             </div>
         </div>
         <div class="col-lg-3 col-xs-6">
             <div class="small-box bg-yellow">
                 <div class="inner">
-                    <h3>中速</h3>
+                    <h3>{{=it.speed}}</h3>
                     <p>爬虫爬取速度</p>
                 </div>
                 <div class="icon"> <i class="fa fa-bug"></i> </div>

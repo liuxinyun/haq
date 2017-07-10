@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanwei.haq.bms.dao.web.ConfigDao">
+
+    <!-- 查询 -->
+    <select id="query" resultType="com.lanwei.haq.bms.entity.web.ConfigEntity">
+        SELECT * FROM t_config WHERE isDel = 'F'
+    </select>
+
+    <!-- 所有状态置零 -->
+    <update id="update0">
+        UPDATE t_config SET status = 0 WHERE isDel = 'F'
+    </update>
+    <!-- 更新指定的状态为1 -->
+    <update id="update1">
+        UPDATE t_config
+        SET status = 1
+        WHERE isDel = 'F'
+        AND id IN
+        <foreach collection="ids" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </update>
+
+
+
+</mapper>
