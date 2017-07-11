@@ -147,13 +147,13 @@ public class WebController {
             key = Constant.REDIS_WEBSITE_PREFIX+domain+"_"+id;
         }
         Jedis jedis = RedisUtil.getJedis(Constant.REDIS_TCP_INDEX);
-        jedis.set(key,"1");
+        jedis.getSet(key,"1");
         int i=10;
         boolean flag = false;
         while (i>0){
             if (jedis.get(key).equals("2")){
                 flag = true;
-                jedis.set(key, "0");//恢复原样
+                jedis.getSet(key, "0");//恢复原样
                 break;
             }
             i--;
