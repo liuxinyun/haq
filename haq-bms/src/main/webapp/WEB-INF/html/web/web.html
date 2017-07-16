@@ -270,15 +270,22 @@
         $("body").on("click",".spider-now",function () {
             var configIds = new Array();
             configIds.push($("#spider_cron").val(),$("#spider_speed").val());
-            alert(JSON.stringify(configIds));
             app.ajax('/haq-bms/web/now/0',{configIds:configIds},function(data){
-                alert(data.msg);
+                if (data.code==200){
+                    app.layerOpen(6, data.msg);
+                }else {
+                    app.layerOpen(5, data.msg);
+                }
             })
-        })
+        });
         $("body").on("click",".spider-id",function () {
             var url = $(this).data("url");
             app.ajax(url,{},function(data){
-                alert(data.msg);
+                if (data.code==200){
+                    app.layerOpen(6, data.msg);
+                }else {
+                    app.layerOpen(5, data.msg);
+                }
             })
         })
     })

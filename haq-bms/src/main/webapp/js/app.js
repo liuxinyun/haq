@@ -36,7 +36,7 @@
         return;
     }
     // 定义全局公用方法
-    define(['jquery', 'doT', 'store', 'messenger', 'blockUI','jQueryForm'], function ($, doT, store, messenger) {
+    define(['jquery', 'doT', 'layer', 'store', 'messenger', 'blockUI','jQueryForm'], function ($, doT, layer, store, messenger) {
 
         $(function () {
             // 按enter键 .fm-submit样式的按钮触发点击事件
@@ -101,6 +101,18 @@
             // 调用模板，tempId定义的模板id,data数据源
             template: function (template, data) {
                 return doT.template(template)(data);
+            },
+
+            //基于layer.js进行封装
+            layerOpen: function (icon,msg) {
+                layer.open({
+                    icon: icon,
+                    title:false,
+                    time: 1500, //1.5秒后自动关闭
+                    btn:false,
+                    shadeClose: false,
+                    content: msg
+                });
             },
 
             // 基于store.js 封装的本地存储功能

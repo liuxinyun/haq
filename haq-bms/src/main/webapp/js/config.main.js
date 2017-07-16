@@ -8,6 +8,7 @@
         paths: {
             'jquery': 'jquery/jquery-1.12.0.min',
             'doT': 'doT/doT.min',
+            'layer':'layer/layer',
             'store': 'store/store.min',
             'bootstrap': 'bootstrap/js/bootstrap.min',
             'my97date': 'My97DatePicker/WdatePicker',
@@ -24,8 +25,9 @@
         waitSeconds: 0 ,
         shim: {
             'bootstrap': { deps: ['jquery'] },
+            'layer': { deps: ['jquery'], exports: "layer" },
             'app': {
-                deps: ['jquery', 'doT', 'store', 'blockUI', 'bootstrap','messenger', 'validation']
+                deps: ['jquery', 'doT', 'layer', 'store', 'blockUI', 'bootstrap','messenger', 'validation']
             },
             'messenger': {  deps: ['jquery'] },
             'validation': { deps: ['jquery', 'validation.lang'] },
@@ -37,8 +39,12 @@
     /**
      * 主函数
      */
-    require(['jquery', 'app', 'jQueryForm','validation','my97date'], function ($, app) {
-        // 初始化
+    require(['jquery', 'layer', 'app', 'jQueryForm','validation','my97date'], function ($, layer, app) {
+        // layer弹层路径初始化
+        layer.config({
+            path: '/haq-bms/lib/layer/'
+        });
+        //系统初始化
         init();
         var $body = $('body'),
             $wrapper = $('#content-main');
