@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanwei.haq.bms.dao.web.AreaDao">
+
+    <sql id="comField">
+        name,parentId,creater,created,modifier,modified,isDel
+    </sql>
+
+    <select id="getAll" resultType="com.lanwei.haq.bms.entity.web.AreaEntity">
+        SELECT sa.*
+        FROM sys_area sa
+        WHERE sa.isDel = 'F';
+    </select>
+
+    <select id="query" parameterType="com.lanwei.haq.bms.entity.web.AreaEntity" resultType="com.lanwei.haq.bms.entity.web.AreaEntity">
+        SELECT sa.*
+        FROM sys_area sa
+        WHERE sa.isDel = 'F'
+        <if test="id!=null and id!=0">
+            AND sa.id = #{id}
+        </if>
+        <if test="null!=name and ''!= name">
+            AND sa.name LIKE CONCAT('%',#{name},'%')
+        </if>
+        ORDER BY sa.created desc
+        LIMIT #{pageStart},#{pageSize};
+    </select>
+
+    <!-- 查询数量，用于分页 -->
+    <select id="count"  parameterType="com.lanwei.haq.bms.entity.web.AreaEntity" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM sys_area sa
+        WHERE sa.isDel = 'F'
+        <if test="id!=null and id!=0">
+            AND sa.id = #{id}
+        </if>
+        <if test="null!=name and ''!= name">
+            AND sa.name LIKE CONCAT('%',#{name},'%')
+        </if>
+    </select>
+
+    <!-- 新增 -->
+    <insert id="add" parameterType="com.lanwei.haq.bms.entity.web.AreaEntity" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO `sys_area`
+        <trim prefix="(" suffix=")">
+            <include refid="comField"/>
+        </trim>
+        VALUES (#{name},#{parentId},#{creater},NOW(),#{modifier},Now(),'F')
+    </insert>
+
+    <!-- 更新 -->
+    <update id="update" parameterType="com.lanwei.haq.bms.entity.web.AreaEntity">
+        UPDATE
+        `sys_area`
+        SET
+        <if test="null != name and ''!= name">
+            name = #{name},
+        </if>
+        <if test="parentId!=null and parentId!=0">
+           parentId = #{parentId}
+        </if>
+        `modifier` = #{modifier},
+        `modified` = NOW()
+        WHERE id=#{id}
+    </update>
+
+    <!-- 删除 -->
+    <update id="del" parameterType="com.lanwei.haq.bms.entity.web.AreaEntity">
+        UPDATE
+        sys_area
+        SET
+        isDel = 'T',
+        modifier = #{modifier},
+        modified = NOW()
+        WHERE
+        id = #{id}
+    </update>
+
+    <!--批量删除-->
+    <update id="delList">
+        UPDATE sys_area
+        SET
+        isDel = 'T',
+        modified = NOW(),
+        modifier = #{userId}
+        WHERE isDel = 'F'
+        AND id in
+        <foreach collection="idArr" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </update>
+
+
+
+</mapper>

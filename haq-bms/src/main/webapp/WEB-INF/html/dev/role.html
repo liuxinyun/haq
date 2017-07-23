@@ -115,7 +115,7 @@
                                 {{for (var key in it.list) {}}
                                 <tr data-id="{{=it.list[key].id}}" data-name="{{=it.list[key].name}}">
                                     <td>{{=it.list[key].name}}</td>
-                                    <td>{{=it.list[key].url}}</td>
+                                    <td title="{{=it.list[key].url}}">{{=it.list[key].url}}</td>
                                     {{? it.list[key].roleId != 0}}
                                     <td><input type="checkbox" checked value="{{=it.list[key].id}}" name="menuId"></td>
                                     {{?}}

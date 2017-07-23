@@ -1,7 +1,7 @@
 package com.lanwei.haq.bms.dao.web;
 
 import com.lanwei.haq.bms.dao.CommonDao;
-import com.lanwei.haq.bms.entity.web.WebEntity;
+import com.lanwei.haq.bms.entity.web.AreaEntity;
 
 import java.util.List;
 
@@ -11,8 +11,8 @@ import java.util.List;
  * @描述：类
  */
 
-public interface WebDao extends CommonDao<WebEntity>{
+public interface AreaDao extends CommonDao<AreaEntity>{
 
-    List<WebEntity> getAll();
+    List<AreaEntity> getAll();
 
 }

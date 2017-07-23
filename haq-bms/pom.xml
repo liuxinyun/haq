@@ -135,9 +135,6 @@
 
             </properties>
 
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
 
         </profile>
         <profile>
@@ -147,7 +144,7 @@
                 <app.listener.ip>0.0.0.0</app.listener.ip>
 
                 <!-- mysql 数据库配置 -->
-                <database.url><![CDATA[jdbc:mysql://localhost:3306/srp_zt?useUnicode=true&amp;characterEncoding=UTF-8]]></database.url>
+                <database.url><![CDATA[jdbc:mysql://localhost:3306/haq?useUnicode=true&amp;characterEncoding=UTF-8]]></database.url>
                 <database.name>root</database.name>
                 <database.password>dP2hmbf91Arg65H53YZ4IVP/jw9dDdhtB3905VBsHtAr6f2OQWvd6SQeQVUQAALFybJy4hZ82AlTd3k/mjPp3A==</database.password>
                 <database.publickey>MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAOib+8PuhwxVy4qfkdL6RVLK0F0gVlh51lPm6sYqn2Nw0bEgL1RLZgxEx0SwmpYJmI/uW1OhLSUpDVo2EaBx/vMCAwEAAQ==</database.publickey>
@@ -175,6 +172,9 @@
 
             </properties>
 
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
 
         </profile>
     </profiles>

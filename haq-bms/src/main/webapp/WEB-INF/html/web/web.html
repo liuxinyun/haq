@@ -3,7 +3,7 @@
         <div class="box-title">
             <h4><i class="fa fa-navicon"></i>网站管理</h4>
             <div class="tools">
-                <a href="javascript:;" title="新增" class="config" data-template-id="#template-web-add" data-param="{type:1}">
+                <a href="javascript:;" title="新增" class="config" data-template-id="#template-web-add" data-url="/haq-bms/area/all">
                     <i class="fa fa-plus-square"></i>
                 </a>
                 <a href="javascript:;" title="刷新" class="reload">
@@ -12,7 +12,7 @@
                 <a href="javascript:;" title="折叠" class="collapse">
                     <i class="fa fa-chevron-down"></i>
                 </a>
-                <a href="javascript:;" title="删除" class="remove" data-template-id="#template-delete" data-del-url="/haq-bms/web/delWeb">
+                <a href="javascript:;" title="删除" class="remove" data-template-id="#template-delete" data-del-url="/haq-bms/web/delBatch">
                     <i class="fa fa-times"></i>
                 </a>
             </div>
@@ -24,30 +24,39 @@
     <div class="container-fluid">
         <form role="form">
             <div class="form-group row">
-                <div class="col-md-3">自动检测时间间隔（单位：分钟）</div>
-                <div class="col-md-1">
-                    <select id="spider_cron">
+                <div class="col-sm-3 control-label">自动检测时间间隔（单位：分钟）</div>
+                <div class="col-sm-2">
+                    <select id="spider_cron" class="form-control">
                         {{for (var key in it.cron) {}}
                             <option value="{{=it.cron[key].id}}" {{? it.cron[key].status ==1 }} selected {{? }}>{{=it.cron[key].data}}</option>
                         {{}}}
                     </select>
                 </div>
-                <div class="col-md-1">爬取速度</div>
-                <div class="col-md-1">
-                    <select id="spider_speed">
+                <div class="col-sm-1 control-label">爬取速度</div>
+                <div class="col-sm-2">
+                    <select id="spider_speed" class="form-control">
                         {{for (var key in it.speed) {}}
                         <option value="{{=it.speed[key].id}}" {{? it.speed[key].status ==1 }} selected {{? }}>{{=it.speed[key].desc}}</option>
                         {{}}}
                     </select>
                 </div>
-                <div class="col-md-3">
+                <div class="col-sm-4">
                     <button class="btn btn-purple spider-now" type="button">保存并立即生效</button>
                 </div>
             </div>
             <div class="form-group row">
                 <div class="col-sm-1 control-label">名称</div>
-                <div class="col-sm-3">
+                <div class="col-sm-4">
                     <input type="text" name="webname" class="form-control" placeholder="名称" value="{{=$.wipeNull(it.queryEntity.webname)}}">
+                </div>
+                <div class="col-sm-1 control-label">地域</div>
+                <div class="col-sm-3">
+                    <select name="areaId" class="form-control">
+                        <option value="0">全部</option>
+                        {{for (var key in it.areaList) {}}
+                        <option value="{{=it.areaList[key].id}}" {{? it.areaList[key].id == $.wipeNull(it.queryEntity.areaId) }} selected {{? }}>{{=it.areaList[key].name}}</option>
+                        {{}}}
+                    </select>
                 </div>
                 <div class="col-sm-3">
                    <button class="btn btn-primary" type="button">查询</button>
@@ -69,18 +78,22 @@
                 <th>网址</th>
                 <th>标题选择器</th>
                 <th>内容选择器</th>
+                <th>类别选择器</th>
                 <th>正则表达式</th>
+                <th>所属地域</th>
                 <th>操作</th>
             </tr>
         </thead>
         <tbody>
         {{for (var key in it.list) {}}
             <tr data-id="{{=it.list[key].id}}" data-name="{{=it.list[key].webname}}">
-                <td><button class="btn btn-link" data-url="/haq-bms/web/{{=it.list[key].id}}" data-template-id="template-web-info">{{=it.list[key].webname}}</button></td>
-                <td>{{=it.list[key].weburl}}</td>
-                <td>{{=it.list[key].titleSelect}}</td>
-                <td>{{=it.list[key].contentSelect}}</td>
-                <td>{{=it.list[key].regex}}</td>
+                <td title="{{=it.list[key].webname}}"><button class="btn btn-link" data-url="/haq-bms/web/{{=it.list[key].id}}" data-template-id="template-web-info">{{=it.list[key].webname}}</button></td>
+                <td title="{{=it.list[key].weburl}}">{{=it.list[key].weburl}}</td>
+                <td title="{{=it.list[key].titleSelect}}">{{=it.list[key].titleSelect}}</td>
+                <td title="{{=it.list[key].contentSelect}}">{{=it.list[key].contentSelect}}</td>
+                <td title="{{=it.list[key].classSelect}}">{{=it.list[key].classSelect}}</td>
+                <td title="{{=it.list[key].regex}}">{{=it.list[key].regex}}</td>
+                <td title="{{=it.list[key].areaName}}">{{=it.list[key].areaName}}</td>
                 <th>
                     <button class="btn btn-link" data-url="/haq-bms/web/{{=it.list[key].id}}" data-template-id="template-web-edit"><span title="编辑" class="fa fa-edit"></span></button>
                     <button class="btn spider-id" data-url="/haq-bms/web/now/{{=it.list[key].id}}"><span title="立即爬虫" class="fa fa-flash"></span></button>
@@ -115,32 +128,48 @@
                 <form class="form-horizontal" role="form" action="/haq-bms/web/add" method="post">
                     <div class="form-group">
                         <label class="col-sm-2 control-label">网站名称</label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-9">
                             <input type="text" name="webname" class="validate[required,maxSize[100]] form-control" placeholder="网站名称">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">网址</label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-9">
                             <input type="text" name="weburl" class="validate[required,maxSize[100]] form-control" placeholder="网址">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">标题选择器</label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-9">
                             <input type="text" name="titleSelect" class="validate[required,maxSize[100]] form-control" placeholder="请填写标题的css表达式">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">内容选择器</label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-9">
                             <input type="text" name="contentSelect" class="validate[required,maxSize[100]] form-control" placeholder="请填写内容的css表达式">
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="col-sm-2 control-label">类别选择器</label>
+                        <div class="col-sm-9">
+                            <input type="text" name="classSelect" class="validate[required,maxSize[100]] form-control" placeholder="请填写类别的css表达式">
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="col-sm-2 control-label">正则表达式</label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-9">
                             <input type="text" name="regex" class="validate[required,maxSize[100]] form-control" placeholder="网址的正则表达式">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">所属区域</label>
+                        <div class="col-sm-9">
+                            <select name="areaId" class="form-control">
+                                {{for(var key in it.areaList){ }}
+                                <option value="{{=it.areaList[key].id }}">{{=it.areaList[key].name }}</option>
+                                {{ } }}
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
@@ -166,7 +195,7 @@
                     <h4 class="modal-title" id="myModalLabel1">网站详情</h4>
                 </div>
                 <div class="modal-body">
-                    <form class="form-horizontal" role="form" action="/haq-bms/web/add" method="post">
+                    <form class="form-horizontal" role="form">
                         <div class="form-group">
                             <label class="col-sm-2 control-label">网站名称</label>
                             <label class="col-sm-10 control-label tl">
@@ -192,9 +221,21 @@
                             </label>
                         </div>
                         <div class="form-group">
+                            <label class="col-sm-2 control-label">类别选择器</label>
+                            <label class="col-sm-10 control-label tl">
+                                {{=it.web.classSelect}}
+                            </label>
+                        </div>
+                        <div class="form-group">
                             <label class="col-sm-2 control-label">正则表达式</label>
                             <label class="col-sm-10 control-label tl">
                                 {{=it.web.regex}}
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">所属地域</label>
+                            <label class="col-sm-10 control-label tl">
+                                {{=it.web.areaName}}
                             </label>
                         </div>
                         <div class="form-group">
@@ -245,9 +286,25 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="col-sm-2 control-label">类别选择器</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="classSelect" class="validate[required,maxSize[100]] form-control" placeholder="类别选择表达式" value="{{=it.web.classSelect}}">
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="col-sm-2 control-label">正则表达式</label>
                             <div class="col-sm-9">
                                 <input type="text" name="regex" class="validate[required,maxSize[100]] form-control" placeholder="网址正则表达式" value="{{=it.web.regex}}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">所属区域</label>
+                            <div class="col-sm-9">
+                                <select name="areaId" class="form-control">
+                                    {{for(var key in it.areaList){ }}
+                                    <option value="{{=it.areaList[key].id }}" {{? it.web.areaId == it.areaList[key].id }} selected {{? }}>{{=it.areaList[key].name }}</option>
+                                    {{ } }}
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">

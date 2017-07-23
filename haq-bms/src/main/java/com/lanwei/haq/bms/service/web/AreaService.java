@@ -1,9 +1,7 @@
 package com.lanwei.haq.bms.service.web;
 
 import com.lanwei.haq.bms.dao.web.AreaDao;
-import com.lanwei.haq.bms.dao.web.WebDao;
 import com.lanwei.haq.bms.entity.web.AreaEntity;
-import com.lanwei.haq.bms.entity.web.WebEntity;
 import com.lanwei.haq.comm.enums.ResponseEnum;
 import com.lanwei.haq.comm.util.ListUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,56 +11,54 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 网站service,处理网站相关的业务逻辑
+ * 地域service,处理地域相关的业务逻辑
  *
  * @author liuxinyun
  * @date 2016/12/31 14:42
  */
 @Service
-public class WebService {
+public class AreaService {
 
-    private final WebDao webDao;
+    private final AreaDao areaDao;
 
     @Autowired
-    public WebService(WebDao webDao) {
-        this.webDao = webDao;
+    public AreaService(AreaDao areaDao) {
+        this.areaDao = areaDao;
     }
 
     /**
-     * 获取网站数量
+     * 获取所有
      * @return
      */
-    public int getWebCount(){
-        WebEntity webEntity = new WebEntity();
-        int count = webDao.count(webEntity);
-        return count;
+    public List<AreaEntity> getAll(){
+        return areaDao.getAll();
     }
 
     /**
-     * 获取网站列表
+     * 获取列表
      */
-    public Map<String, Object> getList(WebEntity webEntity){
+    public Map<String, Object> getList(AreaEntity areaEntity){
         Map<String, Object> resultMap = ResponseEnum.SUCCESS.getResultMap();
-        if(null == webEntity) {
-            webEntity = new WebEntity();
+        if(null == areaEntity) {
+            areaEntity = new AreaEntity();
         }
 
-        int count = webDao.count(webEntity);
+        int count = areaDao.count(areaEntity);
         if(count > 0){
-            resultMap.put("list", webDao.query(webEntity));
+            resultMap.put("list", areaDao.query(areaEntity));
         }
         resultMap.put("count", count);
-        resultMap.put("queryEntity", webEntity);
+        resultMap.put("queryEntity", areaEntity);
         return resultMap;
     }
 
     /**
-     * 根据id获得网站
+     * 根据id获得
      */
-    public WebEntity getById(int id){
-        WebEntity webEntity = new WebEntity();
-        webEntity.setId(id);
-        List<WebEntity> list = webDao.query(webEntity);
+    public AreaEntity getById(int id){
+        AreaEntity areaEntity = new AreaEntity();
+        areaEntity.setId(id);
+        List<AreaEntity> list = areaDao.query(areaEntity);
         if(ListUtil.isNotEmpty(list)){
             return list.get(0);
         }
@@ -70,11 +66,11 @@ public class WebService {
     }
 
     /**
-     * 新增网站
+     * 新增
      */
-    public Map<String, Object> insert(WebEntity webEntity){
+    public Map<String, Object> insert(AreaEntity areaEntity){
         Map<String, Object> resultMap;
-        int flag = webDao.add(webEntity);
+        int flag = areaDao.add(areaEntity);
         if (flag > 0){
             resultMap = ResponseEnum.SUCCESS.getResultMap();
         }else {
@@ -84,18 +80,18 @@ public class WebService {
     }
 
     /**
-     * 更新网站
+     * 更新
      */
-    public Map<String, Object> update(WebEntity webEntity){
-        webDao.update(webEntity);
+    public Map<String, Object> update(AreaEntity areaEntity){
+        areaDao.update(areaEntity);
         return ResponseEnum.SUCCESS.getResultMap();
     }
 
     /**
-     * 删除网站
+     * 删除
      */
-    public void delete(WebEntity webEntity){
-        webDao.del(webEntity);
+    public void delete(AreaEntity areaEntity){
+        areaDao.del(areaEntity);
     }
 
 
@@ -103,7 +99,7 @@ public class WebService {
      * 批量删除
      */
     public Map<String, Object> delBatch(int[] id, int userId) {
-        webDao.delList(id, userId);
+        areaDao.delList(id, userId);
         return ResponseEnum.SUCCESS.getResultMap();
     }
 

@@ -32,9 +32,21 @@ public class WebEntity extends BaseEntity implements Serializable{
      */
     private String contentSelect;
     /**
+     * 类别选择器
+     */
+    private String classSelect;
+    /**
      * 网站的正则表达式
      */
     private String regex;
+    /**
+     * 所属区域id
+     */
+    private int areaId;
+    /**
+     * 所属区域名称
+     */
+    private String areaName;
 
     public String getWeburl() {
         return weburl;
@@ -68,12 +80,36 @@ public class WebEntity extends BaseEntity implements Serializable{
         this.contentSelect = contentSelect;
     }
 
+    public String getClassSelect() {
+        return classSelect;
+    }
+
+    public void setClassSelect(String classSelect) {
+        this.classSelect = classSelect;
+    }
+
     public String getRegex() {
         return regex;
     }
 
     public void setRegex(String regex) {
         this.regex = regex;
+    }
+
+    public int getAreaId() {
+        return areaId;
+    }
+
+    public void setAreaId(int areaId) {
+        this.areaId = areaId;
+    }
+
+    public String getAreaName() {
+        return areaName;
+    }
+
+    public void setAreaName(String areaName) {
+        this.areaName = areaName;
     }
 
     @Override
@@ -83,7 +119,10 @@ public class WebEntity extends BaseEntity implements Serializable{
                 ", weburl='" + weburl + '\'' +
                 ", titleSelect='" + titleSelect + '\'' +
                 ", contentSelect='" + contentSelect + '\'' +
+                ", classSelect='" + classSelect + '\'' +
                 ", regex='" + regex + '\'' +
+                ", areaId=" + areaId +
+                ", areaName='" + areaName + '\'' +
                 '}';
     }
 }

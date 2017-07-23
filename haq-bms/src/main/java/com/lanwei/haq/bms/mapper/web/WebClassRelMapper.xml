@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanwei.haq.bms.dao.web.WebClassRelDao">
+
+    <sql id="comField">
+        webId,sourceName,classId,creater,created,modifier,modified,isDel
+    </sql>
+
+    <select id="query" parameterType="com.lanwei.haq.bms.entity.web.WebClassRelEntity" resultType="com.lanwei.haq.bms.entity.web.WebClassRelEntity">
+        SELECT twc.*,tw.webname,tc.name AS className
+        FROM t_web_class twc
+        LEFT JOIN t_web tw ON tw.id=twc.webId
+        LEFT JOIN t_class tc ON tc.id=twc.classId
+        WHERE twc.isDel = 'F'
+        <if test="id!=null and id!=0">
+            AND twc.id = #{id}
+        </if>
+        <if test="webId!=null and webId!=0">
+            AND twc.webId = #{webId}
+        </if>
+        <if test="classId!=null and classId!=0">
+            AND twc.classId = #{classId}
+        </if>
+        <if test="null!=sourceName and ''!= sourceName">
+            AND twc.sourceName LIKE CONCAT('%',#{sourceName},'%')
+        </if>
+        ORDER BY twc.created desc
+        LIMIT #{pageStart},#{pageSize};
+    </select>
+
+    <!-- 查询数量，用于分页 -->
+    <select id="count"  parameterType="com.lanwei.haq.bms.entity.web.WebClassRelEntity" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM t_web_class twc
+        WHERE twc.isDel = 'F'
+        <if test="id!=null and id!=0">
+            AND twc.id = #{id}
+        </if>
+        <if test="webId!=null and webId!=0">
+            AND twc.webId = #{webId}
+        </if>
+        <if test="classId!=null and classId!=0">
+            AND twc.classId = #{classId}
+        </if>
+        <if test="null!=sourceName and ''!= sourceName">
+            AND twc.sourceName LIKE CONCAT('%',#{sourceName},'%')
+        </if>
+    </select>
+
+    <!-- 新增 -->
+    <insert id="add" parameterType="com.lanwei.haq.bms.entity.web.WebClassRelEntity" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO `t_web_class`
+        <trim prefix="(" suffix=")">
+            <include refid="comField"/>
+        </trim>
+        VALUES (#{webId},#{sourceName},#{classId},#{creater},NOW(),#{modifier},Now(),'F')
+    </insert>
+
+    <!-- 更新 -->
+    <update id="update" parameterType="com.lanwei.haq.bms.entity.web.WebClassRelEntity">
+        UPDATE
+        `t_web_class`
+        SET
+        <if test="null != sourceName and ''!= sourceName">
+            sourceName = #{sourceName},
+        </if>
+        <if test="null != classId and 0!= classId">
+            classId = #{classId},
+        </if>
+        `modifier` = #{modifier},
+        `modified` = NOW()
+        WHERE id=#{id}
+    </update>
+
+    <!-- 删除 -->
+    <update id="del" parameterType="com.lanwei.haq.bms.entity.web.WebClassRelEntity">
+        UPDATE
+        t_web_class
+        SET
+        isDel = 'T',
+        modifier = #{modifier},
+        modified = NOW()
+        WHERE
+        id = #{id}
+    </update>
+
+    <!--批量删除-->
+    <update id="delList">
+        UPDATE t_web_class
+        SET
+        isDel = 'T',
+        modified = NOW(),
+        modifier = #{userId}
+        WHERE isDel = 'F'
+        AND id in
+        <foreach collection="idArr" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </update>
+
+
+
+</mapper>

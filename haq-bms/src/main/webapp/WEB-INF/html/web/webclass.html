@@ -1,0 +1,164 @@
+<div class="col-md-12">
+    <div class="box border lite" data-url="/haq-bms/webclass/list" data-template-id="template-list">
+        <div class="box-title">
+            <h4><i class="fa fa-navicon"></i>系统新闻分类</h4>
+            <div class="tools">
+                <a href="javascript:;" title="新增" class="config" data-template-id="#template-webclass-add">
+                    <i class="fa fa-plus-square"></i>
+                </a>
+                <a href="javascript:;" title="刷新" class="reload">
+                    <i class="fa fa-refresh"></i>
+                </a>
+                <a href="javascript:;" title="折叠" class="collapse">
+                    <i class="fa fa-chevron-down"></i>
+                </a>
+                <a href="javascript:;" title="删除" class="remove" data-template-id="#template-delete" data-del-url="/haq-bms/webclass/delBatch">
+                    <i class="fa fa-times"></i>
+                </a>
+            </div>
+        </div>
+        <div class="box-body"></div>
+    </div>
+</div>
+<script type="text/x-dot-template" id="template-list">
+    <div class="container-fluid">
+        <form role="form">
+            <div class="form-group row">
+                <div class="col-sm-1 control-label">名称</div>
+                <div class="col-sm-3">
+                    <input type="text" name="name" class="form-control" placeholder="名称" value="{{=$.wipeNull(it.queryEntity.name)}}">
+                </div>
+                <div class="col-sm-3">
+                   <button class="btn btn-primary" type="button">查询</button>
+                </div>
+            </div>
+            <input type="hidden" name="pageSize" value="10">
+            <input type="hidden" name="pageNum" value="1">
+        </form>
+    </div>
+    <hr>
+    {{? it.count <= 0}}
+    <p class="alert alert-danger" role="alert"><i class="fa fa-info-circle"></i>&nbsp;没有相关数据</p>
+    {{?}}
+    {{? it.count > 0}}
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>名称</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+        {{for (var key in it.list) {}}
+            <tr data-id="{{=it.list[key].id}}" data-name="{{=it.list[key].name}}">
+                <td><button class="btn btn-link" data-url="/haq-bms/webclass/{{=it.list[key].id}}" data-template-id="template-webclass-info">{{=it.list[key].name}}</button></td>
+                <th>
+                    <button class="btn btn-link" data-url="/haq-bms/webclass/{{=it.list[key].id}}" data-template-id="template-webclass-edit"><span title="编辑" class="fa fa-edit"></span></button>
+                </th>
+            </tr>
+        {{}}}
+        </tbody>
+    </table>
+    {{?}}
+    <div class="container-fluid page" data-num="{{=it.queryEntity.pageNum}}" data-size="{{=it.queryEntity.pageSize}}" data-count="{{=it.count}}">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="pull-left">
+                </div>
+                <div class="pull-right">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-dot-template" id="template-webclass-add">
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">添加新闻分类</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" role="form" action="/haq-bms/webclass/add" method="post">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">分类名称</label>
+                        <div class="col-sm-9">
+                            <input type="text" name="name" class="validate[required,maxSize[50]] form-control" placeholder="分类名称">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12 error-msg"></div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary">添加</button>
+            </div>
+        </div>
+    </div>
+</div>
+</script>
+
+<script type="text/x-dot-template" id="template-webclass-info">
+    <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel1">分类详情</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">分类名称</label>
+                            <label class="col-sm-10 control-label tl">
+                                {{=it.webclass.name}}
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12 error-msg"></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-dot-template" id="template-webclass-edit">
+    <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel2">编辑分类</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" role="form" action="/haq-bms/webclass/update" method="post">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">分类名称</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="name" class="validate[required,maxSize[50]] form-control" placeholder="分类名称" value="{{=it.webclass.name}}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="hidden" name="id" placeholder="ICON" value="{{=it.webclass.id}}">
+                            <div class="col-sm-12 error-msg"></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>

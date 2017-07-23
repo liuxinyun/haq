@@ -1,5 +1,10 @@
 package com.lanwei.haq.comm.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -10,6 +15,8 @@ import java.util.regex.Pattern;
  */
 
 public class WebUtil {
+
+    private static final Logger log = LoggerFactory.getLogger(WebUtil.class);
 
     private static final String REGEX = "[0-9a-zA-Z]+((\\.com)|(\\.cn)|(\\.org)|(\\.net)|(\\.edu)|(\\.com.cn)|(\\.xyz)|(\\.xin)|(\\.club)|(\\.shop)|(\\.site)|(\\.wang)" +
             "|(\\.top)|(\\.win)|(\\.online)|(\\.tech)|(\\.store)|(\\.bid)|(\\.cc)|(\\.ren)|(\\.lol)|(\\.pro)|(\\.red)|(\\.kim)|(\\.space)|(\\.link)|(\\.click)|(\\.news)|(\\.news)|(\\.ltd)|(\\.website)" +
@@ -35,6 +42,27 @@ public class WebUtil {
             domain = m.group();
         }
         return domain;
+    }
+
+    /**
+     * 获取网站host
+     * @param url
+     * @return
+     */
+    public static String getHost(String url){
+        String host = UNKNOWN;
+        try {
+            URL temp = new URL(url);
+            host = temp.getHost();
+        } catch (MalformedURLException e) {
+            log.error(e.getMessage());
+        }
+        return host;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(getDomain("http://news.sina.com.cn/"));
+        System.out.println(getHost("http://news.sina.com.cn/"));
     }
 
 }

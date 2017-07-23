@@ -3,6 +3,7 @@ package com.lanwei.haq.bms.controller.web;
 import com.lanwei.haq.bms.entity.user.UserEntity;
 import com.lanwei.haq.bms.entity.web.ConfigEntity;
 import com.lanwei.haq.bms.entity.web.WebEntity;
+import com.lanwei.haq.bms.service.web.AreaService;
 import com.lanwei.haq.bms.service.web.ConfigService;
 import com.lanwei.haq.bms.service.web.WebService;
 import com.lanwei.haq.comm.annotation.AddEntity;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import redis.clients.jedis.Jedis;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,25 +32,28 @@ public class WebController {
 
     private final WebService webService;
     private final ConfigService configService;
+    private final AreaService areaService;
 
     @Autowired
-    public WebController(WebService webService, ConfigService configService) {
+    public WebController(WebService webService, ConfigService configService,
+                         AreaService areaService) {
         this.webService = webService;
         this.configService = configService;
+        this.areaService = areaService;
     }
 
     /**
-     * 新增网站
+     * 新增
      */
     @ResponseBody
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @SysLog(description = "新增网站")
-    public Map<String, Object> insertWeb(@AddEntity WebEntity webEntity){
-        return webService.insertWeb(webEntity);
+    public Map<String, Object> insert(@AddEntity WebEntity webEntity){
+        return webService.insert(webEntity);
     }
 
     /**
-     * 更新网站
+     * 更新
      */
     @ResponseBody
     @RequestMapping(value = "/update", method = RequestMethod.POST)
@@ -62,12 +65,12 @@ public class WebController {
             return resultMap;
         }
         webEntity.setModifier(currentUser.getId());
-        resultMap = webService.updateWeb(webEntity);
+        resultMap = webService.update(webEntity);
         return resultMap;
     }
 
     /**
-     * 删除网站
+     * 删除
      */
     @ResponseBody
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
@@ -79,18 +82,19 @@ public class WebController {
         } else {
             resultMap = ResponseEnum.SUCCESS.getResultMap();
             webEntity.setModifier(currentUser.getId());
-            webService.deleteWeb(webEntity);
+            webService.delete(webEntity);
         }
         return resultMap;
     }
 
     /**
-     * 查询用户列表
+     * 查询列表
      */
     @ResponseBody
     @RequestMapping(value = "/list", method = RequestMethod.POST)
     public Map<String, Object> getList(WebEntity webEntity){
-        Map<String, Object> resultMap = webService.getWebList(webEntity);
+        Map<String, Object> resultMap = webService.getList(webEntity);
+        resultMap.put("areaList", areaService.getAll());
         List<ConfigEntity> list = configService.getList();
         List<ConfigEntity> cron = new ArrayList<>();
         List<ConfigEntity> speed = new ArrayList<>();
@@ -107,13 +111,13 @@ public class WebController {
     }
 
     /**
-     * 批量删除用户
+     * 批量删除
      */
     @ResponseBody
-    @RequestMapping(value = "/delWeb", method = RequestMethod.POST)
+    @RequestMapping(value = "/delBatch", method = RequestMethod.POST)
     @SysLog(description = "批量删除网站")
-    public Map<String, Object> delUser(int[] id, @CurrentUser UserEntity currentUser){
-        return webService.deleteList(id, currentUser.getId());
+    public Map<String, Object> delBatch(int[] id, @CurrentUser UserEntity currentUser){
+        return webService.delBatch(id, currentUser.getId());
 
     }
 
@@ -124,9 +128,10 @@ public class WebController {
      */
     @ResponseBody
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
-    public Map<String, Object> getWebById(@PathVariable("id") int id) {
+    public Map<String, Object> getById(@PathVariable("id") int id) {
         Map<String, Object> resultMap = ResponseEnum.SUCCESS.getResultMap();
-        resultMap.put("web", webService.getWebById(id));
+        resultMap.put("web", webService.getById(id));
+        resultMap.put("areaList", areaService.getAll());
         return resultMap;
     }
 
@@ -137,19 +142,27 @@ public class WebController {
     @ResponseBody
     @RequestMapping(value = "/now/{id}", method = RequestMethod.POST)
     public Map<String, Object> spiderByNow(@PathVariable("id") int id, @RequestParam(value = "configIds[]",required = false) int[] configIds) {
-        String key;
+        boolean flag = false;
+        int code = 0;
+        if (id == 0){//配置立即生效
+            configService.update(configIds);//更改数据库网站配置表
+            code = HttpUtil.get("http://172.16.1.12:28080/spider?code=0");
+        }else {//该网站立即生效
+            code = HttpUtil.get("http://172.16.1.12:28080/spider?code=" + id);
+        }
+        flag = (code==200) ? true : false;
+        /*String key;
         if (id==0){//配置立即生效
             configService.update(configIds);//更改数据库网站配置表
             key = Constant.REDIS_WEBCONFIG_KEY;
         }else {//该网站立即生效
-            WebEntity webEntity = webService.getWebById(id);
-            String domain = WebUtil.getDomain(webEntity.getWeburl());
+            WebEntity webEntity = webService.getById(id);
+            String domain = WebUtil.getHost(webEntity.getWeburl());
             key = Constant.REDIS_WEBSITE_PREFIX+domain+"_"+id;
         }
         Jedis jedis = RedisUtil.getJedis(Constant.REDIS_TCP_INDEX);
         jedis.getSet(key,"1");
         int i=10;
-        boolean flag = false;
         while (i>0){
             if (jedis.get(key).equals("2")){
                 flag = true;
@@ -163,7 +176,7 @@ public class WebController {
                 e.printStackTrace();
             }
         }
-        RedisUtil.close(jedis);
+        RedisUtil.close(jedis);*/
         if (flag){
             return ResponseEnum.SUCCESS.getResultMap();
         }
