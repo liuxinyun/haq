@@ -135,6 +135,9 @@
 
             </properties>
 
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
 
         </profile>
         <profile>
@@ -171,10 +174,6 @@
                 <file.local.path>D:/zzz/file</file.local.path>
 
             </properties>
-
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
 
         </profile>
     </profiles>
