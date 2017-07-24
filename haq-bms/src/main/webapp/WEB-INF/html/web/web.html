@@ -78,7 +78,6 @@
                 <th>网址</th>
                 <th>标题选择器</th>
                 <th>内容选择器</th>
-                <th>类别选择器</th>
                 <th>正则表达式</th>
                 <th>所属地域</th>
                 <th>操作</th>
@@ -91,7 +90,6 @@
                 <td title="{{=it.list[key].weburl}}">{{=it.list[key].weburl}}</td>
                 <td title="{{=it.list[key].titleSelect}}">{{=it.list[key].titleSelect}}</td>
                 <td title="{{=it.list[key].contentSelect}}">{{=it.list[key].contentSelect}}</td>
-                <td title="{{=it.list[key].classSelect}}">{{=it.list[key].classSelect}}</td>
                 <td title="{{=it.list[key].regex}}">{{=it.list[key].regex}}</td>
                 <td title="{{=it.list[key].areaName}}">{{=it.list[key].areaName}}</td>
                 <th>
@@ -148,12 +146,6 @@
                         <label class="col-sm-2 control-label">内容选择器</label>
                         <div class="col-sm-9">
                             <input type="text" name="contentSelect" class="validate[required,maxSize[100]] form-control" placeholder="请填写内容的css表达式">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">类别选择器</label>
-                        <div class="col-sm-9">
-                            <input type="text" name="classSelect" class="validate[required,maxSize[100]] form-control" placeholder="请填写类别的css表达式">
                         </div>
                     </div>
                     <div class="form-group">
@@ -221,12 +213,6 @@
                             </label>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">类别选择器</label>
-                            <label class="col-sm-10 control-label tl">
-                                {{=it.web.classSelect}}
-                            </label>
-                        </div>
-                        <div class="form-group">
                             <label class="col-sm-2 control-label">正则表达式</label>
                             <label class="col-sm-10 control-label tl">
                                 {{=it.web.regex}}
@@ -283,12 +269,6 @@
                             <label class="col-sm-2 control-label">内容选择器</label>
                             <div class="col-sm-9">
                                 <input type="text" name="contentSelect" class="validate[required,maxSize[100]] form-control" placeholder="内容选择表达式" value="{{=it.web.contentSelect}}">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">类别选择器</label>
-                            <div class="col-sm-9">
-                                <input type="text" name="classSelect" class="validate[required,maxSize[100]] form-control" placeholder="类别选择表达式" value="{{=it.web.classSelect}}">
                             </div>
                         </div>
                         <div class="form-group">

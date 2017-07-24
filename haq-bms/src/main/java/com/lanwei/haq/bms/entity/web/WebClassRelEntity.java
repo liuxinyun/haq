@@ -22,15 +22,14 @@ public class WebClassRelEntity extends BaseEntity implements Serializable{
      * 网站名称
      */
     private String webname;
-
+    /**
+     * 类别选择器
+     */
+    private String classSelect;
     /**
      * 网站原类别名称
      */
     private String sourceName;
-    /**
-     * 标题选择器
-     */
-    private String titleSelect;
     /**
      * 系统类别id
      */
@@ -56,20 +55,20 @@ public class WebClassRelEntity extends BaseEntity implements Serializable{
         this.webname = webname;
     }
 
+    public String getClassSelect() {
+        return classSelect;
+    }
+
+    public void setClassSelect(String classSelect) {
+        this.classSelect = classSelect;
+    }
+
     public String getSourceName() {
         return sourceName;
     }
 
     public void setSourceName(String sourceName) {
         this.sourceName = sourceName;
-    }
-
-    public String getTitleSelect() {
-        return titleSelect;
-    }
-
-    public void setTitleSelect(String titleSelect) {
-        this.titleSelect = titleSelect;
     }
 
     public int getClassId() {
@@ -93,8 +92,8 @@ public class WebClassRelEntity extends BaseEntity implements Serializable{
         return "WebClassRelEntity{" +
                 "webId=" + webId +
                 ", webname='" + webname + '\'' +
+                ", classSelect='" + classSelect + '\'' +
                 ", sourceName='" + sourceName + '\'' +
-                ", titleSelect='" + titleSelect + '\'' +
                 ", classId=" + classId +
                 ", className='" + className + '\'' +
                 '}';

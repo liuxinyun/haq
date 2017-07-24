@@ -3,7 +3,7 @@
 <mapper namespace="com.lanwei.haq.bms.dao.web.WebClassRelDao">
 
     <sql id="comField">
-        webId,sourceName,classId,creater,created,modifier,modified,isDel
+        webId,classSelect,sourceName,classId,creater,created,modifier,modified,isDel
     </sql>
 
     <select id="query" parameterType="com.lanwei.haq.bms.entity.web.WebClassRelEntity" resultType="com.lanwei.haq.bms.entity.web.WebClassRelEntity">
@@ -53,7 +53,7 @@
         <trim prefix="(" suffix=")">
             <include refid="comField"/>
         </trim>
-        VALUES (#{webId},#{sourceName},#{classId},#{creater},NOW(),#{modifier},Now(),'F')
+        VALUES (#{webId},#{classSelect},#{sourceName},#{classId},#{creater},NOW(),#{modifier},Now(),'F')
     </insert>
 
     <!-- 更新 -->
@@ -61,6 +61,12 @@
         UPDATE
         `t_web_class`
         SET
+        <if test="null != webId and 0!= webId">
+            webId = #{webId},
+        </if>
+        <if test="null != classSelect and ''!= classSelect">
+            classSelect = #{classSelect},
+        </if>
         <if test="null != sourceName and ''!= sourceName">
             sourceName = #{sourceName},
         </if>

@@ -102,19 +102,25 @@
             <div class="modal-body">
                 <form class="form-horizontal" role="form" action="/haq-bms/webclassrel/add" method="post">
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">原分类名称</label>
-                        <div class="col-sm-9">
-                            <input type="text" name="sourceName" class="validate[required,maxSize[50]] form-control" placeholder="原分类名称">
-                        </div>
-                    </div>
-                    <div class="form-group">
                         <label class="col-sm-2 control-label">所属网站</label>
                         <div class="col-sm-9">
                             <select name="webId" class="form-control">
                                 {{for(var key in it.webList){ }}
-                                <option value="{{=it.webList[key].id }}">{{=it.areaList[key].webname }}</option>
+                                <option value="{{=it.webList[key].id }}">{{=it.webList[key].webname }}</option>
                                 {{ } }}
                             </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">类别选择器</label>
+                        <div class="col-sm-9">
+                            <input type="text" name="classSelect" class="validate[required,maxSize[100]] form-control" placeholder="请填写类别的css表达式">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">原分类名称</label>
+                        <div class="col-sm-9">
+                            <input type="text" name="sourceName" class="validate[required,maxSize[50]] form-control" placeholder="原分类名称">
                         </div>
                     </div>
                     <div class="form-group">
@@ -152,15 +158,21 @@
                 <div class="modal-body">
                     <form class="form-horizontal" role="form">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">原分类名称</label>
-                            <label class="col-sm-10 control-label tl">
-                                {{=it.webclassrel.sourceName}}
-                            </label>
-                        </div>
-                        <div class="form-group">
                             <label class="col-sm-2 control-label">所属网站</label>
                             <label class="col-sm-10 control-label tl">
                                 {{=it.webclassrel.webname}}
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">类别选择器</label>
+                            <label class="col-sm-10 control-label tl">
+                                {{=it.webclassrel.classSelect}}
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">原分类名称</label>
+                            <label class="col-sm-10 control-label tl">
+                                {{=it.webclassrel.sourceName}}
                             </label>
                         </div>
                         <div class="form-group">
@@ -193,19 +205,25 @@
                 <div class="modal-body">
                     <form class="form-horizontal" role="form" action="/haq-bms/webclassrel/update" method="post">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">原分类名称</label>
-                            <div class="col-sm-9">
-                                <input type="text" name="sourceName" class="validate[required,maxSize[50]] form-control" placeholder="原分类名称" value="{{=it.webclassrel.sourceName}}">
-                            </div>
-                        </div>
-                        <div class="form-group">
                             <label class="col-sm-2 control-label">所属网站</label>
                             <div class="col-sm-9">
                                 <select name="webId" class="form-control">
                                     {{for(var key in it.webList){ }}
-                                    <option value="{{=it.webList[key].id }}" {{? it.webclassrel.webId == it.webList[key].id }} selected {{?}}>{{=it.areaList[key].webname }}</option>
+                                    <option value="{{=it.webList[key].id }}" {{? it.webclassrel.webId == it.webList[key].id }} selected {{?}}>{{=it.webList[key].webname }}</option>
                                     {{ } }}
                                 </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">类别选择器</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="classSelect" class="validate[required,maxSize[100]] form-control" placeholder="请填写类别的css表达式" value="{{=it.webclassrel.classSelect}}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">原分类名称</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="sourceName" class="validate[required,maxSize[50]] form-control" placeholder="原分类名称" value="{{=it.webclassrel.sourceName}}">
                             </div>
                         </div>
                         <div class="form-group">
