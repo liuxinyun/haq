@@ -77,7 +77,7 @@
             regex = #{regex},
         </if>
         <if test="areaId!=null and areaId!=0">
-            areaId = #{areaId}
+            areaId = #{areaId},
         </if>
         `modifier` = #{modifier},
         `modified` = NOW()
