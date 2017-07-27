@@ -59,6 +59,7 @@
         <thead>
             <tr>
                 <th>所属网站</th>
+                <th>类别选择器</th>
                 <th>分类名称</th>
                 <th>系统分类</th>
                 <th>操作</th>
@@ -68,6 +69,7 @@
         {{for (var key in it.list) {}}
             <tr data-id="{{=it.list[key].id}}" data-name="{{=it.list[key].webname}}">
                 <td><button class="btn btn-link" data-url="/haq-bms/webclassrel/{{=it.list[key].id}}" data-template-id="template-webclassrel-info">{{=it.list[key].webname}}</button></td>
+                <td title="{{=it.list[key].classSelect }}">{{=it.list[key].classSelect }}</td>
                 <td>{{=it.list[key].sourceName }}</td>
                 <td>{{=it.list[key].className }}</td>
                 <th>

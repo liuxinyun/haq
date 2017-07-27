@@ -2,7 +2,7 @@
 <configuration>
     <jmxConfigurator />
     <!-- 定义日志的根目录 -->
-    <property name="LOG_HOME" value="/home/haqteam/log/haq" />
+    <property name="LOG_HOME" value="/home/haqteam/install/log" />
     <!-- 定义日志文件名称 -->
     <property name="appName" value="haq-bms"/>
     <!-- 控制台输出日志 -->

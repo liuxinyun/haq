@@ -1,0 +1,10 @@
+src/main/webapp/WEB-INF/classes/
+src/main/webapp/WEB-INF/lib/
+target/
+.settings/
+.project
+.classpath
+.idea
+*.iml
+*.DS_Store
+logs/
