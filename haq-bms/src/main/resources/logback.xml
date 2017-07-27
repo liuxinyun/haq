@@ -40,7 +40,7 @@
 	<logger name="java.sql.PreparedStatement" level="DEBUG" />
     <logger name="*" level="DEBUG" />
     
-    <root level="DEBUG"> <!-- 开发过程DEBUG 项目发布的时候必须使用该级别 ERROR  ,最起码也应该是 WARN -->
+    <root level="ERROR"> <!-- 开发过程DEBUG 项目发布的时候必须使用该级别 ERROR  ,最起码也应该是 WARN -->
 		<appender-ref ref="FILE-AUDIT"/>
 		<appender-ref ref="STDOUT" />
 	</root>
