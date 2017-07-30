@@ -12,6 +12,29 @@
     <url>http://maven.apache.org</url>
 
     <dependencies>
+        <!-- es检索 -->
+        <dependency>
+            <groupId>org.elasticsearch</groupId>
+            <artifactId>elasticsearch</artifactId>
+            <version>2.3.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-elasticsearch</artifactId>
+            <version>2.1.0.RELEASE</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>elasticsearch</artifactId>
+                    <groupId>org.elasticsearch</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- 爬虫 -->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.9.2</version>
+        </dependency>
         <!-- jackson -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -49,6 +72,11 @@
         <profile>
             <id>production</id>
             <properties>
+                <!-- 执行初始化监听器的ip -->
+                <app.listener.ip>172.16.1.12:28081</app.listener.ip>
+
+                <!-- es集群地址 -->
+                <es.nodes>172.16.1.11:9300,172.16.1.11:9301</es.nodes>
 
                 <!-- mysql 数据库配置 -->
                 <database.url><![CDATA[jdbc:mysql://172.16.1.12:3306/haq?useUnicode=true&amp;characterEncoding=UTF-8]]></database.url>
@@ -83,6 +111,8 @@
         <profile>
             <id>development</id>
             <properties>
+                <!-- 执行初始化监听器的ip -->
+                <app.listener.ip>0.0.0.0</app.listener.ip>
 
                 <!-- mysql 数据库配置 -->
                 <database.url><![CDATA[jdbc:mysql://localhost:3306/haq?useUnicode=true&amp;characterEncoding=UTF-8]]></database.url>

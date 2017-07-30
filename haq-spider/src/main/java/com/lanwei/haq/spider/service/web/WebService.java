@@ -2,11 +2,10 @@ package com.lanwei.haq.spider.service.web;
 
 import com.lanwei.haq.spider.dao.web.WebDao;
 import com.lanwei.haq.spider.entity.web.WebEntity;
-import com.lanwei.haq.comm.enums.ResponseEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
+import java.util.List;
 
 /**
  * 网站service,处理网站相关的业务逻辑
@@ -25,31 +24,26 @@ public class WebService {
     }
 
     /**
-     * 获取网站数量
-     * @return
+     * 通过网站id获取网站
      */
-    public int getWebCount(){
-        WebEntity webEntity = new WebEntity();
-        int count = webDao.count(webEntity);
-        return count;
+    public WebEntity getWebById(Integer webId){
+        return webDao.getWebById(webId);
     }
 
     /**
-     * 获取网站列表
+     * 获取所有网站id
+     * @return
      */
-    public Map<String, Object> getList(WebEntity webEntity){
-        Map<String, Object> resultMap = ResponseEnum.SUCCESS.getResultMap();
-        if(null == webEntity) {
-            webEntity = new WebEntity();
-        }
+    public List<Integer> getAllWebId(){
+        return webDao.getAllId();
+    }
 
-        int count = webDao.count(webEntity);
-        if(count > 0){
-            resultMap.put("list", webDao.query(webEntity));
-        }
-        resultMap.put("count", count);
-        resultMap.put("queryEntity", webEntity);
-        return resultMap;
+    /**
+     * 获取所有网站
+     * @return
+     */
+    public List<WebEntity> getAllWeb(){
+        return webDao.getAllWeb();
     }
 
 

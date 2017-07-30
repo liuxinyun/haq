@@ -1,5 +1,6 @@
 package com.lanwei.haq.spider.controller.web;
 
+import com.lanwei.haq.comm.enums.ResponseEnum;
 import com.lanwei.haq.comm.util.Constant;
 import com.lanwei.haq.comm.util.RedisUtil;
 import com.lanwei.haq.spider.entity.web.WebEntity;
@@ -35,11 +36,9 @@ public class WebController {
      */
     @ResponseBody
     @RequestMapping(value = "/list", method = RequestMethod.POST)
-    public Map<String, Object> getList(WebEntity webEntity){
-        Map<String, Object> resultMap = webService.getList(webEntity);
-        Jedis jedis = redisUtil.getJedis(Constant.REDIS_SAVE_INDEX);
-        jedis.set("Test", "test");
-        redisUtil.close(jedis);
+    public Map<String, Object> getList(){
+        Map<String, Object> resultMap = ResponseEnum.SUCCESS.getResultMap();
+        resultMap.put("web", webService.getAllWeb());
         return resultMap;
     }
 

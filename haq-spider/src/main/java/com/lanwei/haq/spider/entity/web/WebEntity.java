@@ -1,7 +1,5 @@
 package com.lanwei.haq.spider.entity.web;
 
-import com.lanwei.haq.spider.entity.BaseEntity;
-
 import java.io.Serializable;
 
 /**
@@ -10,10 +8,14 @@ import java.io.Serializable;
  * @描述：类
  */
 
-public class WebEntity extends BaseEntity implements Serializable{
+public class WebEntity implements Serializable{
 
-    private static final long serialVersionUID = 5113195625614870736L;
+    private static final long serialVersionUID = -6960156273140862317L;
 
+    /**
+     * 网站id
+     */
+    private Integer id;
     /**
      * 网站名称
      */
@@ -36,20 +38,16 @@ public class WebEntity extends BaseEntity implements Serializable{
      */
     private String regex;
     /**
-     * 所属区域id
+     * 所属地域id
      */
-    private int areaId;
-    /**
-     * 所属区域名称
-     */
-    private String areaName;
+    private Integer areaId;
 
-    public String getWeburl() {
-        return weburl;
+    public Integer getId() {
+        return id;
     }
 
-    public void setWeburl(String weburl) {
-        this.weburl = weburl;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getWebname() {
@@ -58,6 +56,14 @@ public class WebEntity extends BaseEntity implements Serializable{
 
     public void setWebname(String webname) {
         this.webname = webname;
+    }
+
+    public String getWeburl() {
+        return weburl;
+    }
+
+    public void setWeburl(String weburl) {
+        this.weburl = weburl;
     }
 
     public String getTitleSelect() {
@@ -84,32 +90,24 @@ public class WebEntity extends BaseEntity implements Serializable{
         this.regex = regex;
     }
 
-    public int getAreaId() {
+    public Integer getAreaId() {
         return areaId;
     }
 
-    public void setAreaId(int areaId) {
+    public void setAreaId(Integer areaId) {
         this.areaId = areaId;
-    }
-
-    public String getAreaName() {
-        return areaName;
-    }
-
-    public void setAreaName(String areaName) {
-        this.areaName = areaName;
     }
 
     @Override
     public String toString() {
         return "WebEntity{" +
-                "webname='" + webname + '\'' +
+                "id=" + id +
+                ", webname='" + webname + '\'' +
                 ", weburl='" + weburl + '\'' +
                 ", titleSelect='" + titleSelect + '\'' +
                 ", contentSelect='" + contentSelect + '\'' +
                 ", regex='" + regex + '\'' +
                 ", areaId=" + areaId +
-                ", areaName='" + areaName + '\'' +
                 '}';
     }
 }

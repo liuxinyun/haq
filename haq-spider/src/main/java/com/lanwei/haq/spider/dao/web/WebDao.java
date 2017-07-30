@@ -2,6 +2,7 @@ package com.lanwei.haq.spider.dao.web;
 
 import com.lanwei.haq.spider.dao.CommonDao;
 import com.lanwei.haq.spider.entity.web.WebEntity;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -11,8 +12,12 @@ import java.util.List;
  * @描述：类
  */
 
-public interface WebDao extends CommonDao<WebEntity>{
+public interface WebDao{
 
-    List<WebEntity> getAll();
+    List<Integer> getAllId();
+
+    List<WebEntity> getAllWeb();
+
+    WebEntity getWebById(@Param("id") Integer webId);
 
 }

@@ -2,114 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lanwei.haq.spider.dao.web.WebDao">
 
-    <sql id="comField">
-        webname,weburl,titleSelect,contentSelect,regex,areaId,creater,created,modifier,modified,isDel
-    </sql>
-
-    <select id="getAll" resultType="com.lanwei.haq.spider.entity.web.WebEntity">
-        SELECT tw.*,sa.name AS areaName
-        FROM t_web tw
-        LEFT JOIN sys_area sa ON sa.id=tw.areaId
-        WHERE tw.isDel = 'F';
+    <select id="getAllId" resultType="java.lang.Integer">
+        SELECT id FROM t_web WHERE isDel = 'F';
     </select>
 
-    <select id="query" parameterType="com.lanwei.haq.spider.entity.web.WebEntity" resultType="com.lanwei.haq.spider.entity.web.WebEntity">
-        SELECT tw.*,sa.name AS areaName
-        FROM t_web tw
-        LEFT JOIN sys_area sa ON sa.id=tw.areaId
-        WHERE tw.isDel = 'F'
-        <if test="id!=null and id!=0">
-            AND tw.id = #{id}
-        </if>
-        <if test="areaId!=null and areaId!=0">
-            AND tw.areaId = #{areaId}
-        </if>
-        <if test="null!=webname and ''!= webname">
-            AND tw.webname LIKE CONCAT('%',#{webname},'%')
-        </if>
-        ORDER BY tw.created desc
-        LIMIT #{pageStart},#{pageSize};
+    <select id="getAllWeb" resultType="com.lanwei.haq.spider.entity.web.WebEntity">
+        SELECT * FROM t_web WHERE isDel = 'F';
     </select>
 
-    <!-- 查询数量，用于分页 -->
-    <select id="count" parameterType="com.lanwei.haq.spider.entity.web.WebEntity" resultType="java.lang.Integer">
-        SELECT COUNT(1)
-        FROM t_web tw
-        WHERE tw.isDel = 'F'
-        <if test="id!=null and id!=0">
-            AND tw.id = #{id}
-        </if>
-        <if test="areaId!=null and areaId!=0">
-            AND tw.areaId = #{areaId}
-        </if>
-        <if test="null!=webname and ''!= webname">
-            AND tw.webname LIKE CONCAT('%',#{webname},'%')
-        </if>
+    <select id="getWebById" parameterType="java.lang.Integer" resultType="com.lanwei.haq.spider.entity.web.WebEntity">
+        SELECT * FROM t_web WHERE id=#{id} AND isDel = 'F';
     </select>
-
-    <!-- 新增 -->
-    <insert id="add" parameterType="com.lanwei.haq.spider.entity.web.WebEntity" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
-        INSERT INTO `t_web`
-        <trim prefix="(" suffix=")">
-            <include refid="comField"/>
-        </trim>
-        VALUES (#{webname},#{weburl},#{titleSelect},#{contentSelect},#{regex},#{areaId},#{creater},NOW(),#{modifier},Now(),'F')
-    </insert>
-
-    <!-- 更新用户 -->
-    <update id="update" parameterType="com.lanwei.haq.spider.entity.web.WebEntity">
-        UPDATE
-        `t_web`
-        SET
-        <if test="null != webname and ''!= webname">
-            webname = #{webname},
-        </if>
-        <if test="null != weburl and ''!= weburl">
-            weburl = #{weburl},
-        </if>
-        <if test="null != titleSelect and ''!= titleSelect">
-            titleSelect = #{titleSelect},
-        </if>
-        <if test="null != contentSelect and ''!= contentSelect">
-            contentSelect = #{contentSelect},
-        </if>
-        <if test="null != regex and ''!= regex">
-            regex = #{regex},
-        </if>
-        <if test="areaId!=null and areaId!=0">
-            areaId = #{areaId},
-        </if>
-        `modifier` = #{modifier},
-        `modified` = NOW()
-        WHERE id=#{id}
-    </update>
-
-    <!-- 删除 -->
-    <update id="del" parameterType="com.lanwei.haq.spider.entity.web.WebEntity">
-        UPDATE
-        t_web
-        SET
-        isDel = 'T',
-        modifier = #{modifier},
-        modified = NOW()
-        WHERE
-        id = #{id}
-    </update>
-
-    <!--批量删除-->
-    <update id="delList">
-        UPDATE t_web
-        SET
-        isDel = 'T',
-        modified = NOW(),
-        modifier = #{userId}
-        WHERE isDel = 'F'
-        AND id in
-        <foreach collection="idArr" open="(" close=")" separator="," item="id">
-            #{id}
-        </foreach>
-    </update>
-
-
 
 </mapper>
