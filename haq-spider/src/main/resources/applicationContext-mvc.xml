@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc.xsd ">
+
+    <!-- 扫描路径 -->
+    <context:component-scan base-package="com.lanwei.haq.spider"/>
+    <context:annotation-config/>
+
+    <!-- 注入参数配置  -->
+    <mvc:annotation-driven/>
+
+    <!-- properties配置文件 此处配置位置不能动 -->
+    <context:property-placeholder location="classpath*:app.properties" order="1"/>
+
+    <!-- 启动Spring MVC的注解功能，完成请求和注解POJO的映射 -->
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter"/>
+
+    <!-- 此路径下的请求,不会被DefaultAnnotationHandlerMapping下的拦截器拦截(它只拦截@Controller注解的) -->
+    <mvc:default-servlet-handler/>
+
+    <!-- 定义一个视图解析器  -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/html/"/>
+        <property name="suffix" value=".html" />
+    </bean>
+
+    <!-- 返回为json的bean -->
+    <bean id="mappingJacksonHttpMessageConverter"
+          class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+        <property name="supportedMediaTypes">
+            <list>
+                <value>text/html;charset=UTF-8</value>
+            </list>
+        </property>
+    </bean>
+    <!-- json转换器 -->
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <ref bean="mappingJacksonHttpMessageConverter"/>
+            </list>
+        </property>
+    </bean>
+
+
+</beans>
