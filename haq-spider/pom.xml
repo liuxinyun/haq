@@ -114,6 +114,9 @@
                 <!-- 执行初始化监听器的ip -->
                 <app.listener.ip>0.0.0.0</app.listener.ip>
 
+                <!-- es集群地址 -->
+                <es.nodes>172.16.1.11:9300,172.16.1.11:9301</es.nodes>
+
                 <!-- mysql 数据库配置 -->
                 <database.url><![CDATA[jdbc:mysql://localhost:3306/haq?useUnicode=true&amp;characterEncoding=UTF-8]]></database.url>
                 <database.name>root</database.name>

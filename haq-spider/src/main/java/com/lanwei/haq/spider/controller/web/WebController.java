@@ -1,14 +1,10 @@
 package com.lanwei.haq.spider.controller.web;
 
 import com.lanwei.haq.comm.enums.ResponseEnum;
-import com.lanwei.haq.comm.util.Constant;
-import com.lanwei.haq.comm.util.RedisUtil;
-import com.lanwei.haq.spider.entity.web.WebEntity;
 import com.lanwei.haq.spider.service.web.WebService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import redis.clients.jedis.Jedis;
 
 import java.util.Map;
 
@@ -23,12 +19,10 @@ import java.util.Map;
 public class WebController {
 
     private final WebService webService;
-    private final RedisUtil redisUtil;
 
     @Autowired
-    public WebController(WebService webService, RedisUtil redisUtil) {
+    public WebController(WebService webService) {
         this.webService = webService;
-        this.redisUtil = redisUtil;
     }
 
     /**

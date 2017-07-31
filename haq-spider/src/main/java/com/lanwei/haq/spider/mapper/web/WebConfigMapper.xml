@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lanwei.haq.spider.dao.web.WebConfigDao">
 
-    <select id="getAll" resultType="com.lanwei.haq.spider.entity.web.WebConfigEntity">
+    <select id="getCurrentConfig" resultType="com.lanwei.haq.spider.entity.web.WebConfigEntity">
         SELECT * FROM t_config WHERE status=1 AND isDel = 'F';
     </select>
 

@@ -22,25 +22,24 @@ import java.util.Queue;
  * @日期：2017/6/5 22:41
  * @描述：类
  */
-@Component
 public class Spider implements Runnable {
 
-    @Autowired
+    private final Logger logger = LoggerFactory.getLogger(Spider.class);
+
+    private WebEntity webEntity;
+    private Queue<String> queue;//存储衍生网址
     private RedisUtil redisUtil;
-    @Autowired
     private SpiderUtil spiderUtil;
-    @Autowired
     private EsUtil esUtil;
 
-    private final WebEntity webEntity;
-
-    //存储衍生网址
-    private Queue<String> queue;
-    static Logger logger = LoggerFactory.getLogger(Spider.class);
-
-    public Spider(WebEntity webEntity, Queue<String> queue) {
+    public Spider(WebEntity webEntity, Queue<String> queue,
+                  RedisUtil redisUtil, SpiderUtil spiderUtil,
+                  EsUtil esUtil) {
         this.webEntity = webEntity;
         this.queue = queue;
+        this.redisUtil = redisUtil;
+        this.spiderUtil = spiderUtil;
+        this.esUtil = esUtil;
     }
 
     @Override
@@ -58,29 +57,25 @@ public class Spider implements Runnable {
             try {
                 Document document = Jsoup.connect(weburl).timeout(3000).get();
                 if (document != null) {
-                    long hour = DateUtil.getCurrentHour();
-                    //网站统计自增1
-                    statisJedis.hincrBy(key, String.valueOf(hour), 1);
-                    //总量统计增1
-                    statisJedis.hincrBy(Constant.REDIS_TOTAL_PREFIX, String.valueOf(hour), 1);
-                    //地域统计总量增1
-                    statisJedis.hincrBy(Constant.REDIS_AREA_PREFIX + webEntity.getAreaId(), String.valueOf(hour), 1);
                     //获取所有未爬取子链接
-                    List<String> list = spiderUtil.getLinks(document);
+                    List<String> list = SpiderUtil.getLinks(document);
                     for (String s : list) {
                         //符合正则表达式 && 在redis不存在 ==> 入Queue
-                        if (spiderUtil.matchUrl(webEntity.getRegex(), s)) {
+                        if (SpiderUtil.matchUrl(webEntity.getRegex(), s)) {
                             if (saveJedis.setnx(s, Long.toString(System.currentTimeMillis())) == 1) {
                                 queue.add(s);
                             }
                         }
                     }
                     //如果不符合正则表达式就不进行标题内容获取了
-                    if (!spiderUtil.matchUrl(webEntity.getRegex(), weburl)) {
+                    if (!SpiderUtil.matchUrl(webEntity.getRegex(), weburl)) {
                         continue;
                     }
                     //获取新闻标题和内容，所属分类和专题。
                     NewsEntity news = spiderUtil.getNewsByDoc(document, webEntity);
+                    if (news == null){
+                        continue;//当标签选择器跟该网址对应不上时获取不到标题内容等，认为不是所要的新闻。
+                    }
                     String content = news.getContent();
                     //根据HTML内容替换图片地址为本服务器地址
                     Map<String, Object> map = DownPicUtil.htmlToFtp(content);
@@ -93,6 +88,14 @@ public class Spider implements Runnable {
                     news.setDatetime(DateUtil.format(new Date()));
                     esUtil.insertObject("haqqq", "news_test", news);
                     logger.info(weburl + " stored into Elasticsearch.");
+                    //下面开始进行统计
+                    long hour = DateUtil.getCurrentHour();
+                    //网站统计自增1
+                    statisJedis.hincrBy(key, String.valueOf(hour), 1);
+                    //总量统计增1
+                    statisJedis.hincrBy(Constant.REDIS_TOTAL_PREFIX, String.valueOf(hour), 1);
+                    //地域统计总量增1
+                    statisJedis.hincrBy(Constant.REDIS_AREA_PREFIX + webEntity.getAreaId(), String.valueOf(hour), 1);
                 }
             } catch (Exception e) {
                 logger.error("Get " + weburl + " failed for ", e);

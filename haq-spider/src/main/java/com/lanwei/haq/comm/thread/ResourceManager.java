@@ -1,7 +1,13 @@
 package com.lanwei.haq.comm.thread;
 
+import com.lanwei.haq.comm.util.EsUtil;
+import com.lanwei.haq.comm.util.RedisUtil;
+import com.lanwei.haq.comm.util.SpiderUtil;
+import com.lanwei.haq.spider.dao.web.MysqlDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +18,17 @@ import java.util.TimerTask;
 /**
  * 爬虫资源管理：定时器、线程池、数据buffer Created by Carlisle on 2017/7/10.
  */
+@Component
 public class ResourceManager {
+
+    @Autowired
+    private MysqlDao mysqlDao;
+    @Autowired
+    private RedisUtil redisUtil;
+    @Autowired
+    private SpiderUtil spiderUtil;
+    @Autowired
+    private EsUtil esUtil;
 
     private static final int MAX_QUEUE_SIZE = 2000;
 
@@ -26,7 +42,7 @@ public class ResourceManager {
         monitorTimer.scheduleAtFixedRate(new ResourceMonitor(), 0, 10000);
     }
 
-    public static boolean setWebSpiderThreadAndStart(final int webId, int tnum, int cronTime) {
+    public boolean setWebSpiderThreadAndStart(final int webId, int tnum, int cronTime) {
         logger.info("Receive request to start spider for website:" + webId + ",tnum:" + tnum);
         ResourceUnit unit = null;
         Timer t = null;
@@ -45,7 +61,7 @@ public class ResourceManager {
             //取消当前调度
             t.cancel();
         }
-        t.scheduleAtFixedRate(new SpiderTimer(unit), 0, cronTime * 1000 * 60);
+        t.scheduleAtFixedRate(new SpiderTimer(mysqlDao.getWebById(webId),unit, redisUtil, spiderUtil, esUtil), 0, cronTime * 1000 * 60);
         logger.debug("Website id:" + webId + "pider task scheduled at rate of " + cronTime + "s.");
         return true;
 

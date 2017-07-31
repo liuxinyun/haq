@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanwei.haq.spider.dao.web.MysqlDao">
+
+    <select id="getAllWebId" resultType="java.lang.Integer">
+        SELECT id FROM t_web WHERE isDel = 'F';
+    </select>
+
+    <select id="getAllWeb" resultType="com.lanwei.haq.spider.entity.web.WebEntity">
+        SELECT * FROM t_web WHERE isDel = 'F';
+    </select>
+
+    <select id="getWebById" parameterType="java.lang.Integer" resultType="com.lanwei.haq.spider.entity.web.WebEntity">
+        SELECT * FROM t_web WHERE id=#{id} AND isDel = 'F';
+    </select>
+
+    <select id="getAllSubject" resultType="com.lanwei.haq.spider.entity.web.SubjectEntity">
+        SELECT * FROM t_subject WHERE isDel = 'F';
+    </select>
+
+    <select id="getClassByWebId" parameterType="java.lang.Integer" resultType="com.lanwei.haq.spider.entity.web.WebClassEntity">
+        SELECT * FROM t_web_class WHERE webId=#{webId} AND isDel = 'F';
+    </select>
+
+    <select id="getCurrentConfig" resultType="com.lanwei.haq.spider.entity.web.WebConfigEntity">
+        SELECT * FROM t_config WHERE status=1 AND isDel = 'F';
+    </select>
+
+</mapper>

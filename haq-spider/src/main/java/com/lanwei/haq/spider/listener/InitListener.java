@@ -1,16 +1,12 @@
 package com.lanwei.haq.spider.listener;
 
 import com.lanwei.haq.comm.thread.ResourceManager;
-import com.lanwei.haq.comm.util.IpUtil;
 import com.lanwei.haq.comm.util.SpiderUtil;
-import com.lanwei.haq.comm.util.SpringContextUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
-
-import java.util.Objects;
 
 /**
  * 初始化系统监听器，当Application初始化成功或者刷新的时候会执行该方法
@@ -22,44 +18,23 @@ public class InitListener implements ApplicationListener<ContextRefreshedEvent> 
 
     private final static Logger log = LoggerFactory.getLogger(InitListener.class);
 
-    /**
-     * 需要执行初始化的ip
-     */
-    private String ip;
+    @Autowired
+    private SpiderUtil spiderUtil;
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
 
-        ApplicationContext context = event.getApplicationContext();
-        // * context的id，org.springframework.web.context.WebApplicationContext: 是spring的id
-        // * org.springframework.web.context.WebApplicationContext:/spring 是spring mvc的id
-        // * 容器初始化的时候首先会触发spring的初始化成功监听，其次执行spring mvc初始化成功监听
-        String[] idArr = {"org.springframework.web.context.WebApplicationContext:", "org.springframework.web.context.WebApplicationContext:/springMvc"};
-        String id = context.getId();
-        // 当触发spring mvc初始化成功监听是再执行系统参数的初始化
-        if (idArr[1].equals(id)) {
-            log.info("Application初始化完毕，开始准备初始化系统，本机ip:[{}]，允许执行初始化的ip:[{}]", IpUtil.getRealIp(), ip);
-            /// 有可能系统会部署到多台服务器，通过限制ip的方式，限制只在其中某一台服务器执行初始化。
-            if (Objects.equals(IpUtil.getRealIp(), ip)) {
-                /// TODO 需要初始化系统参数
-                log.info("[ip:{}]允许执行，开始系统初始化", ip);
-
-                /*try {
-                    ResourceManager.init();
-                    SpiderUtil spiderUtil = (SpiderUtil) SpringContextUtil.getBean("spiderUtil");
-                    spiderUtil.spiderAll();
-                }catch (Exception e){
-                    log.error("Spider System init failed for " + e.getMessage(), e);
-                    return;
-                }*/
-
-                log.info("[ip:{}]初始化系统完毕！！！", ip);
+        //root application context 没有parent.
+        if(event.getApplicationContext().getParent() == null){
+            log.info("spring初始化完成");
+            try {
+                ResourceManager.init();
+                spiderUtil.spiderAll();
+            } catch (Exception e) {
+                log.error("系统初始化失败："+e.getMessage(), e);
             }
-
         }
+
     }
 
-    public void setIp(String ip) {
-        this.ip = ip;
-    }
 }
