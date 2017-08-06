@@ -1,5 +1,7 @@
 package com.lanwei.haq.bms.controller.web;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.lanwei.haq.bms.entity.user.UserEntity;
 import com.lanwei.haq.bms.entity.web.ConfigEntity;
 import com.lanwei.haq.bms.entity.web.WebEntity;
@@ -11,12 +13,14 @@ import com.lanwei.haq.comm.annotation.CurrentUser;
 import com.lanwei.haq.comm.annotation.SysLog;
 import com.lanwei.haq.comm.enums.ResponseEnum;
 import com.lanwei.haq.comm.util.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import redis.clients.jedis.Jedis;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +33,8 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "/web")
 public class WebController {
+
+    private static final Logger logger = LoggerFactory.getLogger(WebController.class);
 
     private final WebService webService;
     private final ConfigService configService;
@@ -142,42 +148,17 @@ public class WebController {
     @ResponseBody
     @RequestMapping(value = "/now/{id}", method = RequestMethod.POST)
     public Map<String, Object> spiderByNow(@PathVariable("id") int id, @RequestParam(value = "configIds[]",required = false) int[] configIds) {
-        boolean flag = false;
-        int code = 0;
         if (id == 0){//配置立即生效
             configService.update(configIds);//更改数据库网站配置表
-            code = HttpUtil.get("http://172.16.1.12:28080/spider?code=0");
-        }else {//该网站立即生效
-            code = HttpUtil.get("http://172.16.1.12:28080/spider?code=" + id);
         }
-        flag = (code==200) ? true : false;
-        /*String key;
-        if (id==0){//配置立即生效
-            configService.update(configIds);//更改数据库网站配置表
-            key = Constant.REDIS_WEBCONFIG_KEY;
-        }else {//该网站立即生效
-            WebEntity webEntity = webService.getById(id);
-            String domain = WebUtil.getHost(webEntity.getWeburl());
-            key = Constant.REDIS_WEBSITE_PREFIX+domain+"_"+id;
-        }
-        Jedis jedis = RedisUtil.getJedis(Constant.REDIS_TCP_INDEX);
-        jedis.getSet(key,"1");
-        int i=10;
-        while (i>0){
-            if (jedis.get(key).equals("2")){
-                flag = true;
-                jedis.getSet(key, "0");//恢复原样
-                break;
-            }
-            i--;
-            try {
-                Thread.sleep(200);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        RedisUtil.close(jedis);*/
-        if (flag){
+        // 参数
+        Map<String, String> params = new HashMap<>();
+        params.put("id", String.valueOf(id));
+        String jsonStr = HttpUtil.postForm(Constant.SPIDER_ADDRESS, params);
+        logger.info("http return {}", jsonStr);
+        JSONObject object = JSON.parseObject(jsonStr);
+        String code = object.getString("code");
+        if (code.equals("200")){
             return ResponseEnum.SUCCESS.getResultMap();
         }
         return ResponseEnum.SYSTEM_ERROR.getResultMap();

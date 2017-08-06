@@ -48,21 +48,21 @@ public class ResourceManager {
         Timer t = null;
         //如果传入的网站id爬虫从未运行过，给该网站id分配资源，并立即开始执行
         if (!resource.containsKey(webId)) {
-            logger.debug("Website:" + webId + " is new, start to allocate resource...");
+            logger.info("Website:" + webId + " is new, start to allocate resource...");
             unit = new ResourceUnit(webId, tnum);
             resource.put(webId, unit);
-            logger.debug("Website:" + webId + "resource allocated.");
+            logger.info("Website:" + webId + "resource allocated.");
             t = new Timer();
             timers.put(webId, t);
         } else {//如果传入的网站id爬虫正在执行，获取其资源，并立即执行
-            logger.debug("Website:" + webId + " is running, start to refresh...");
+            logger.info("Website:" + webId + " is running, start to refresh...");
             unit = resource.get(webId);
             t = timers.get(webId);
             //取消当前调度
             t.cancel();
         }
         t.scheduleAtFixedRate(new SpiderTimer(mysqlDao.getWebById(webId),unit, redisUtil, spiderUtil, esUtil), 0, cronTime * 1000 * 60);
-        logger.debug("Website id:" + webId + "pider task scheduled at rate of " + cronTime + "s.");
+        logger.info("Website id:" + webId + "pider task scheduled at rate of " + cronTime + "s.");
         return true;
 
     }

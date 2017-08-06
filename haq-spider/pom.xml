@@ -107,6 +107,10 @@
 
             </properties>
 
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+
         </profile>
         <profile>
             <id>development</id>
@@ -146,9 +150,6 @@
 
             </properties>
 
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
         </profile>
     </profiles>
 
