@@ -30,7 +30,7 @@ public class DownPicUtil {
     // 编码
     private static final String ECODING = "UTF-8";
     // 获取img标签正则
-    private static final String IMGURL_REG = "<[\\s]*img.*src=(.*?)[^>]*?>";
+    private static final String IMGURL_REG = "<[\\s]{0,3}img.*src=(.*?)[^>]*?>";
     // 获取src路径的正则
     private static final String IMGSRC_REG = "http:\"?(.*?)(\"|>|\\s+)";
 

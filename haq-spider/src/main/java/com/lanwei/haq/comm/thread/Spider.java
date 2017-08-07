@@ -87,7 +87,7 @@ public class Spider implements Runnable {
                     news.setUrl(weburl);
                     news.setDatetime(DateUtil.format(new Date()));
                     esUtil.insertObject("haqqq", "news_test", news);
-                    logger.info(weburl + " stored into Elasticsearch.");
+                    logger.info("news={} stored into Elasticsearch.", news.toString());
                     //下面开始进行统计
                     long hour = DateUtil.getCurrentHour();
                     //网站统计自增1
