@@ -78,10 +78,9 @@ public class Spider implements Runnable {
                     }
                     String content = news.getContent();
                     //根据HTML内容替换图片地址为本服务器地址
-                    Map<String, Object> map = DownPicUtil.htmlToFtp(content);
-                    news.setContent(map.get("html").toString());//替换后的内容
-                    String imgpath = JSON.toJSONString(map.get("list"));
-                    news.setImg_path(imgpath);//图片地址
+                    Map<String, String> map = DownPicUtil.htmlToFtp(content);
+                    news.setContent(map.get("html"));//替换后的内容
+                    news.setImg_path(map.get("img"));//图片地址
                     //填充其他属性
                     news.setWebsite(webEntity.getWebname());
                     news.setUrl(weburl);
