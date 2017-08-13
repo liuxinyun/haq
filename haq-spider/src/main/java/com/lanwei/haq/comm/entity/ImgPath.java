@@ -9,6 +9,10 @@ package com.lanwei.haq.comm.entity;
 public class ImgPath {
 
     /**
+     * 图片名称
+     */
+    private String name;
+    /**
      * 原地址
      */
     private String source;
@@ -16,6 +20,14 @@ public class ImgPath {
      * 本地地址
      */
     private String local;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getSource() {
         return source;
@@ -36,7 +48,8 @@ public class ImgPath {
     @Override
     public String toString() {
         return "ImgPath{" +
-                "source='" + source + '\'' +
+                "name='" + name + '\'' +
+                ", source='" + source + '\'' +
                 ", local='" + local + '\'' +
                 '}';
     }
