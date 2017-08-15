@@ -12,6 +12,7 @@ public class Constant {
     public static final String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
     //年月日
     public static final String YYYY_MM_DD = "yyyy-MM-dd";
+    public static final String YYYYMMDD = "yyyyMMdd";
     //年月日时
     public static final String YYYY_MM_DD_HH = "yyyy-MM-dd HH:00:00";
 
