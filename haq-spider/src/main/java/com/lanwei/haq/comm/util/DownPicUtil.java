@@ -167,7 +167,7 @@ public class DownPicUtil {
                 temp = temp.substring(0, temp.indexOf("?"));
             }
             String imageName = temp.substring(temp.lastIndexOf("/") + 1, temp.length());
-            html = html.replaceAll(url, LOCALURL+date+"/"+imageName);//替换原地址到本地网址
+            html = html.replace(url, LOCALURL+date+"/"+imageName);//替换原地址到本地网址
             ImgPath imgPath = new ImgPath();
             imgPath.setName(imageName);
             imgPath.setSource(url);
@@ -217,7 +217,7 @@ public class DownPicUtil {
             os.close();
             is.close();
         } catch (Exception e) {
-            logger.error("get inputStream failed:", e);
+            logger.error("saveImgToLocal failed for "+e.getMessage(), e);
         }
     }
 
