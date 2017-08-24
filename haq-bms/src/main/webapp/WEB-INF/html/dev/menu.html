@@ -56,13 +56,13 @@
         <tbody>
         {{for (var key in it.list) {}}
             <tr data-id="{{=it.list[key].id}}" data-name="{{=it.list[key].name}}">
-                <td title="{{=it.list[key].name}}"><button class="btn btn-link" data-url="/menu/{{=it.list[key].id}}" data-template-id="template-menu-info">{{=it.list[key].name}}</button></td>
+                <td title="{{=it.list[key].name}}"><button class="btn btn-link" data-url="/haq-bms/menu/{{=it.list[key].id}}" data-template-id="template-menu-info">{{=it.list[key].name}}</button></td>
                 <td title="{{=it.list[key].url}}">{{=it.list[key].url}}</td>
                 <td><i class="fa {{=it.list[key].icon}}"></i></td>
                 <td>{{=it.list[key].typeStr}}</td>
                 <td>{{=it.list[key].moduleName}}</td>
                 <td>{{=it.list[key].menuName}}</td>
-                <th><button class="btn btn-link" data-url="/menu/{{=it.list[key].id}}" data-template-id="template-menu-edit"><span class="fa fa-edit"></span></button></th>
+                <th><button class="btn btn-link" data-url="/haq-bms/menu/{{=it.list[key].id}}" data-template-id="template-menu-edit"><span class="fa fa-edit"></span></button></th>
             </tr>
         {{}}}
         </tbody>
@@ -292,7 +292,7 @@
             if(moduleId==0){
                 $('body').find('.menuList').html('');
             }else{
-                app.ajax('/menu/get',{moduleId:moduleId,type:2},function (data) {
+                app.ajax('/haq-bms/menu/get',{moduleId:moduleId,type:2},function (data) {
                     var arrText = app.template($('#template-item-list').text(),data);
                     $('body').find('.menuList').html(arrText);
                 });

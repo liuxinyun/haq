@@ -14,6 +14,7 @@ import com.lanwei.haq.comm.annotation.AddEntity;
 import com.lanwei.haq.comm.annotation.CurrentUser;
 import com.lanwei.haq.comm.annotation.SysLog;
 import com.lanwei.haq.comm.enums.ResponseEnum;
+import com.lanwei.haq.comm.enums.RoleTypeEnum;
 import com.lanwei.haq.comm.enums.SexEnum;
 import com.lanwei.haq.comm.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,25 +73,30 @@ public class UserController {
         if (null == userEntity) {
             resultMap = ResponseEnum.PARAM_ERROR.getResultMap();
             resultMap.put("msg", "用户名或者密码错误");
-        } else {
-            resultMap = ResponseEnum.SUCCESS.getResultMap();
-            request.getSession().setAttribute("user", userEntity);
-            //获取请求ip
-            String ip = request.getRemoteAddr();
-            //获取请求路径
-            String uri = request.getRequestURI();
-            String param = userEntity.toString();
-            SysLogEntity sysLogEntity = new SysLogEntity();
-            sysLogEntity.setDescription("用户登录");
-            sysLogEntity.setUrl(uri);
-            sysLogEntity.setParam(param);
-            sysLogEntity.setUserId(userEntity.getId());
-            sysLogEntity.setUsername(userEntity.getName());
-            sysLogEntity.setIp(ip);
-            sysLogEntity.setCreater(userEntity.getId());
-            sysLogEntity.setModifier(userEntity.getId());
-            sysLogService.add(sysLogEntity);
+            return resultMap;
         }
+        if(userEntity.getRoleId() == RoleTypeEnum.USER.getCode()){
+            resultMap = ResponseEnum.PARAM_ERROR.getResultMap();
+            resultMap.put("msg", "普通用户无权限登录管理系统");
+            return resultMap;
+        }
+        resultMap = ResponseEnum.SUCCESS.getResultMap();
+        request.getSession().setAttribute("user", userEntity);
+        //获取请求ip
+        String ip = request.getRemoteAddr();
+        //获取请求路径
+        String uri = request.getRequestURI();
+        String param = userEntity.toString();
+        SysLogEntity sysLogEntity = new SysLogEntity();
+        sysLogEntity.setDescription("用户登录");
+        sysLogEntity.setUrl(uri);
+        sysLogEntity.setParam(param);
+        sysLogEntity.setUserId(userEntity.getId());
+        sysLogEntity.setUsername(userEntity.getName());
+        sysLogEntity.setIp(ip);
+        sysLogEntity.setCreater(userEntity.getId());
+        sysLogEntity.setModifier(userEntity.getId());
+        sysLogService.add(sysLogEntity);
         return resultMap;
     }
 

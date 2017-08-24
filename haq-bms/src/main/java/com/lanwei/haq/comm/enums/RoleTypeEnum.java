@@ -8,7 +8,11 @@ package com.lanwei.haq.comm.enums;
  */
 public enum RoleTypeEnum {
 
-    DEV((byte) 1, "开发人员权限组"), USER((byte) 2, "用户权限组"),BMS((byte) 3, "后台管理人员");
+    DEV((byte) 1, "开发人员权限组"),
+    BMS((byte) 2, "系统管理权限组"),
+    USER((byte) 3, "普通用户权限组"),
+    INFO((byte) 4, "信息管理权限组")
+    ;
 
     /**
      * 编码
