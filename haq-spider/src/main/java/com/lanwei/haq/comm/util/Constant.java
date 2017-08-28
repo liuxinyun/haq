@@ -8,6 +8,12 @@ package com.lanwei.haq.comm.util;
 
 public class Constant {
 
+    //浏览器用户代理
+    public static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36";
+    //vpn本地代理地址和端口号
+    public static final String PROXY_HOST = "127.0.0.1";
+    public static final int PROXY_PORT = 8118;
+
     //年月日时分秒
     public static final String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
     //年月日

@@ -55,7 +55,12 @@ public class Spider implements Runnable {
             String weburl = queue.poll();
             logger.info("Getting " + weburl);
             try {
-                Document document = Jsoup.connect(weburl).timeout(3000).get();
+                Document document = Jsoup.connect(weburl)
+                        .proxy(Constant.PROXY_HOST, Constant.PROXY_PORT)
+                        .ignoreContentType(true)
+                        .userAgent(Constant.USER_AGENT)
+                        .ignoreHttpErrors(true)  //这个很重要,否则会报HTTP error fetching URL. Status=404
+                        .timeout(3000).get();
                 if (document != null) {
                     //获取所有未爬取子链接
                     List<String> list = SpiderUtil.getLinks(document);
