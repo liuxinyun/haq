@@ -53,14 +53,14 @@ public class Spider implements Runnable {
                 break;
             }
             String weburl = queue.poll();
-            logger.info("Getting " + weburl);
             try {
                 Document document = Jsoup.connect(weburl)
                         .proxy(Constant.PROXY_HOST, Constant.PROXY_PORT)
-                        .ignoreContentType(true)
-                        .userAgent(Constant.USER_AGENT)
-                        .ignoreHttpErrors(true)  //这个很重要,否则会报HTTP error fetching URL. Status=404
-                        .timeout(3000).get();
+                        /*.userAgent(Constant.USER_AGENT)//模拟浏览器
+                        .ignoreContentType(false)//解析响应是忽略文档类型
+                        .ignoreHttpErrors(false)  //响应时是否忽略错误，404等*/
+                        .validateTLSCertificates(false)//关闭证书验证
+                        .timeout(10000).get();
                 if (document != null) {
                     //获取所有未爬取子链接
                     List<String> list = SpiderUtil.getLinks(document);
