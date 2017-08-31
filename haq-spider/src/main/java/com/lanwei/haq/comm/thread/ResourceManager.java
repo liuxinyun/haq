@@ -39,7 +39,7 @@ public class ResourceManager {
     private static final Logger logger = LoggerFactory.getLogger(ResourceManager.class);
 
     public static void init() throws InterruptedException {
-        monitorTimer.scheduleAtFixedRate(new ResourceMonitor(), 0, 10000);
+        monitorTimer.scheduleAtFixedRate(new ResourceMonitor(), 0, 60000);
     }
 
     public boolean setWebSpiderThreadAndStart(final int webId, int tnum, int cronTime) {

@@ -13,6 +13,10 @@ public class Constant {
     //vpn本地代理地址和端口号
     public static final String PROXY_HOST = "127.0.0.1";
     public static final int PROXY_PORT = 8118;
+    //爬取深度
+    public static final int DEEPTH = 1;
+    //爬虫前睡眠时间最大值
+    public static final int SLEEP_BOUND = 30000;
 
     //年月日时分秒
     public static final String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
@@ -26,12 +30,6 @@ public class Constant {
     public static final Integer REDIS_SAVE_INDEX = 0;
     //爬虫统计库
     public static final Integer REDIS_STATIS_INDEX = 1;
-    //爬虫使用redis轮询交互库
-    public static final Integer REDIS_TCP_INDEX = 2;
-    //网站站点redis所用前缀，后边存储网站域名和id，例如website_sina_2
-    public static final String REDIS_WEBSITE_PREFIX = "website_";
-    //网站配置redis键
-    public static final String REDIS_WEBCONFIG_KEY = "webconfig";
     //统计各网站接入量web_news.sina.com.cn
     public static final String REDIS_WEB_PREFIX = "web_";
     //统计网站接入总量total_webcount

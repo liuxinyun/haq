@@ -1,6 +1,6 @@
 package com.lanwei.haq.comm.thread;
 
-import com.alibaba.fastjson.JSON;
+import com.lanwei.haq.comm.entity.UrlDeepth;
 import com.lanwei.haq.comm.util.*;
 import com.lanwei.haq.spider.entity.NewsEntity;
 import com.lanwei.haq.spider.entity.web.WebEntity;
@@ -8,14 +8,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
+import java.util.*;
 
 /**
  * @作者：刘新运
@@ -27,12 +22,12 @@ public class Spider implements Runnable {
     private final Logger logger = LoggerFactory.getLogger(Spider.class);
 
     private WebEntity webEntity;
-    private Queue<String> queue;//存储衍生网址
+    private Queue<UrlDeepth> queue;//存储衍生网址
     private RedisUtil redisUtil;
     private SpiderUtil spiderUtil;
     private EsUtil esUtil;
 
-    public Spider(WebEntity webEntity, Queue<String> queue,
+    public Spider(WebEntity webEntity, Queue<UrlDeepth> queue,
                   RedisUtil redisUtil, SpiderUtil spiderUtil,
                   EsUtil esUtil) {
         this.webEntity = webEntity;
@@ -52,8 +47,11 @@ public class Spider implements Runnable {
             if (queue.isEmpty()) {
                 break;
             }
-            String weburl = queue.poll();
+            UrlDeepth urlDeepth = queue.poll();
+            String weburl = urlDeepth.getUrl();
+            int deepth = urlDeepth.getDeepth();
             try {
+                Thread.sleep(new Random().nextInt(Constant.SLEEP_BOUND)+1000);
                 Document document = Jsoup.connect(weburl)
                         .proxy(Constant.PROXY_HOST, Constant.PROXY_PORT)
                         /*.userAgent(Constant.USER_AGENT)//模拟浏览器
@@ -62,13 +60,16 @@ public class Spider implements Runnable {
                         .validateTLSCertificates(false)//关闭证书验证
                         .timeout(10000).get();
                 if (document != null) {
-                    //获取所有未爬取子链接
-                    List<String> list = SpiderUtil.getLinks(document);
-                    for (String s : list) {
-                        //符合正则表达式 && 在redis不存在 ==> 入Queue
-                        if (SpiderUtil.matchUrl(webEntity.getRegex(), s)) {
-                            if (saveJedis.setnx(s, Long.toString(System.currentTimeMillis())) == 1) {
-                                queue.add(s);
+                    //未达到指定深度，继续爬子连接
+                    if(deepth < Constant.DEEPTH){
+                        //获取所有未爬取子链接
+                        List<String> list = SpiderUtil.getLinks(document);
+                        for (String s : list) {
+                            //符合正则表达式 && 在redis不存在 ==> 入Queue
+                            if (SpiderUtil.matchUrl(webEntity.getRegex(), s)) {
+                                if (saveJedis.setnx(s, Long.toString(System.currentTimeMillis())) == 1) {
+                                    queue.add(new UrlDeepth(s, deepth+1));
+                                }
                             }
                         }
                     }
@@ -102,6 +103,7 @@ public class Spider implements Runnable {
                     statisJedis.hincrBy(Constant.REDIS_AREA_PREFIX + webEntity.getAreaId(), String.valueOf(hour), 1);
                 }
             } catch (Exception e) {
+                saveJedis.del(weburl);//出现异常未爬取的网址从redis中删除，下次还可以再爬
                 logger.error("Get " + weburl + " failed for ", e);
             }
         }
