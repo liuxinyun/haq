@@ -11,8 +11,8 @@ public class Constant {
     //浏览器用户代理
     public static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36";
     //vpn本地代理地址和端口号
-    public static final String PROXY_HOST = "127.0.0.1";
-    public static final int PROXY_PORT = 8118;
+    public static final String PROXY_HOST = "172.16.1.21";
+    public static final int PROXY_PORT = 2443;
     //爬取深度
     public static final int DEEPTH = 1;
     //爬虫前睡眠时间最大值
