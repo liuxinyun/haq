@@ -53,8 +53,7 @@ public class Spider implements Runnable {
             try {
                 Thread.sleep(new Random().nextInt(Constant.SLEEP_BOUND)+1000);
                 Document document = Jsoup.connect(weburl)
-                        .proxy(Constant.PROXY_HOST, Constant.PROXY_PORT)
-                        //.userAgent(Constant.USER_AGENT)//模拟浏览器
+                        .proxy(PropertiesUtil.get("proxy.host"), PropertiesUtil.getInt("proxy.port"))
                         .ignoreContentType(false)//解析响应是忽略文档类型
                         .ignoreHttpErrors(false)  //响应时是否忽略错误，404等
                         .validateTLSCertificates(false)//关闭证书验证

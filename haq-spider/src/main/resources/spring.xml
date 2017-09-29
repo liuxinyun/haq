@@ -7,6 +7,7 @@
 
     <!-- 扫描路径 -->
     <context:component-scan base-package="com.lanwei.haq"/>
+    <context:property-placeholder location="classpath*:app.properties"/>
 
     <import resource="spring-jdbc.xml"/>
     <import resource="spring-redis.xml"/>

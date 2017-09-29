@@ -13,18 +13,8 @@ public class PropertiesUtil {
 	 * 初始化参数,类加载器执行
 	 */
 	static {
-		ResourceBundle bundle = ResourceBundle.getBundle("info");
+		ResourceBundle bundle = ResourceBundle.getBundle("app");
 		Set<String> keySets = bundle.keySet();
-		for (String key : keySets) {
-			try {
-				properties.put(key, new String(bundle.getString(key).getBytes("ISO-8859-1"),"UTF-8"));
-			} catch (Exception e) {
-				// TODO: handle exception
-			}
-		}
-		// 密钥分发相关命令参数
-		bundle = ResourceBundle.getBundle("command");
-		keySets = bundle.keySet();
 		for (String key : keySets) {
 			try {
 				properties.put(key, new String(bundle.getString(key).getBytes("ISO-8859-1"),"UTF-8"));
