@@ -8,11 +8,6 @@ package com.lanwei.haq.comm.util;
 
 public class Constant {
 
-    //爬取深度
-    public static final int DEEPTH = 1;
-    //爬虫前睡眠时间最大值
-    public static final int SLEEP_BOUND = 30000;
-
     //年月日时分秒
     public static final String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
     //年月日

@@ -1,6 +1,6 @@
 package com.lanwei.haq.comm.thread;
 
-import com.lanwei.haq.comm.entity.UrlDeepth;
+import com.lanwei.haq.comm.entity.UrlDepth;
 import com.lanwei.haq.comm.util.EsUtil;
 import com.lanwei.haq.comm.util.RedisUtil;
 import com.lanwei.haq.comm.util.SpiderUtil;
@@ -38,7 +38,7 @@ public class SpiderTimer extends TimerTask {
     public void run() {
         logger.info("Website " + unit.websiteId + " putting seed to Queue...");
         for (int i = 0; i < unit.tnum; i++) {
-            unit.q.add(new UrlDeepth(webEntity.getWeburl(),0));
+            unit.q.add(new UrlDepth(webEntity.getWeburl(),0));
             unit.threadpool.execute(new Spider(webEntity, unit.q, redisUtil, spiderUtil, esUtil));
         }
         logger.info("Website " + unit.websiteId + " started "+unit.tnum+" threads.");

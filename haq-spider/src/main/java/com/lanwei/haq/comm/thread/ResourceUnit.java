@@ -5,9 +5,8 @@
  */
 package com.lanwei.haq.comm.thread;
 
-import com.lanwei.haq.comm.entity.UrlDeepth;
+import com.lanwei.haq.comm.entity.UrlDepth;
 
-import java.util.Timer;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -22,7 +21,7 @@ public class ResourceUnit {
     public int websiteId = -1;
     public int tnum = 0;
     public ThreadPoolExecutor threadpool = null;
-    public ConcurrentLinkedQueue<UrlDeepth> q = null;
+    public ConcurrentLinkedQueue<UrlDepth> q = null;
 
     public ResourceUnit(int websiteId, int tnum) {
         this.websiteId = websiteId;

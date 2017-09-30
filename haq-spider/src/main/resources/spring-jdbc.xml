@@ -7,32 +7,8 @@
 	http://www.springframework.org/schema/tx/spring-tx-3.0.xsd"
 	default-lazy-init="true">
 
-   <!-- &lt;!&ndash; 基于Druid数据库链接池的数据源配置 &ndash;&gt;
 	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
-		&lt;!&ndash; 基本属性driverClassName、 url、user、password &ndash;&gt;
-		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="${database.url}" />
-        <property name="username" value="${database.name}" />
-        <property name="password" value="${database.password}" />
-		&lt;!&ndash; 配置初始化大小、最小、最大 &ndash;&gt;
-		&lt;!&ndash; 通常来说，只需要修改initialSize、minIdle、maxActive &ndash;&gt;
-		<property name="initialSize" value="${database.initialSize}" />
-		<property name="minIdle" value="${database.minIdle}" />
-		<property name="maxActive" value="${database.maxActive}" />
-		<property name="testWhileIdle" value="true" />
-
-		&lt;!&ndash; 配置获取连接等待超时的时间 &ndash;&gt;
-		<property name="maxWait" value="5000" />
-		&lt;!&ndash; 配置一个连接在池中最小生存的时间，单位是毫秒 &ndash;&gt;
-		<property name="minEvictableIdleTimeMillis" value="30000" />
-		&lt;!&ndash; 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 &ndash;&gt;
-		<property name="timeBetweenEvictionRunsMillis" value="60000" />
-		&lt;!&ndash; 解密密码必须要配置的项 &ndash;&gt;
-	</bean>-->
-
-
-	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
-		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="driverClassName" value="${database.driver}" />
 		<!-- 连接地址 -->
 		<property name="url" value="${database.url}" />
 		<!-- 数据库连接用户名 -->

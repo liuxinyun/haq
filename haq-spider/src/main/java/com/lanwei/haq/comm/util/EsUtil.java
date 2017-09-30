@@ -43,9 +43,8 @@ public class EsUtil {
      * @param indexName
      * @param type
      * @param o
-     * @throws IOException
      */
-    public void insertObject(String indexName, String type, Object o) throws IOException {
+    public void insertObject(String indexName, String type, Object o) {
         IndexResponse response = client
                 //prepareIndex(索引库名，索引type,指定id)
                 .prepareIndex(indexName, type)
@@ -62,7 +61,7 @@ public class EsUtil {
      * @param str
      * @throws IOException
      */
-    public void insertString(String indexName, String type, String str) throws IOException {
+    public void insertString(String indexName, String type, String str) {
         IndexResponse response = client
                 //prepareIndex(索引库名，索引type,指定id)
                 .prepareIndex(indexName, type)

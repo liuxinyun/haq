@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @描述：类
  */
 
-public class UrlDeepth implements Serializable {
+public class UrlDepth implements Serializable {
     private static final long serialVersionUID = -9133229062170357355L;
 
     /**
@@ -18,11 +18,11 @@ public class UrlDeepth implements Serializable {
     /**
      * 深度
      */
-    private int deepth;
+    private int depth;
 
-    public UrlDeepth(String url, int deepth) {
+    public UrlDepth(String url, int depth) {
         this.url = url;
-        this.deepth = deepth;
+        this.depth = depth;
     }
 
     public String getUrl() {
@@ -33,19 +33,19 @@ public class UrlDeepth implements Serializable {
         this.url = url;
     }
 
-    public int getDeepth() {
-        return deepth;
+    public int getDepth() {
+        return depth;
     }
 
-    public void setDeepth(int deepth) {
-        this.deepth = deepth;
+    public void setDepth(int depth) {
+        this.depth = depth;
     }
 
     @Override
     public String toString() {
-        return "UrlDeepth{" +
+        return "UrlDepth{" +
                 "url='" + url + '\'' +
-                ", deepth=" + deepth +
+                ", depth=" + depth +
                 '}';
     }
 }

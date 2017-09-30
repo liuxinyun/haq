@@ -94,7 +94,7 @@ public class SpiderUtil {
      * @return
      * @throws IOException
      */
-    public static List<String> getLinks(Document doc) throws IOException {
+    public static List<String> getLinks(Document doc) {
         List<String> list = new ArrayList<>();
         if (doc.select("a[href]") != null && !doc.select("a[href]").isEmpty()) {
             Elements links = doc.select("a[href]");
