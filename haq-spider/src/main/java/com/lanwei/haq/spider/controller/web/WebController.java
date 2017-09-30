@@ -29,7 +29,7 @@ public class WebController {
      * 查询列表
      */
     @ResponseBody
-    @RequestMapping(value = "/list", method = RequestMethod.POST)
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     public Map<String, Object> getList(){
         Map<String, Object> resultMap = ResponseEnum.SUCCESS.getResultMap();
         resultMap.put("web", webService.getAllWeb());
