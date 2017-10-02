@@ -44,9 +44,9 @@ public class Spider implements Runnable {
         //统计
         Jedis statisJedis = redisUtil.getJedis(Constant.REDIS_STATIS_INDEX);
         String key = Constant.REDIS_WEB_PREFIX + WebUtil.getHost(webEntity.getWeburl());
-        int maxCount = PropertiesUtil.getInt("spider.max");//每次爬取的最大数量
-        int total = 0;//本次已经爬取的总数，不能比maxCount大
-        while (total<=maxCount && queue!=null && !queue.isEmpty()) {
+        //每个链接可爬取的最大子链接数量
+        final int maxCount = PropertiesUtil.getInt("spider.max");
+        while (queue!=null && !queue.isEmpty()) {
             if (queue.isEmpty()) {
                 break;
             }
@@ -75,26 +75,34 @@ public class Spider implements Runnable {
                 if(depth < PropertiesUtil.getInt("spider.depth")){
                     //获取所有未爬取子链接
                     List<String> list = SpiderUtil.getLinks(document);
+                    //每个子链接只取前maxCount个有效的进行进一步爬取,total<=maxCount
+                    int total = 0;
                     for (String s : list) {
-                        total++;
-                        if (total > maxCount){
-                            break;//达到最大数量后就不放入队列了
-                        }
                         //符合正则表达式 && 在redis不存在 ==> 入Queue
-                        /*if (SpiderUtil.matchUrl(webEntity.getRegex(), s)) {
+                        if (SpiderUtil.matchUrl(webEntity.getRegex(), s)) {
                             if (saveJedis.setnx(s, Long.toString(System.currentTimeMillis())) == 1) {
                                 queue.add(new UrlDepth(s, depth+1));
+                                if (++total > maxCount){
+                                    break;
+                                }
                             }
-                        }*/
+                        }
                     }
+                }
+                //如果是种子网址就不进行下面的操作了
+                if (weburl.equals(webEntity.getWeburl())){
+                    continue;
                 }
                 //如果不符合正则表达式就不进行标题内容获取了
                 if (!SpiderUtil.matchUrl(webEntity.getRegex(), weburl)) {
+                    logger.warn("url={} is not satisfy regex.", weburl);
                     continue;
                 }
                 //获取新闻标题和内容，所属分类和专题。
                 NewsEntity news = spiderUtil.getNewsByDoc(document, webEntity);
                 if (news == null){
+                    logger.warn("url={} get news is null for titleSelect={} and contentSelect={}",
+                            weburl, webEntity.getTitleSelect(), webEntity.getContentSelect());
                     continue;//当标签选择器跟该网址对应不上时获取不到标题内容等，认为不是所要的新闻。
                 }
                 String content = news.getContent();
@@ -106,7 +114,7 @@ public class Spider implements Runnable {
                 news.setWebsite(webEntity.getWebname());
                 news.setUrl(weburl);
                 news.setDatetime(DateUtil.format(new Date()));
-                //esUtil.insertObject("haqqq", "news_test", news);
+                esUtil.insertObject("haqqq", "news_test", news);
                 logger.info("news={} stored into Elasticsearch.", news.toString());
                 //下面开始进行统计
                 long hour = DateUtil.getCurrentHour();
