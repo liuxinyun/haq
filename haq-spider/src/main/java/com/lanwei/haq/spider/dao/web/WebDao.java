@@ -1,6 +1,5 @@
 package com.lanwei.haq.spider.dao.web;
 
-import com.lanwei.haq.spider.dao.CommonDao;
 import com.lanwei.haq.spider.entity.web.WebEntity;
 import org.apache.ibatis.annotations.Param;
 

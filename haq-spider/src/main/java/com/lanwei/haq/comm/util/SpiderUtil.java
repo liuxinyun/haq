@@ -1,5 +1,7 @@
 package com.lanwei.haq.comm.util;
 
+import com.lanwei.haq.comm.entity.SpiderConfig;
+import com.lanwei.haq.comm.enums.ConfigEnum;
 import com.lanwei.haq.comm.thread.ResourceManager;
 import com.lanwei.haq.spider.dao.web.MysqlDao;
 import com.lanwei.haq.spider.entity.NewsEntity;
@@ -49,42 +51,36 @@ public class SpiderUtil {
      * 开始所有网站爬虫任务
      */
     public void spiderAll() {
-        //查询数据库中配置
-        Map<String, Integer> config = getCurrentConfig();
-        int cron = config.get("cron");//间隔时间分钟
-        int threadCount = config.get("thread");//线程数
-        List<Integer> list = mysqlDao.getAllWebId();
-        for (int webId : list) {
-            resourceManager.setWebSpiderThreadAndStart(webId, threadCount, cron);
-        }
+        List<Integer> webIds = mysqlDao.getAllWebId();// 有效的网站
+        List<Integer> webIdDels = mysqlDao.getAllWebIdDel();// 已经被删除的网站
+        resourceManager.setWebSpiderThreadAndStart(webIds, getCurrentConfig());
+        resourceManager.removeThreadByWebIds(webIdDels);
     }
     /**
      * 开始指定id网站爬虫任务
      * @param webId 
      */
     public void spiderByWebId(int webId) {
-        //查询数据库中配置
-        Map<String, Integer> config = getCurrentConfig();
-        int cron = config.get("cron");//间隔时间分钟
-        int threadCount = config.get("thread");//线程数
-        resourceManager.setWebSpiderThreadAndStart(webId, threadCount, cron);
+        List<Integer> webIds = new ArrayList<>();
+        webIds.add(webId);
+        resourceManager.setWebSpiderThreadAndStart(webIds, getCurrentConfig());
     }
 
     /**
      * 获得当前配置
      * @return
      */
-    private Map<String, Integer> getCurrentConfig(){
-        Map<String, Integer> map = new HashMap<>();
+    private SpiderConfig getCurrentConfig(){
+        SpiderConfig spiderConfig = new SpiderConfig();
         List<WebConfigEntity> list = mysqlDao.getCurrentConfig();
         for (WebConfigEntity webConfigEntity : list){
-            if (webConfigEntity.getType() == 1){
-                map.put("cron", webConfigEntity.getData());
-            }else if (webConfigEntity.getType() == 2){
-                map.put("thread", webConfigEntity.getData());
+            if (webConfigEntity.getType() == ConfigEnum.CRON.getType()){
+                spiderConfig.setCron(webConfigEntity.getData());
+            }else if (webConfigEntity.getType() == ConfigEnum.THREAD_NUM.getType()){
+                spiderConfig.setThreadNum(webConfigEntity.getData());
             }
         }
-        return map;
+        return spiderConfig;
     }
 
     /**

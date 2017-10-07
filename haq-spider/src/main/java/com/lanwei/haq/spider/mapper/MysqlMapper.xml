@@ -6,6 +6,10 @@
         SELECT id FROM t_web WHERE isDel = 'F';
     </select>
 
+    <select id="getAllWebIdDel" resultType="java.lang.Integer">
+        SELECT id FROM t_web WHERE isDel = 'T';
+    </select>
+
     <select id="getAllWeb" resultType="com.lanwei.haq.spider.entity.web.WebEntity">
         SELECT * FROM t_web WHERE isDel = 'F';
     </select>
