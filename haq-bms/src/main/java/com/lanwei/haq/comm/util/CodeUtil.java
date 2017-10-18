@@ -70,11 +70,13 @@ public class CodeUtil {
                     long n = 1;
                     out("开始读取代码行数");
                     for (File f : fList) {
-                        if (n % 20 == 0)
+                        if (n % 20 == 0) {
                             System.out.print("。");
+                        }
 
-                        if (n % 800 == 0)
+                        if (n % 800 == 0) {
                             System.out.println();
+                        }
 
                         n++;
 

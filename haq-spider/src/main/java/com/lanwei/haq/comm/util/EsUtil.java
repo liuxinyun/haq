@@ -32,8 +32,9 @@ public class EsUtil {
      * 释放
      */
     public void close(TransportClient client) {
-        if (client==null)
+        if (client==null) {
             return;
+        }
         client.close();
     }
 

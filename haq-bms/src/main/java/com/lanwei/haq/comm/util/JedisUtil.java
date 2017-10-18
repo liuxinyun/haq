@@ -90,8 +90,9 @@ public class JedisUtil {
         } catch (Exception e) {
             logger.error("[JedisUtil]存储key:{}-value:{}异常", key, value, e);
         } finally {
-            if (null != jedis)
+            if (null != jedis) {
                 jedis.close();
+            }
         }
         return b;
     }
@@ -113,8 +114,9 @@ public class JedisUtil {
         } catch (Exception e) {
             logger.error("[JedisUtil]存储key:{}-value:{}异常", key, value, e);
         } finally {
-            if (null != jedis)
+            if (null != jedis) {
                 jedis.close();
+            }
         }
         return b;
     }
@@ -228,8 +230,9 @@ public class JedisUtil {
         } catch (Exception e) {
             logger.error("[JedisUtil]删除key：{}异常", Arrays.toString(key), e);
         } finally {
-            if (null != jedis)
+            if (null != jedis) {
                 jedis.close();
+            }
         }
         return count;
     }

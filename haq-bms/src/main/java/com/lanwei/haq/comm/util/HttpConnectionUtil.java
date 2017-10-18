@@ -277,10 +277,14 @@ public class HttpConnectionUtil {
 			e.printStackTrace();
 		}finally {
 			try{
-				if(writer!=null)writer.close();
+				if(writer!=null) {
+                    writer.close();
+                }
 			}catch(Exception e){}
 			try{
-				if(inStream!=null)inStream.close();
+				if(inStream!=null) {
+                    inStream.close();
+                }
 			}catch(Exception e){}
 		}
 		return null;
@@ -322,7 +326,9 @@ public class HttpConnectionUtil {
 			e.printStackTrace();
 		}finally {
 			try{
-				if(writer!=null)writer.close();
+				if(writer!=null) {
+                    writer.close();
+                }
 			}catch(Exception e){}
 		}
 		return null;
@@ -407,7 +413,9 @@ public class HttpConnectionUtil {
 			byte[] data = outStream.toByteArray();
 			return data;
 		}finally {
-			if(inStream!=null)inStream.close();
+			if(inStream!=null) {
+                inStream.close();
+            }
 		}
 	}
 }

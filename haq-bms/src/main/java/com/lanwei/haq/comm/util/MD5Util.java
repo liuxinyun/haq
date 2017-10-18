@@ -19,10 +19,12 @@ public class MD5Util {
 			StringBuffer buf = new StringBuffer("");
 			for (int offset = 0; offset < b.length; offset++) {
 				i = b[offset];
-				if (i < 0)
+				if (i < 0) {
 					i += 256;
-				if (i < 16)
+				}
+				if (i < 16) {
 					buf.append("0");
+				}
 				buf.append(Integer.toHexString(i));
 			}
 			return buf.toString().toUpperCase();
@@ -45,10 +47,12 @@ public class MD5Util {
 			StringBuffer buf = new StringBuffer("");
 			for (int offset = 0; offset < b.length; offset++) {
 				i = b[offset];
-				if (i < 0)
+				if (i < 0) {
 					i += 256;
-				if (i < 16)
+				}
+				if (i < 16) {
 					buf.append("0");
+				}
 				buf.append(Integer.toHexString(i));
 			}
 			return buf.toString().substring(8, 24).toUpperCase();
@@ -60,9 +64,8 @@ public class MD5Util {
 
 	public static void main(String agrs[]) {
 		System.out.println(MD5Util.MD5("Neusoft123@Neusoft123"));
-		ConfigTools configTools = new ConfigTools();
 		try {
-			String s = configTools.encrypt("123456");
+			String s = ConfigTools.encrypt("123456");
 			System.out.println(s);
 		} catch (Exception e) {
 			e.printStackTrace();

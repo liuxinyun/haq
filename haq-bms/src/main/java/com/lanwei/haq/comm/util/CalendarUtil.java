@@ -117,7 +117,7 @@ public class CalendarUtil {
         ca.setTime(date);
         try {
             for (int i = 0; i < day; i++) {
-                ca.add(ca.DAY_OF_MONTH, 1);
+                ca.add(Calendar.DAY_OF_MONTH, 1);
                 if (!checkWorkday(ca.getTime())) {
                     i--;
                 }
@@ -304,17 +304,17 @@ public class CalendarUtil {
             Date d = df.parse("2017-09-30");
             CalendarUtil cu = new CalendarUtil(holiday1,extra1);
             //判断传入的日期是否是工作日
-            if (cu.checkWorkday(d)){
+            if (checkWorkday(d)){
                 System.out.println(df.format(d)+"是工作日");
             }else {
                 System.out.println(df.format(d)+"是节假日");
             }
             //输出传入的日期在指定天数后的工作日日期
-            Date dd = cu.addDateByWorkDay(d,5);
+            Date dd = addDateByWorkDay(d,5);
             System.out.println("接下来第5个工作日"+df.format(dd));
 
             //输出传入日期当月的工作日
-            List<Date> list1 = cu.getWorkDay(d);
+            List<Date> list1 = getWorkDay(d);
             Calendar ca = Calendar.getInstance();
             ca.setTime(d);
             System.out.println(ca.get(Calendar.YEAR)+"年"+(ca.get(Calendar.MONTH)+1)+"月所有工作日:");
@@ -322,7 +322,7 @@ public class CalendarUtil {
                 System.out.println(df.format(date));
             }
             //输出传入日期当年的每个月的第一个工作日
-            List<Date> list2 = cu.getFirstWorkDayOfMonth(d);
+            List<Date> list2 = getFirstWorkDayOfMonth(d);
             System.out.println(ca.get(Calendar.YEAR)+"年每个月第一个工作日:");
             for (Date date:list2){
                 System.out.println(df.format(date));

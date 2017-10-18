@@ -48,8 +48,9 @@ public class StringUtils {
      * @return String
      */
     public static String wipeNull(String str, boolean trim) {
-        if (isNotBlank(str))
+        if (isNotBlank(str)) {
             return trim ? str.trim() : str;
+        }
         return "";
     }
 
@@ -60,8 +61,9 @@ public class StringUtils {
      * @return String
      */
     public static String upcaseFirstChar(String str) {
-        if (isBlank(str))
+        if (isBlank(str)) {
             return null;
+        }
         str = str.trim();
         return (str.charAt(0) + "").toUpperCase() + str.substring(1, str.length());
     }

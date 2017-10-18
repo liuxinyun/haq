@@ -18,8 +18,9 @@ public class BigDecimalUtil {
 	 * @return
 	 */
 	public static BigDecimal add(BigDecimal bigDecimalA,BigDecimal bigDecimalB){
-		if(bigDecimalA!=null && bigDecimalB!=null)
-			return bigDecimalA.add(bigDecimalB);
+		if(bigDecimalA!=null && bigDecimalB!=null) {
+            return bigDecimalA.add(bigDecimalB);
+        }
 		return null;
 	}
 	
@@ -30,8 +31,9 @@ public class BigDecimalUtil {
 	 * @return
 	 */
 	public static BigDecimal subtract(BigDecimal bigDecimalA,BigDecimal bigDecimalB){
-		if(bigDecimalA!=null && bigDecimalB!=null)
-			return bigDecimalA.subtract(bigDecimalB);
+		if(bigDecimalA!=null && bigDecimalB!=null) {
+            return bigDecimalA.subtract(bigDecimalB);
+        }
 		return null;
 	}
 	
@@ -42,8 +44,9 @@ public class BigDecimalUtil {
 	 * @return
 	 */
 	public static BigDecimal multiply(BigDecimal bigDecimalA,BigDecimal bigDecimalB){
-		if(bigDecimalA!=null && bigDecimalB!=null)
-			return bigDecimalA.multiply(bigDecimalB);
+		if(bigDecimalA!=null && bigDecimalB!=null) {
+            return bigDecimalA.multiply(bigDecimalB);
+        }
 		return null;
 	}
 	
@@ -54,8 +57,9 @@ public class BigDecimalUtil {
 	 * @return
 	 */
 	public static BigDecimal divide(BigDecimal bigDecimalA,BigDecimal bigDecimalB){
-		if(bigDecimalA!=null && bigDecimalB!=null)
-			return bigDecimalA.divide(bigDecimalB,30,BigDecimal.ROUND_HALF_EVEN);
+		if(bigDecimalA!=null && bigDecimalB!=null) {
+            return bigDecimalA.divide(bigDecimalB, 30, BigDecimal.ROUND_HALF_EVEN);
+        }
 		return null;
 	}
 }

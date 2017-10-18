@@ -54,8 +54,9 @@ public class SysLogAspect {
             StringBuffer params = new StringBuffer();
             if(joinPoint.getArgs()!=null && joinPoint.getArgs().length>0){
                 for (int i=0; i<joinPoint.getArgs().length; i++){
-                    if (joinPoint.getArgs()[i] == null)
+                    if (joinPoint.getArgs()[i] == null) {
                         continue;
+                    }
                     params.append(joinPoint.getArgs()[i].toString()).append(";");
                 }
             }

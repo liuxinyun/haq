@@ -64,8 +64,9 @@ public class SysLogService {
     public Map<String, Object> logList(SysLogEntity sysLogEntity) {
         Map<String, Object> resultMap = ResponseEnum.SUCCESS.getResultMap();
 
-        if(null == sysLogEntity)
+        if(null == sysLogEntity) {
             sysLogEntity = new SysLogEntity();
+        }
 
         // 查询总数
         int count = sysLogDao.count(sysLogEntity);

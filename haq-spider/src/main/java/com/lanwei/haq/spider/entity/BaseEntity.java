@@ -115,7 +115,9 @@ public class BaseEntity {
     }
 
     public int getPageNum() {
-        if (pageNum < 1) pageNum = 1;
+        if (pageNum < 1) {
+            pageNum = 1;
+        }
         return pageNum;
     }
 

@@ -91,8 +91,9 @@ public class RoleService {
         // 先清除之前的角色菜单关系
         roleDao.delRel(roleId, userEntity.getId());
 
-        if (null != menuId)
+        if (null != menuId) {
             roleDao.addRel(menuId, roleId, userEntity.getId());
+        }
 
         return resultMap;
     }

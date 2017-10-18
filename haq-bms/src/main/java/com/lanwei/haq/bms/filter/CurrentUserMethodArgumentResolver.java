@@ -34,8 +34,9 @@ public class CurrentUserMethodArgumentResolver implements HandlerMethodArgumentR
      */
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-        if (parameter.getParameterType().getName().equals(UserEntity.class.getName()))
+        if (parameter.getParameterType().getName().equals(UserEntity.class.getName())) {
             return webRequest.getAttribute("user", NativeWebRequest.SCOPE_SESSION);
+        }
 
         return null;
     }
