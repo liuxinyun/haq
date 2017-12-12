@@ -13,7 +13,7 @@
        http://www.springframework.org/schema/aop/spring-aop.xsd">
 
     <!-- 扫描路径 -->
-    <context:component-scan base-package="com.lanwei.haq.bms"/>
+    <context:component-scan base-package="com.lanwei.haq.bms.controller"/>
     <context:annotation-config/>
 
     <!-- 注入参数配置  -->
@@ -25,7 +25,7 @@
     </mvc:annotation-driven>
 
     <!-- properties配置文件 此处配置位置不能动 -->
-    <context:property-placeholder location="classpath*:app.properties" order="1"/>
+    <!--<context:property-placeholder location="classpath*:app.properties,config.properties" order="1"/>-->
 
     <!-- 启动Spring MVC的注解功能，完成请求和注解POJO的映射 -->
     <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter"/>
@@ -77,6 +77,5 @@
 
     <!-- 启动@Aspect注解支持 -->
     <aop:aspectj-autoproxy proxy-target-class="true"/>
-    <bean id="sysLogAspect" class="com.lanwei.haq.bms.aspect.SysLogAspect"></bean>
 
 </beans>

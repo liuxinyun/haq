@@ -24,6 +24,10 @@ public class WebEntity extends BaseEntity implements Serializable{
      */
     private String weburl;
     /**
+     * 种子网址
+     */
+    private String seedUrls;
+    /**
      * 标题选择器
      */
     private String titleSelect;
@@ -50,6 +54,14 @@ public class WebEntity extends BaseEntity implements Serializable{
 
     public void setWeburl(String weburl) {
         this.weburl = weburl;
+    }
+
+    public String getSeedUrls() {
+        return seedUrls;
+    }
+
+    public void setSeedUrls(String seedUrls) {
+        this.seedUrls = seedUrls;
     }
 
     public String getWebname() {
@@ -105,11 +117,12 @@ public class WebEntity extends BaseEntity implements Serializable{
         return "WebEntity{" +
                 "webname='" + webname + '\'' +
                 ", weburl='" + weburl + '\'' +
+                ", seedUrls='" + seedUrls + '\'' +
                 ", titleSelect='" + titleSelect + '\'' +
                 ", contentSelect='" + contentSelect + '\'' +
                 ", regex='" + regex + '\'' +
                 ", areaId=" + areaId +
                 ", areaName='" + areaName + '\'' +
-                '}';
+                "} " ;
     }
 }

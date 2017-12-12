@@ -56,79 +56,19 @@
 
     <profiles>
         <profile>
-            <id>production</id>
+            <id>dev</id>
             <properties>
-                <!-- 执行初始化监听器的ip -->
-                <app.listener.ip>172.16.1.13:28080</app.listener.ip>
-
-                <!-- mysql 数据库配置 -->
-                <database.url><![CDATA[jdbc:mysql://172.16.1.12:3306/haq?useUnicode=true&amp;characterEncoding=UTF-8]]></database.url>
-                <database.name>root</database.name>
-                <database.password>bN1LRPYwGEmwvhnbxm9MszZbymMfhNiEouqYq68Zb0HCWRSB700pEyBNLAdF6xBT8oJiY9hnh95zjpJpcCv9Mw==</database.password>
-                <database.publickey>MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAOib+8PuhwxVy4qfkdL6RVLK0F0gVlh51lPm6sYqn2Nw0bEgL1RLZgxEx0SwmpYJmI/uW1OhLSUpDVo2EaBx/vMCAwEAAQ==</database.publickey>
-                <database.initialSize>5</database.initialSize>
-                <database.minIdle>5</database.minIdle>
-                <database.maxActive>100</database.maxActive>
-
-                <!-- redis 配置 -->
-                <redis.pool.maxActive>600</redis.pool.maxActive>
-                <redis.pool.maxIdle>20</redis.pool.maxIdle>
-                <redis.pool.maxWait>1000</redis.pool.maxWait>
-                <redis.pool.testOnBorrow>true</redis.pool.testOnBorrow>
-                <redis.pool.testOnReturn>false</redis.pool.testOnReturn>
-                <redis.ip>172.16.1.12</redis.ip>
-                <redis.port>6379</redis.port>
-                <redis.timeout>5000</redis.timeout>
-                <redis.password>haqteam</redis.password>
-                <redis.db.index>6</redis.db.index>
-
-                <!-- 系统MD5加密需要添加的前缀 -->
-                <md5.prefix>d83cb40d7d784adb8c57af4a4fe1a18b</md5.prefix>
-
-                <!-- 本地配置 -->
-                <file.local.path>/home/haqteam/data/file</file.local.path>
-
+                <resource.path>src/main/resources_dev</resource.path>
             </properties>
-
+        </profile>
+        <profile>
+            <id>pro</id>
+            <properties>
+                <resource.path>src/main/resources_pro</resource.path>
+            </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
-        </profile>
-        <profile>
-            <id>development</id>
-            <properties>
-                <!-- 执行初始化监听器的ip -->
-                <app.listener.ip>0.0.0.0</app.listener.ip>
-
-                <!-- mysql 数据库配置 -->
-                <database.url><![CDATA[jdbc:mysql://localhost:3306/haq?useUnicode=true&amp;characterEncoding=UTF-8]]></database.url>
-                <database.name>root</database.name>
-                <database.password>dP2hmbf91Arg65H53YZ4IVP/jw9dDdhtB3905VBsHtAr6f2OQWvd6SQeQVUQAALFybJy4hZ82AlTd3k/mjPp3A==</database.password>
-                <database.publickey>MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAOib+8PuhwxVy4qfkdL6RVLK0F0gVlh51lPm6sYqn2Nw0bEgL1RLZgxEx0SwmpYJmI/uW1OhLSUpDVo2EaBx/vMCAwEAAQ==</database.publickey>
-                <database.initialSize>5</database.initialSize>
-                <database.minIdle>5</database.minIdle>
-                <database.maxActive>100</database.maxActive>
-
-                <!-- redis 配置 -->
-                <redis.pool.maxActive>600</redis.pool.maxActive>
-                <redis.pool.maxIdle>20</redis.pool.maxIdle>
-                <redis.pool.maxWait>1000</redis.pool.maxWait>
-                <redis.pool.testOnBorrow>true</redis.pool.testOnBorrow>
-                <redis.pool.testOnReturn>false</redis.pool.testOnReturn>
-                <redis.ip>localhost</redis.ip>
-                <redis.port>6379</redis.port>
-                <redis.timeout>5000</redis.timeout>
-                <redis.password>123456</redis.password>
-                <redis.db.index>1</redis.db.index>
-
-                <!-- 系统MD5加密需要添加的前缀 -->
-                <md5.prefix>d83cb40d7d784adb8c57af4a4fe1a18b</md5.prefix>
-
-                <!-- 本地配置 -->
-                <file.local.path>D:/zzz/file</file.local.path>
-
-            </properties>
-
         </profile>
     </profiles>
 
@@ -163,6 +103,13 @@
             </resource>
             <resource>
                 <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>${resource.path}</directory>
                 <includes>
                     <include>**/*</include>
                 </includes>

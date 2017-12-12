@@ -76,9 +76,7 @@
             <tr>
                 <th>名称</th>
                 <th>网址</th>
-                <th>标题选择器</th>
-                <th>内容选择器</th>
-                <th>正则表达式</th>
+                <th>种子地址</th>
                 <th>所属地域</th>
                 <th>操作</th>
             </tr>
@@ -88,9 +86,7 @@
             <tr data-id="{{=it.list[key].id}}" data-name="{{=it.list[key].webname}}">
                 <td title="{{=it.list[key].webname}}"><button class="btn btn-link" data-url="/haq-bms/web/{{=it.list[key].id}}" data-template-id="template-web-info">{{=it.list[key].webname}}</button></td>
                 <td title="{{=it.list[key].weburl}}">{{=it.list[key].weburl}}</td>
-                <td title="{{=it.list[key].titleSelect}}">{{=it.list[key].titleSelect}}</td>
-                <td title="{{=it.list[key].contentSelect}}">{{=it.list[key].contentSelect}}</td>
-                <td title="{{=it.list[key].regex}}">{{=it.list[key].regex}}</td>
+                <td title="{{=it.list[key].seedUrls}}">{{=it.list[key].seedUrls}}</td>
                 <td title="{{=it.list[key].areaName}}">{{=it.list[key].areaName}}</td>
                 <th>
                     <button class="btn btn-link" data-url="/haq-bms/web/{{=it.list[key].id}}" data-template-id="template-web-edit"><span title="编辑" class="fa fa-edit"></span></button>
@@ -134,6 +130,12 @@
                         <label class="col-sm-2 control-label">网址</label>
                         <div class="col-sm-9">
                             <input type="text" name="weburl" class="validate[required,maxSize[500]] form-control" placeholder="网址">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">种子地址</label>
+                        <div class="col-sm-9">
+                            <textarea name="seedUrls" class="validate[required] form-control" placeholder="多个地址之间用@分隔" />
                         </div>
                     </div>
                     <div class="form-group">
@@ -195,9 +197,15 @@
                             </label>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">网站地址</label>
+                            <label class="col-sm-2 control-label">网址</label>
                             <label class="col-sm-10 control-label tl">
                                 {{=it.web.weburl}}
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">种子地址</label>
+                            <label class="col-sm-10 control-label tl">
+                                {{=it.web.seedUrls}}
                             </label>
                         </div>
                         <div class="form-group">
@@ -254,9 +262,15 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">网站地址</label>
+                            <label class="col-sm-2 control-label">网址</label>
                             <div class="col-sm-9">
-                                <input type="text" name="weburl" class="validate[required,maxSize[500]] form-control" placeholder="网站地址" value="{{=it.web.weburl}}">
+                                <input type="text" name="weburl" class="validate[required,maxSize[500]] form-control" placeholder="网址" value="{{=it.web.weburl}}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">种子地址</label>
+                            <div class="col-sm-9">
+                                <textarea name="seedUrls" class="validate[required] form-control" placeholder="多个地址之间用@分隔">{{=it.web.seedUrls}}</textarea>
                             </div>
                         </div>
                         <div class="form-group">
