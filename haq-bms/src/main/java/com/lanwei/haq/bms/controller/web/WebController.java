@@ -6,6 +6,7 @@ import com.lanwei.haq.bms.entity.user.UserEntity;
 import com.lanwei.haq.bms.entity.web.ConfigEntity;
 import com.lanwei.haq.bms.entity.web.WebEntity;
 import com.lanwei.haq.bms.service.web.AreaService;
+import com.lanwei.haq.bms.service.web.ClassService;
 import com.lanwei.haq.bms.service.web.ConfigService;
 import com.lanwei.haq.bms.service.web.WebService;
 import com.lanwei.haq.comm.annotation.AddEntity;
@@ -39,13 +40,15 @@ public class WebController {
     private final WebService webService;
     private final ConfigService configService;
     private final AreaService areaService;
+    private final ClassService classService;
 
     @Autowired
     public WebController(WebService webService, ConfigService configService,
-                         AreaService areaService) {
+                         AreaService areaService, ClassService classService) {
         this.webService = webService;
         this.configService = configService;
         this.areaService = areaService;
+        this.classService = classService;
     }
 
     /**
@@ -138,6 +141,15 @@ public class WebController {
         Map<String, Object> resultMap = ResponseEnum.SUCCESS.getResultMap();
         resultMap.put("web", webService.getById(id));
         resultMap.put("areaList", areaService.getAll());
+        return resultMap;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getClass/{id}", method = RequestMethod.POST)
+    public Map<String, Object> getClass(@PathVariable("id") int id) {
+        Map<String, Object> resultMap = ResponseEnum.SUCCESS.getResultMap();
+        resultMap.put("webId", id);
+        resultMap.put("classList", classService.getAll());
         return resultMap;
     }
 

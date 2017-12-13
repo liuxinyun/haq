@@ -2,10 +2,13 @@ package com.lanwei.haq.bms.service.web;
 
 import com.lanwei.haq.bms.dao.web.AreaDao;
 import com.lanwei.haq.bms.dao.web.WebDao;
+import com.lanwei.haq.bms.dao.web.WebSeedDao;
 import com.lanwei.haq.bms.entity.web.AreaEntity;
 import com.lanwei.haq.bms.entity.web.WebEntity;
+import com.lanwei.haq.bms.entity.web.WebSeedEntity;
 import com.lanwei.haq.comm.enums.ResponseEnum;
 import com.lanwei.haq.comm.util.ListUtil;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,10 +25,12 @@ import java.util.Map;
 public class WebService {
 
     private final WebDao webDao;
+    private final WebSeedDao webSeedDao;
 
     @Autowired
-    public WebService(WebDao webDao) {
+    public WebService(WebDao webDao, WebSeedDao webSeedDao) {
         this.webDao = webDao;
+        this.webSeedDao = webSeedDao;
     }
 
     /**
@@ -39,6 +44,14 @@ public class WebService {
     }
 
     /**
+     * 获取所有网站
+     * @return
+     */
+    public List<WebEntity> getAll(){
+        return webDao.getAll();
+    }
+
+    /**
      * 获取网站列表
      */
     public Map<String, Object> getList(WebEntity webEntity){
@@ -49,7 +62,11 @@ public class WebService {
 
         int count = webDao.count(webEntity);
         if(count > 0){
-            resultMap.put("list", webDao.query(webEntity));
+            List<WebEntity> webEntities = webDao.query(webEntity);
+            for (WebEntity entity : webEntities) {
+                dealSeed(entity);
+            }
+            resultMap.put("list", webEntities);
         }
         resultMap.put("count", count);
         resultMap.put("queryEntity", webEntity);
@@ -64,7 +81,9 @@ public class WebService {
         webEntity.setId(id);
         List<WebEntity> list = webDao.query(webEntity);
         if(ListUtil.isNotEmpty(list)){
-            return list.get(0);
+            WebEntity entity = list.get(0);
+            dealSeed(entity);
+            return entity;
         }
         return null;
     }
@@ -105,6 +124,18 @@ public class WebService {
     public Map<String, Object> delBatch(int[] id, int userId) {
         webDao.delList(id, userId);
         return ResponseEnum.SUCCESS.getResultMap();
+    }
+
+    private void dealSeed(WebEntity webEntity){
+        List<WebSeedEntity> webSeedEntities = webSeedDao.queryByWebId(webEntity.getId());
+        if (CollectionUtils.isEmpty(webSeedEntities)){
+            return;
+        }
+        StringBuilder sb = new StringBuilder();
+        for (WebSeedEntity seedEntity : webSeedEntities) {
+            sb.append(seedEntity.getSeedurl()).append(":").append(seedEntity.getClassName()).append(",");
+        }
+        webEntity.setSeedUrls(sb.substring(0, sb.length()-1));
     }
 
 }

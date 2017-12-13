@@ -1,7 +1,6 @@
 package com.lanwei.haq.bms.entity.web;
 
 import com.lanwei.haq.bms.entity.BaseEntity;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 
@@ -11,23 +10,22 @@ import java.io.Serializable;
  * @描述：类
  */
 
-public class WebEntity extends BaseEntity implements Serializable{
+public class WebSeedEntity extends BaseEntity implements Serializable{
 
     private static final long serialVersionUID = 5113195625614870736L;
 
     /**
+     * 网站id
+     */
+    private int webId;
+    /**
      * 网站名称
      */
-    private String webname;
-
+    private String webName;
     /**
-     * 网站地址
+     * 种子地址
      */
-    private String weburl;
-    /**
-     * 种子网址
-     */
-    private String seedUrls = StringUtils.EMPTY;
+    private String seedurl;
     /**
      * 标题选择器
      */
@@ -41,36 +39,36 @@ public class WebEntity extends BaseEntity implements Serializable{
      */
     private String regex;
     /**
-     * 所属区域id
+     * 类别id
      */
-    private int areaId;
+    private int classId;
     /**
-     * 所属区域名称
+     * 类别名称
      */
-    private String areaName;
+    private String className;
 
-    public String getWeburl() {
-        return weburl;
+    public int getWebId() {
+        return webId;
     }
 
-    public void setWeburl(String weburl) {
-        this.weburl = weburl;
+    public void setWebId(int webId) {
+        this.webId = webId;
     }
 
-    public String getSeedUrls() {
-        return seedUrls;
+    public String getWebName() {
+        return webName;
     }
 
-    public void setSeedUrls(String seedUrls) {
-        this.seedUrls = seedUrls;
+    public void setWebName(String webName) {
+        this.webName = webName;
     }
 
-    public String getWebname() {
-        return webname;
+    public String getSeedurl() {
+        return seedurl;
     }
 
-    public void setWebname(String webname) {
-        this.webname = webname;
+    public void setSeedurl(String seedurl) {
+        this.seedurl = seedurl;
     }
 
     public String getTitleSelect() {
@@ -97,33 +95,31 @@ public class WebEntity extends BaseEntity implements Serializable{
         this.regex = regex;
     }
 
-    public int getAreaId() {
-        return areaId;
+    public int getClassId() {
+        return classId;
     }
 
-    public void setAreaId(int areaId) {
-        this.areaId = areaId;
+    public void setClassId(int classId) {
+        this.classId = classId;
     }
 
-    public String getAreaName() {
-        return areaName;
+    public String getClassName() {
+        return className;
     }
 
-    public void setAreaName(String areaName) {
-        this.areaName = areaName;
+    public void setClassName(String className) {
+        this.className = className;
     }
 
     @Override
     public String toString() {
-        return "WebEntity{" +
-                "webname='" + webname + '\'' +
-                ", weburl='" + weburl + '\'' +
-                ", seedUrls='" + seedUrls + '\'' +
+        return "WebSeedEntity{" +
+                "webName='" + webName + '\'' +
+                ", seedurl='" + seedurl + '\'' +
                 ", titleSelect='" + titleSelect + '\'' +
                 ", contentSelect='" + contentSelect + '\'' +
                 ", regex='" + regex + '\'' +
-                ", areaId=" + areaId +
-                ", areaName='" + areaName + '\'' +
+                ", className='" + className + '\'' +
                 "} " ;
     }
 }

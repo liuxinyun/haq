@@ -26,6 +26,10 @@ public class WebEntity implements Serializable{
      */
     private String weburl;
     /**
+     * 种子地址
+     */
+    private String seedUrls;
+    /**
      * 标题选择器
      */
     private String titleSelect;
@@ -66,6 +70,14 @@ public class WebEntity implements Serializable{
         this.weburl = weburl;
     }
 
+    public String getSeedUrls() {
+        return seedUrls;
+    }
+
+    public void setSeedUrls(String seedUrls) {
+        this.seedUrls = seedUrls;
+    }
+
     public String getTitleSelect() {
         return titleSelect;
     }
@@ -104,6 +116,7 @@ public class WebEntity implements Serializable{
                 "id=" + id +
                 ", webname='" + webname + '\'' +
                 ", weburl='" + weburl + '\'' +
+                ", seedUrls='" + seedUrls + '\'' +
                 ", titleSelect='" + titleSelect + '\'' +
                 ", contentSelect='" + contentSelect + '\'' +
                 ", regex='" + regex + '\'' +

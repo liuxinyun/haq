@@ -1,0 +1,265 @@
+<div class="col-md-12">
+    <div class="box border lite" data-url="/haq-bms/webseed/list" data-template-id="template-list">
+        <div class="box-title">
+            <h4><i class="fa fa-navicon"></i>种子网址管理</h4>
+            <div class="tools">
+                <a href="javascript:;" title="新增" class="config" data-template-id="#template-webseed-add" data-url="/haq-bms/webseed/allNeed">
+                    <i class="fa fa-plus-square"></i>
+                </a>
+                <a href="javascript:;" title="刷新" class="reload">
+                    <i class="fa fa-refresh"></i>
+                </a>
+                <a href="javascript:;" title="折叠" class="collapse">
+                    <i class="fa fa-chevron-down"></i>
+                </a>
+                <a href="javascript:;" title="删除" class="remove" data-template-id="#template-delete" data-del-url="/haq-bms/webseed/delBatch">
+                    <i class="fa fa-times"></i>
+                </a>
+            </div>
+        </div>
+        <div class="box-body"></div>
+    </div>
+</div>
+<script type="text/x-dot-template" id="template-list">
+    <div class="container-fluid">
+        <form role="form">
+            <div class="form-group row">
+                <div class="col-sm-1 control-label">种子网址</div>
+                <div class="col-sm-4">
+                    <input type="text" name="seedurl" class="form-control" placeholder="种子网址" value="{{=$.wipeNull(it.queryEntity.seedurl)}}">
+                </div>
+                <div class="col-sm-1 control-label">网站</div>
+                <div class="col-sm-2">
+                    <select name="webId" class="form-control">
+                        <option value="0">全部</option>
+                        {{for (var key in it.webList) {}}
+                        <option value="{{=it.webList[key].id}}" {{? it.webList[key].id == $.wipeNull(it.queryEntity.webId) }} selected {{? }}>{{=it.webList[key].webname}}</option>
+                        {{}}}
+                    </select>
+                </div>
+                <div class="col-sm-3">
+                    <button class="btn btn-primary" type="button">查询</button>
+                </div>
+            </div>
+            <input type="hidden" name="pageSize" value="10">
+            <input type="hidden" name="pageNum" value="1">
+        </form>
+    </div>
+    <hr>
+    {{? it.count <= 0}}
+    <p class="alert alert-danger" role="alert"><i class="fa fa-info-circle"></i>&nbsp;没有相关数据</p>
+    {{?}}
+    {{? it.count > 0}}
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>种子网址</th>
+            <th>所属网站</th>
+            <th>所属类别</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{for (var key in it.list) {}}
+        <tr data-id="{{=it.list[key].id}}" data-name="{{=it.list[key].seedurl}}">
+            <td title="{{=it.list[key].seedurl}}"><button class="btn btn-link" data-url="/haq-bms/webseed/{{=it.list[key].id}}" data-template-id="template-webseed-info">{{=it.list[key].seedurl}}</button></td>
+            <td title="{{=it.list[key].webName}}">{{=it.list[key].webName}}</td>
+            <td title="{{=it.list[key].className}}">{{=it.list[key].className}}</td>
+            <th>
+                <button class="btn btn-link" data-url="/haq-bms/webseed/{{=it.list[key].id}}" data-template-id="template-webseed-edit"><span title="编辑" class="fa fa-edit"></span></button>
+            </th>
+        </tr>
+        {{}}}
+        </tbody>
+    </table>
+    {{?}}
+    <div class="container-fluid page" data-num="{{=it.queryEntity.pageNum}}" data-size="{{=it.queryEntity.pageSize}}" data-count="{{=it.count}}">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="pull-left">
+                </div>
+                <div class="pull-right">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-dot-template" id="template-webseed-add">
+    <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel">添加种子网址</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" role="form" action="/haq-bms/webseed/add" method="post">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">种子网址</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="seedurl" class="validate[required,maxSize[500]] form-control" placeholder="种子网址">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">所属网站</label>
+                            <div class="col-sm-9">
+                                <select name="webId" class="form-control">
+                                    {{for(var key in it.webList){ }}
+                                    <option value="{{=it.webList[key].id }}">{{=it.webList[key].webname }}</option>
+                                    {{ } }}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">所属类别</label>
+                            <div class="col-sm-9">
+                                <select name="classId" class="form-control">
+                                    {{for(var key in it.classList){ }}
+                                    <option value="{{=it.classList[key].id }}" {{? it.classList[key].id == 5 }} selected {{? }}>{{=it.classList[key].name }}</option>
+                                    {{ } }}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12 error-msg"></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary">添加</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-dot-template" id="template-webseed-info">
+    <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel1">种子详情</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">种子网址</label>
+                            <label class="col-sm-10 control-label tl">
+                                {{=it.web.seedurl}}
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">所属网站</label>
+                            <label class="col-sm-10 control-label tl">
+                                {{=it.web.webName}}
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">所属类别</label>
+                            <label class="col-sm-10 control-label tl">
+                                {{=it.web.className}}
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">标题选择器</label>
+                            <label class="col-sm-10 control-label tl">
+                                {{=it.web.titleSelect}}
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">内容选择器</label>
+                            <label class="col-sm-10 control-label tl">
+                                {{=it.web.contentSelect}}
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">正则表达式</label>
+                            <label class="col-sm-10 control-label tl">
+                                {{=it.web.regex}}
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12 error-msg"></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-dot-template" id="template-webseed-edit">
+    <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel2">编辑种子</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" role="form" action="/haq-bms/webseed/update" method="post">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">种子网址</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="seedurl" class="validate[required,maxSize[200]] form-control" placeholder="种子网址" value="{{=it.web.seedurl}}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">所属网站</label>
+                            <div class="col-sm-9">
+                                <select name="webId" class="form-control">
+                                    {{for(var key in it.webList){ }}
+                                    <option value="{{=it.webList[key].id }}" {{? it.web.webId == it.webList[key].id }} selected {{? }}>{{=it.webList[key].webname }}</option>
+                                    {{ } }}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">所属类别</label>
+                            <div class="col-sm-9">
+                                <select name="classId" class="form-control">
+                                    {{for(var key in it.classList){ }}
+                                    <option value="{{=it.classList[key].id }}" {{? it.web.classId == it.classList[key].id }} selected {{? }}>{{=it.classList[key].name }}</option>
+                                    {{ } }}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">标题选择器</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="titleSelect" class="validate[required,maxSize[500]] form-control" placeholder="标题选择表达式" value="{{=it.web.titleSelect}}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">内容选择器</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="contentSelect" class="validate[required,maxSize[500]] form-control" placeholder="内容选择表达式" value="{{=it.web.contentSelect}}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">正则表达式</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="regex" class="validate[required,maxSize[500]] form-control" placeholder="网址正则表达式" value="{{=it.web.regex}}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="hidden" name="id" placeholder="ICON" value="{{=it.web.id}}">
+                            <div class="col-sm-12 error-msg"></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>

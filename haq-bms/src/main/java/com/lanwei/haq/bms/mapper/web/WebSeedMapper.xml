@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanwei.haq.bms.dao.web.WebSeedDao">
+
+    <sql id="comField">
+        webId,seedurl,titleSelect,contentSelect,regex,classId,creater,created,modifier,modified,isDel
+    </sql>
+
+    <select id="queryByWebId" parameterType="java.lang.Integer" resultType="com.lanwei.haq.bms.entity.web.WebSeedEntity">
+        SELECT tws.*,tc.name AS className
+        FROM t_web_seed tws
+        LEFT JOIN t_class tc ON tc.id=tws.classId
+        WHERE tws.isDel = 'F'
+        <if test="webId!=null and webId!=0">
+            AND tws.webId = #{webId}
+        </if>
+    </select>
+
+    <select id="query" parameterType="com.lanwei.haq.bms.entity.web.WebSeedEntity" resultType="com.lanwei.haq.bms.entity.web.WebSeedEntity">
+        SELECT tws.*,tc.name AS className,tw.webname AS webName
+        FROM t_web_seed tws
+        LEFT JOIN t_class tc ON tc.id=tws.classId
+        LEFT JOIN t_web tw ON tw.id=tws.webId
+        WHERE tws.isDel = 'F'
+        <if test="id!=null and id!=0">
+            AND tws.id = #{id}
+        </if>
+        <if test="webId!=null and webId!=0">
+            AND tws.webId = #{webId}
+        </if>
+        <if test="seedurl!=null and ''!=seedurl">
+            AND tws.seedurl LIKE CONCAT('%',#{seedurl},'%')
+        </if>
+        ORDER BY tws.created desc
+        LIMIT #{pageStart},#{pageSize};
+    </select>
+
+    <!-- 查询数量，用于分页 -->
+    <select id="count"  parameterType="com.lanwei.haq.bms.entity.web.WebEntity" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM t_web_seed tws
+        WHERE tws.isDel = 'F'
+        <if test="id!=null and id!=0">
+            AND tws.id = #{id}
+        </if>
+        <if test="webId!=null and webId!=0">
+            AND tws.webId = #{webId}
+        </if>
+        <if test="seedurl!=null and ''!=seedurl">
+            AND tws.seedurl LIKE CONCAT('%',#{seedurl},'%')
+        </if>
+    </select>
+
+    <!-- 新增 -->
+    <insert id="add" parameterType="com.lanwei.haq.bms.entity.web.WebSeedEntity" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO `t_web_seed`
+        <trim prefix="(" suffix=")">
+            <include refid="comField"/>
+        </trim>
+        VALUES (#{webId},#{seedurl},#{titleSelect},#{contentSelect},#{regex},#{classId},#{creater},NOW(),#{modifier},Now(),'F')
+    </insert>
+
+    <!-- 更新用户 -->
+    <update id="update" parameterType="com.lanwei.haq.bms.entity.web.WebSeedEntity">
+        UPDATE
+        `t_web_seed`
+        SET
+        <if test="webId!=null and webId!=0">
+            webId = #{webId},
+        </if>
+        <if test="null != seedurl and ''!= seedurl">
+            seedurl = #{seedurl},
+        </if>
+        <if test="null != titleSelect and ''!= titleSelect">
+            titleSelect = #{titleSelect},
+        </if>
+        <if test="null != contentSelect and ''!= contentSelect">
+            contentSelect = #{contentSelect},
+        </if>
+        <if test="null != regex and ''!= regex">
+            regex = #{regex},
+        </if>
+        <if test="classId!=null and classId!=0">
+            classId = #{classId},
+        </if>
+        `modifier` = #{modifier},
+        `modified` = NOW()
+        WHERE id=#{id}
+    </update>
+
+    <!-- 删除 -->
+    <update id="del" parameterType="com.lanwei.haq.bms.entity.web.WebSeedEntity">
+        UPDATE
+        t_web_seed
+        SET
+        isDel = 'T',
+        modifier = #{modifier},
+        modified = NOW()
+        WHERE
+        id = #{id}
+    </update>
+
+    <!--批量删除-->
+    <update id="delList">
+        UPDATE t_web_seed
+        SET
+        isDel = 'T',
+        modified = NOW(),
+        modifier = #{userId}
+        WHERE isDel = 'F'
+        AND id in
+        <foreach collection="idArr" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </update>
+
+
+
+</mapper>
