@@ -159,4 +159,31 @@ public class WebSeedController {
         return resultMap;
     }
 
+    /**
+     * 爬虫测试
+     * @param id
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/test/{id}", method = RequestMethod.POST)
+    public Map<String, Object> testSpider(@PathVariable("id") int id) {
+        WebSeedEntity webSeedEntity = webSeedService.getById(id);
+        // 参数
+        Map<String, String> params = new HashMap<>();
+        params.put("weburl", webSeedEntity.getSeedurl());
+        params.put("titleSelect", webSeedEntity.getTitleSelect());
+        params.put("contentSelect", webSeedEntity.getContentSelect());
+        params.put("regex", webSeedEntity.getRegex());
+        String jsonStr = HttpUtil.postForm(Constant.SPIDER_TEST, params);
+        logger.info("http return {}", jsonStr);
+        JSONObject object = JSON.parseObject(jsonStr);
+        String code = object.getString("code");
+        if (code.equals("200")){
+            Map<String, Object> resultMap = ResponseEnum.SUCCESS.getResultMap();
+            resultMap.put("param", object.get("param"));
+            return resultMap;
+        }
+        return ResponseEnum.SYSTEM_ERROR.getResultMap();
+    }
+
 }

@@ -13,5 +13,10 @@ public class Constant {
      */
     public static final String SPIDER_ADDRESS = "http://172.16.1.12:28081/spider/spider/now";
 
+    /**
+     * 爬虫测试地址
+     */
+    public static final String SPIDER_TEST = "http://172.16.1.12:28081/spider/spider/test";
+
 
 }

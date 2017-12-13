@@ -144,6 +144,11 @@ public class WebController {
         return resultMap;
     }
 
+    /**
+     * 获取类别
+     * @param id
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/getClass/{id}", method = RequestMethod.POST)
     public Map<String, Object> getClass(@PathVariable("id") int id) {
@@ -151,6 +156,33 @@ public class WebController {
         resultMap.put("webId", id);
         resultMap.put("classList", classService.getAll());
         return resultMap;
+    }
+
+    /**
+     * 爬虫测试
+     * @param id
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/test/{id}", method = RequestMethod.POST)
+    public Map<String, Object> testSpider(@PathVariable("id") int id) {
+        WebEntity webEntity = webService.getById(id);
+        // 参数
+        Map<String, String> params = new HashMap<>();
+        params.put("weburl", webEntity.getWeburl());
+        params.put("titleSelect", webEntity.getTitleSelect());
+        params.put("contentSelect", webEntity.getContentSelect());
+        params.put("regex", webEntity.getRegex());
+        String jsonStr = HttpUtil.postForm(Constant.SPIDER_TEST, params);
+        logger.info("http return {}", jsonStr);
+        JSONObject object = JSON.parseObject(jsonStr);
+        String code = object.getString("code");
+        if (code.equals("200")){
+            Map<String, Object> resultMap = ResponseEnum.SUCCESS.getResultMap();
+            resultMap.put("param", object.get("param"));
+            return resultMap;
+        }
+        return ResponseEnum.SYSTEM_ERROR.getResultMap();
     }
 
     /**
