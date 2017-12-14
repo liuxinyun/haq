@@ -1,17 +1,29 @@
 package com.lanwei.haq.comm.thread;
 
 import com.lanwei.haq.comm.entity.SpiderConfig;
+import com.lanwei.haq.comm.entity.UrlDepth;
+import com.lanwei.haq.comm.util.Constant;
 import com.lanwei.haq.comm.util.EsUtil;
 import com.lanwei.haq.comm.util.RedisUtil;
 import com.lanwei.haq.comm.util.SpiderUtil;
 import com.lanwei.haq.spider.dao.web.MysqlDao;
+import com.lanwei.haq.spider.entity.web.WebEntity;
+import com.lanwei.haq.spider.entity.web.WebSeedEntity;
+import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 爬虫资源管理：定时器、线程池、数据buffer Created by Carlisle on 2017/7/10.
@@ -30,14 +42,15 @@ public class ResourceManager {
 
     private static final int MAX_QUEUE_SIZE = 2000;
 
-    private static Map<Integer, Timer> timers = new HashMap<>();
+    private static Map<Integer, ScheduledExecutorService> spiderServices = new HashMap<>();
     private static Map<Integer, ResourceUnit> resource = new HashMap<>();
 
-    private static Timer monitorTimer = new Timer();
+    private static ScheduledExecutorService monitorService = new ScheduledThreadPoolExecutor(1);
     private static final Logger logger = LoggerFactory.getLogger(ResourceManager.class);
 
-    public static void init() throws InterruptedException {
-        monitorTimer.scheduleAtFixedRate(new ResourceMonitor(), 0, 60000);
+    public static void init()  {
+        // 每3分钟检测一次
+        monitorService.scheduleAtFixedRate(new ResourceMonitor(), 0, 3, TimeUnit.MINUTES);
     }
 
     /**
@@ -46,12 +59,11 @@ public class ResourceManager {
      * @return
      */
     public void removeThreadByWebIds(final List<Integer> webIds){
-        Timer t = null;
+        ScheduledExecutorService spiderService = null;
         for (Integer webId : webIds) {
             if (resource.containsKey(webId)){
-                t = timers.get(webId);
-                t.cancel();
-                t = null;
+                spiderService = spiderServices.get(webId);
+                spiderService.shutdownNow();
                 resource = dealMapRemove(resource, webId);
                 logger.error("Website id:{} has removed.", webId);
             }
@@ -64,55 +76,55 @@ public class ResourceManager {
      * @param spiderConfig
      */
     public void setWebSpiderThreadAndStart(List<Integer> webIds, final SpiderConfig spiderConfig){
-        int tnum = spiderConfig.getThreadNum();
-        int cronTime = spiderConfig.getCron();
+        int tnum = spiderConfig.getThreadNum();// 线程数
+        int cronTime = spiderConfig.getCron();// 间隔时间
         for (Integer webId : webIds) {
-            logger.info("Receive request to start spider for website:" + webId + ",tnum:" + tnum);
+            logger.info("Receive request to start spider for website:" + webId + ",thread num:" + tnum);
             ResourceUnit unit = null;
-            Timer t = null;
-            //如果传入的网站id爬虫从未运行过，给该网站id分配资源，并立即开始执行
+            ScheduledExecutorService spiderService = null;
+            // 如果传入的网站id爬虫从未运行过，给该网站id分配资源
             if (!resource.containsKey(webId)) {
                 logger.info("Website:" + webId + " is new, start to allocate resource...");
                 unit = new ResourceUnit(webId, tnum);
                 resource.put(webId, unit);
+                spiderService = new ScheduledThreadPoolExecutor(2);
+                spiderServices.put(webId, spiderService);
                 logger.info("Website:" + webId + "resource allocated.");
-            } else {//如果传入的网站id爬虫正在执行，获取其资源，并立即执行
+            } else {
+                // 如果传入的网站id爬虫正在执行，获取其资源
                 logger.info("Website:" + webId + " is running, start to refresh...");
                 unit = resource.get(webId);
-                t = timers.get(webId);
-                //取消当前调度
-                t.cancel();
-                t = null;
+                spiderService = spiderServices.get(webId);
+                spiderService.shutdown();
             }
-            t = new Timer();
-            timers.put(webId, t);
-            t.scheduleAtFixedRate(new SpiderTimer(mysqlDao.getWebById(webId),unit, redisUtil, spiderUtil, esUtil), 0, cronTime * 1000 * 60);
-            logger.info("Website id:" + webId + "pider task scheduled at rate of " + cronTime + "s.");
+            spiderService.scheduleAtFixedRate(new SpiderUnit(unit), 0, cronTime, TimeUnit.MINUTES);
+            logger.info("Website id:" + webId + "spider task scheduled at rate of " + cronTime + "min.");
         }
     }
 
     //用于检查各队列容量，以动态调整线程数量
-    private static class ResourceMonitor extends TimerTask {
+    private static class ResourceMonitor implements Runnable {
 
         ResourceMonitor() {
-
         }
 
         @Override
         public void run() {
-
             logger.info("============= ResourceManager:Queue Monitor ================");
             logger.info("     website       queue size      active thread");
             for (Entry<Integer, ResourceUnit> e : resource.entrySet()) {
                 int webId = e.getKey();
                 ResourceUnit unit = e.getValue();
-                logger.info("        " + webId + "              " + unit.q.size() + "                 " + unit.threadpool.getActiveCount());
-                if (unit.q.size() > MAX_QUEUE_SIZE) {
+                int size = 0;
+                for (Entry<Integer, ConcurrentLinkedQueue<UrlDepth>> entry : unit.queueMap.entrySet()) {
+                    size += entry.getValue().size();
+                }
+                logger.info("        " + webId + "              " + size + "                 " + unit.threadpool.getActiveCount());
+                if (size > MAX_QUEUE_SIZE) {
                     //do something
                 }
             }
             logger.info("============================================================");
-
         }
     }
 
@@ -132,6 +144,47 @@ public class ResourceManager {
             }
         }
         return result;
+    }
+
+    /**
+     * 爬虫单元
+     */
+    private class SpiderUnit implements Runnable {
+
+        private ResourceUnit unit;
+
+        public SpiderUnit(ResourceUnit unit) {
+            this.unit = unit;
+        }
+
+        @Override
+        public void run() {
+            logger.info("Website " + unit.webId + " putting seed to Queue...");
+            WebEntity webEntity = mysqlDao.getWebById(unit.webId);
+            List<WebSeedEntity> webSeeds = mysqlDao.getSeedByWebId(unit.webId);
+            if (CollectionUtils.isEmpty(webSeeds)){
+                // 没有种子网址，那就用该网站的
+                WebSeedEntity webSeedEntity = new WebSeedEntity();
+                webSeedEntity.setId(0);
+                webSeedEntity.setSeedurl(webEntity.getWeburl());
+                webSeedEntity.setRegex(webEntity.getRegex());
+                webSeedEntity.setTitleSelect(webEntity.getTitleSelect());
+                webSeedEntity.setContentSelect(webEntity.getContentSelect());
+                webSeedEntity.setClassId(Constant.NewsClass.OTHER);
+                webSeeds.add(webSeedEntity);
+            }
+            for (WebSeedEntity webSeed : webSeeds) {
+                // TODO 一个种子网址只放一个线程
+                webSeed.setWebName(webEntity.getWebname());// 存es使用
+                webSeed.setAreaId(webEntity.getAreaId());// 存所属地域使用
+                ConcurrentLinkedQueue<UrlDepth> queue = new ConcurrentLinkedQueue<>();
+                queue.add(new UrlDepth(webSeed.getSeedurl(),0));
+                unit.queueMap.put(webSeed.getId(), queue);
+                unit.threadpool.execute(new Spider(webSeed, queue, redisUtil, spiderUtil, esUtil));
+            }
+            logger.info("Website " + unit.webId + " started "+unit.tnum+" threads.");
+        }
+
     }
 
 }

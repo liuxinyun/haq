@@ -1,9 +1,9 @@
 package com.lanwei.haq.spider.dao.web;
 
 import com.lanwei.haq.spider.entity.web.SubjectEntity;
-import com.lanwei.haq.spider.entity.web.WebClassEntity;
 import com.lanwei.haq.spider.entity.web.WebConfigEntity;
 import com.lanwei.haq.spider.entity.web.WebEntity;
+import com.lanwei.haq.spider.entity.web.WebSeedEntity;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -52,7 +52,7 @@ public interface MysqlDao {
      * @param webId
      * @return
      */
-    List<WebClassEntity> getClassByWebId(@Param("webId") Integer webId);
+    List<WebSeedEntity> getSeedByWebId(@Param("webId") Integer webId);
 
     /**
      * 获取当前配置信息

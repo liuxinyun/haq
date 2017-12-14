@@ -22,8 +22,8 @@
         SELECT * FROM t_subject WHERE isDel = 'F';
     </select>
 
-    <select id="getClassByWebId" parameterType="java.lang.Integer" resultType="com.lanwei.haq.spider.entity.web.WebClassEntity">
-        SELECT * FROM t_web_class WHERE webId=#{webId} AND isDel = 'F';
+    <select id="getSeedByWebId" parameterType="java.lang.Integer" resultType="com.lanwei.haq.spider.entity.web.WebSeedEntity">
+        SELECT * FROM t_web_seed WHERE isDel = 'F' AND webId = #{webId};
     </select>
 
     <select id="getCurrentConfig" resultType="com.lanwei.haq.spider.entity.web.WebConfigEntity">

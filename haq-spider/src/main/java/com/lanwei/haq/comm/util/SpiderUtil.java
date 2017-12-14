@@ -6,23 +6,18 @@ import com.lanwei.haq.comm.thread.ResourceManager;
 import com.lanwei.haq.spider.dao.web.MysqlDao;
 import com.lanwei.haq.spider.entity.NewsEntity;
 import com.lanwei.haq.spider.entity.web.SubjectEntity;
-import com.lanwei.haq.spider.entity.web.WebClassEntity;
 import com.lanwei.haq.spider.entity.web.WebConfigEntity;
-import com.lanwei.haq.spider.entity.web.WebEntity;
+import com.lanwei.haq.spider.entity.web.WebSeedEntity;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,8 +28,6 @@ import java.util.regex.Pattern;
  */
 @Component
 public class SpiderUtil {
-
-    private static final Logger logger = LoggerFactory.getLogger(SpiderUtil.class);
 
     private RedisUtil redisUtil;
     private MysqlDao mysqlDao;
@@ -129,9 +122,9 @@ public class SpiderUtil {
      * @param doc
      * @return
      */
-    public NewsEntity getNewsByDoc(Document doc, WebEntity webEntity) {
-        Elements titleElements = doc.select(webEntity.getTitleSelect());
-        Elements contentElements = doc.select(webEntity.getContentSelect());
+    public NewsEntity getNewsByDoc(Document doc, WebSeedEntity webSeedEntity) {
+        Elements titleElements = doc.select(webSeedEntity.getTitleSelect());
+        Elements contentElements = doc.select(webSeedEntity.getContentSelect());
         if (titleElements==null || titleElements.isEmpty() ||
                 contentElements==null || contentElements.isEmpty()){
             return null;
@@ -160,7 +153,7 @@ public class SpiderUtil {
         String subject = sb.toString().trim();//去除前后空格
         result.setSubject(subject);
         //接下来获取新闻分类
-        Integer classify = Constant.NewsClass.OTHER;//默认分类其他
+        /*Integer classify = Constant.NewsClass.OTHER;//默认分类其他
         List<WebClassEntity> webClassEntities = mysqlDao.getClassByWebId(webEntity.getId());
         for (WebClassEntity webClassEntity : webClassEntities) {
             Elements elements = doc.select(webClassEntity.getClassSelect());
@@ -174,9 +167,10 @@ public class SpiderUtil {
                 break;
             }
         }
-        result.setClassify(classify);
+        result.setClassify(classify);*/
+        result.setClassify(webSeedEntity.getClassId());
         //统计分类
-        statisJedis.hincrBy(Constant.REDIS_CLASS_PREFIX + classify, String.valueOf(hour), 1);
+        statisJedis.hincrBy(Constant.REDIS_CLASS_PREFIX + webSeedEntity.getClassId(), String.valueOf(hour), 1);
         redisUtil.close(statisJedis);
         return result;
     }
