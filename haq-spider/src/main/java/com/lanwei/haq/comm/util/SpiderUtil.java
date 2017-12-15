@@ -17,7 +17,9 @@ import redis.clients.jedis.Jedis;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -83,8 +85,8 @@ public class SpiderUtil {
      * @return
      * @throws IOException
      */
-    public static List<String> getLinks(Document doc) {
-        List<String> list = new ArrayList<>();
+    public static Set<String> getLinks(Document doc) {
+        Set<String> set = new HashSet<>();
         if (doc.select("a[href]") != null && !doc.select("a[href]").isEmpty()) {
             Elements links = doc.select("a[href]");
             for (Element link : links) {
@@ -94,11 +96,11 @@ public class SpiderUtil {
                     if (index > -1) {
                         subUrl = subUrl.substring(0, index);
                     }
-                    list.add(subUrl);
+                    set.add(subUrl);
                 }
             }
         }
-        return list;
+        return set;
     }
 
     /**
@@ -114,6 +116,30 @@ public class SpiderUtil {
             return true;
         }
         return false;
+    }
+
+    /**
+     * 根据文档和标题内容选择器获取标题内容
+     * @param doc
+     * @param titleSelect
+     * @param contentSelect
+     * @return
+     */
+    public static NewsEntity getNewsByDoc(Document doc, String titleSelect, String contentSelect) {
+        NewsEntity result = new NewsEntity();
+        Elements titleElements = doc.select(titleSelect);
+        Elements contentElements = doc.select(contentSelect);
+        if (titleElements==null || titleElements.isEmpty()){
+            result.setTitle("");
+        }else {
+            result.setTitle(titleElements.first().text());
+        }
+        if (contentElements==null || contentElements.isEmpty()){
+            result.setContent("");
+        }else {
+            result.setContent(contentElements.first().html());
+        }
+        return result;
     }
 
     /**

@@ -74,10 +74,10 @@ public class Spider implements Runnable {
                 //未达到指定深度，继续爬子连接
                 if(depth < PropertiesUtil.getInt("spider.depth")){
                     //获取所有未爬取子链接
-                    List<String> list = SpiderUtil.getLinks(document);
+                    Set<String> set = SpiderUtil.getLinks(document);
                     //每个子链接只取前maxCount个有效的进行进一步爬取,total<=maxCount
                     int total = 0;
-                    for (String s : list) {
+                    for (String s : set) {
                         //符合正则表达式 && 在redis不存在 ==> 入Queue
                         if (SpiderUtil.matchUrl(webSeedEntity.getRegex(), s)) {
                             if (saveJedis.setnx(s, Long.toString(System.currentTimeMillis())) == 1) {

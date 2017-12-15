@@ -1,16 +1,19 @@
 package com.lanwei.haq.spider.controller.web;
 
 import com.lanwei.haq.comm.enums.ResponseEnum;
+import com.lanwei.haq.comm.thread.SpiderTest;
 import com.lanwei.haq.comm.util.SpiderUtil;
 import com.lanwei.haq.spider.entity.web.WebEntity;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 /**
  * 爬虫管理Controller
@@ -18,20 +21,21 @@ import java.util.Map;
  * @author liuxinyun
  * @date 2016/12/19 22:30
  */
-@Controller
+@RestController
 @RequestMapping(value = "/spider")
 public class SpiderController {
 
     private static final Logger logger = LoggerFactory.getLogger(SpiderController.class);
 
+    /**
+     * 线程池
+     */
+    @Resource
+    private ThreadPoolTaskExecutor taskExecutor;
+
+    @Resource
     private  SpiderUtil spiderUtil;
 
-    @Autowired
-    public SpiderController(SpiderUtil spiderUtil) {
-        this.spiderUtil = spiderUtil;
-    }
-
-    @ResponseBody
     @RequestMapping(value = "/now", method = RequestMethod.POST)
     public Map<String, Object> spiderNow(@RequestParam(value = "id") Integer id){
         Map<String, Object> resultMap = ResponseEnum.SUCCESS.getResultMap();
@@ -54,7 +58,6 @@ public class SpiderController {
      * @param webEntity
      * @return
      */
-    @ResponseBody
     @RequestMapping(value = "/test", method = RequestMethod.POST)
     public Map<String, Object> spiderTest(WebEntity webEntity){
         Map<String, Object> resultMap = ResponseEnum.SUCCESS.getResultMap();
@@ -67,8 +70,14 @@ public class SpiderController {
             return resultMap;
         }
         // 调用爬虫测试函数
-        System.out.println(webEntity.toString());
-        resultMap.put("param", "我是返回结果");
+        Future future = taskExecutor.submit(new SpiderTest(webEntity));
+        try {
+            Object o = future.get();
+            resultMap.put("param", o.toString());
+        } catch (Exception e) {
+            logger.error("spiderTest error and param is {}", webEntity);
+            resultMap.put("param", e.getMessage());
+        }
         return resultMap;
     }
 

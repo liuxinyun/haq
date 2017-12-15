@@ -15,15 +15,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 爬虫资源管理：定时器、线程池、数据buffer Created by Carlisle on 2017/7/10.
@@ -42,15 +36,15 @@ public class ResourceManager {
 
     private static final int MAX_QUEUE_SIZE = 2000;
 
-    private static Map<Integer, ScheduledExecutorService> spiderServices = new HashMap<>();
+    private static Map<Integer, Timer> timers = new HashMap<>();
     private static Map<Integer, ResourceUnit> resource = new HashMap<>();
 
-    private static ScheduledExecutorService monitorService = new ScheduledThreadPoolExecutor(1);
+    private static Timer monitorTimer = new Timer("资源监测线程");
     private static final Logger logger = LoggerFactory.getLogger(ResourceManager.class);
 
     public static void init()  {
         // 每3分钟检测一次
-        monitorService.scheduleAtFixedRate(new ResourceMonitor(), 0, 3, TimeUnit.MINUTES);
+        monitorTimer.scheduleAtFixedRate(new ResourceMonitor(), 0, 3*60*1000);
     }
 
     /**
@@ -59,11 +53,12 @@ public class ResourceManager {
      * @return
      */
     public void removeThreadByWebIds(final List<Integer> webIds){
-        ScheduledExecutorService spiderService = null;
+        Timer timer = null;
         for (Integer webId : webIds) {
             if (resource.containsKey(webId)){
-                spiderService = spiderServices.get(webId);
-                spiderService.shutdownNow();
+                timer = timers.get(webId);
+                timer.cancel();
+                timer = null;
                 resource = dealMapRemove(resource, webId);
                 logger.error("Website id:{} has removed.", webId);
             }
@@ -78,38 +73,42 @@ public class ResourceManager {
     public void setWebSpiderThreadAndStart(List<Integer> webIds, final SpiderConfig spiderConfig){
         int tnum = spiderConfig.getThreadNum();// 线程数
         int cronTime = spiderConfig.getCron();// 间隔时间
+        ResourceUnit unit = null;
+        Timer timer = null;
         for (Integer webId : webIds) {
             logger.info("Receive request to start spider for website:" + webId + ",thread num:" + tnum);
-            ResourceUnit unit = null;
-            ScheduledExecutorService spiderService = null;
             // 如果传入的网站id爬虫从未运行过，给该网站id分配资源
             if (!resource.containsKey(webId)) {
                 logger.info("Website:" + webId + " is new, start to allocate resource...");
                 unit = new ResourceUnit(webId, tnum);
                 resource.put(webId, unit);
-                spiderService = new ScheduledThreadPoolExecutor(2);
-                spiderServices.put(webId, spiderService);
                 logger.info("Website:" + webId + "resource allocated.");
             } else {
                 // 如果传入的网站id爬虫正在执行，获取其资源
                 logger.info("Website:" + webId + " is running, start to refresh...");
                 unit = resource.get(webId);
-                spiderService = spiderServices.get(webId);
-                spiderService.shutdown();
+                timer = timers.get(webId);
+                //取消当前调度
+                timer.cancel();
+                timer = null;
             }
-            spiderService.scheduleAtFixedRate(new SpiderUnit(unit), 0, cronTime, TimeUnit.MINUTES);
+            timer = new Timer("Timer-webId-"+webId);
+            timers.put(webId, timer);
+            timer.scheduleAtFixedRate(new SpiderUnit(unit), 0, cronTime*60*1000);
             logger.info("Website id:" + webId + "spider task scheduled at rate of " + cronTime + "min.");
         }
     }
 
     //用于检查各队列容量，以动态调整线程数量
-    private static class ResourceMonitor implements Runnable {
+    private static class ResourceMonitor extends TimerTask {
 
         ResourceMonitor() {
+
         }
 
         @Override
         public void run() {
+
             logger.info("============= ResourceManager:Queue Monitor ================");
             logger.info("     website       queue size      active thread");
             for (Entry<Integer, ResourceUnit> e : resource.entrySet()) {
@@ -125,6 +124,7 @@ public class ResourceManager {
                 }
             }
             logger.info("============================================================");
+
         }
     }
 
@@ -149,7 +149,7 @@ public class ResourceManager {
     /**
      * 爬虫单元
      */
-    private class SpiderUnit implements Runnable {
+    private class SpiderUnit extends TimerTask {
 
         private ResourceUnit unit;
 
