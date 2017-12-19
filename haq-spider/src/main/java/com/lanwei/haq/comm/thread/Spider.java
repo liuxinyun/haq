@@ -1,6 +1,7 @@
 package com.lanwei.haq.comm.thread;
 
 import com.lanwei.haq.comm.entity.UrlDepth;
+import com.lanwei.haq.comm.jdbc.MyJedisService;
 import com.lanwei.haq.comm.util.*;
 import com.lanwei.haq.spider.entity.NewsEntity;
 import com.lanwei.haq.spider.entity.web.WebSeedEntity;
@@ -24,26 +25,25 @@ public class Spider implements Runnable {
 
     private WebSeedEntity webSeedEntity;
     private Queue<UrlDepth> queue;//存储衍生网址
-    private RedisUtil redisUtil;
     private SpiderUtil spiderUtil;
     private EsUtil esUtil;
+    private MyJedisService saveJedis;
+    private MyJedisService statisJedis;
 
     public Spider(WebSeedEntity webSeedEntity, Queue<UrlDepth> queue,
-                  RedisUtil redisUtil, SpiderUtil spiderUtil,
-                  EsUtil esUtil) {
+                  SpiderUtil spiderUtil, EsUtil esUtil,
+                  MyJedisService saveJedis, MyJedisService statisJedis) {
         this.webSeedEntity = webSeedEntity;
         this.queue = queue;
-        this.redisUtil = redisUtil;
         this.spiderUtil = spiderUtil;
         this.esUtil = esUtil;
+        this.saveJedis = saveJedis;
+        this.statisJedis = statisJedis;
     }
 
     @Override
     public void run() {
-        Jedis saveJedis = redisUtil.getJedis(Constant.REDIS_SAVE_INDEX);
-        //统计
-        Jedis statisJedis = redisUtil.getJedis(Constant.REDIS_STATIS_INDEX);
-        String key = Constant.REDIS_WEB_PREFIX + WebUtil.getHost(webSeedEntity.getSeedurl());
+        String websiteKey = Constant.REDIS_WEB_PREFIX + WebUtil.getHost(webSeedEntity.getSeedurl());
         //每个链接可爬取的最大子链接数量
         final int maxCount = PropertiesUtil.getInt("spider.max");
         while (queue!=null && !queue.isEmpty()) {
@@ -119,15 +119,13 @@ public class Spider implements Runnable {
                 //下面开始进行统计
                 long hour = DateUtil.getCurrentHour();
                 //网站统计自增1
-                statisJedis.hincrBy(key, String.valueOf(hour), 1);
+                statisJedis.hincrBy(websiteKey, String.valueOf(hour), 1);
                 //总量统计增1
                 statisJedis.hincrBy(Constant.REDIS_TOTAL_PREFIX, String.valueOf(hour), 1);
                 //地域统计总量增1
                 statisJedis.hincrBy(Constant.REDIS_AREA_PREFIX + webSeedEntity.getAreaId(), String.valueOf(hour), 1);
             }
         }
-        redisUtil.close(saveJedis);
-        redisUtil.close(statisJedis);
     }
 
 }

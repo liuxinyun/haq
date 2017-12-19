@@ -2,9 +2,9 @@ package com.lanwei.haq.comm.thread;
 
 import com.lanwei.haq.comm.entity.SpiderConfig;
 import com.lanwei.haq.comm.entity.UrlDepth;
+import com.lanwei.haq.comm.jdbc.MyJedisService;
 import com.lanwei.haq.comm.util.Constant;
 import com.lanwei.haq.comm.util.EsUtil;
-import com.lanwei.haq.comm.util.RedisUtil;
 import com.lanwei.haq.comm.util.SpiderUtil;
 import com.lanwei.haq.spider.dao.web.MysqlDao;
 import com.lanwei.haq.spider.entity.web.WebEntity;
@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -26,13 +27,15 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class ResourceManager {
 
     @Autowired
-    private MysqlDao mysqlDao;
-    @Autowired
-    private RedisUtil redisUtil;
-    @Autowired
     private SpiderUtil spiderUtil;
     @Autowired
+    private MysqlDao mysqlDao;
+    @Autowired
     private EsUtil esUtil;
+    @Resource
+    private MyJedisService saveJedisService;
+    @Resource
+    private MyJedisService statisJedisService;
 
     private static final int MAX_QUEUE_SIZE = 2000;
 
@@ -180,7 +183,7 @@ public class ResourceManager {
                 ConcurrentLinkedQueue<UrlDepth> queue = new ConcurrentLinkedQueue<>();
                 queue.add(new UrlDepth(webSeed.getSeedurl(),0));
                 unit.queueMap.put(webSeed.getId(), queue);
-                unit.threadpool.execute(new Spider(webSeed, queue, redisUtil, spiderUtil, esUtil));
+                unit.threadpool.execute(new Spider(webSeed, queue, spiderUtil, esUtil, saveJedisService, statisJedisService));
             }
             logger.info("Website " + unit.webId + " started "+unit.tnum+" threads.");
         }

@@ -2,6 +2,7 @@ package com.lanwei.haq.comm.util;
 
 import com.lanwei.haq.comm.entity.SpiderConfig;
 import com.lanwei.haq.comm.enums.ConfigEnum;
+import com.lanwei.haq.comm.jdbc.MyJedisService;
 import com.lanwei.haq.comm.thread.ResourceManager;
 import com.lanwei.haq.spider.dao.web.MysqlDao;
 import com.lanwei.haq.spider.entity.NewsEntity;
@@ -13,8 +14,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import redis.clients.jedis.Jedis;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -31,16 +32,12 @@ import java.util.regex.Pattern;
 @Component
 public class SpiderUtil {
 
-    private RedisUtil redisUtil;
-    private MysqlDao mysqlDao;
-    private ResourceManager resourceManager;
-
+    @Resource
+    private MyJedisService statisJedisService;
     @Autowired
-    public SpiderUtil(RedisUtil redisUtil, MysqlDao mysqlDao, ResourceManager resourceManager) {
-        this.redisUtil = redisUtil;
-        this.mysqlDao = mysqlDao;
-        this.resourceManager = resourceManager;
-    }
+    private MysqlDao mysqlDao;
+    @Autowired
+    private ResourceManager resourceManager;
 
     /**
      * 开始所有网站爬虫任务
@@ -155,8 +152,6 @@ public class SpiderUtil {
                 contentElements==null || contentElements.isEmpty()){
             return null;
         }
-        //统计用
-        Jedis statisJedis = redisUtil.getJedis(Constant.REDIS_STATIS_INDEX);
         long hour = DateUtil.getCurrentHour();
         NewsEntity result = new NewsEntity();
         String titleResult = titleElements.first().text();//标题
@@ -173,7 +168,7 @@ public class SpiderUtil {
             if (matcher.find()) {
                 sb.append(subjectEntity.getId()).append(" ");
                 //统计专题
-                statisJedis.hincrBy(Constant.REDIS_SUBJECT_PREFIX + subjectEntity.getId(), String.valueOf(hour), 1);
+                statisJedisService.hincrBy(Constant.REDIS_SUBJECT_PREFIX + subjectEntity.getId(), String.valueOf(hour), 1);
             }
         }
         String subject = sb.toString().trim();//去除前后空格
@@ -196,8 +191,7 @@ public class SpiderUtil {
         result.setClassify(classify);*/
         result.setClassify(webSeedEntity.getClassId());
         //统计分类
-        statisJedis.hincrBy(Constant.REDIS_CLASS_PREFIX + webSeedEntity.getClassId(), String.valueOf(hour), 1);
-        redisUtil.close(statisJedis);
+        statisJedisService.hincrBy(Constant.REDIS_CLASS_PREFIX + webSeedEntity.getClassId(), String.valueOf(hour), 1);
         return result;
     }
 

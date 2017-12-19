@@ -1,25 +1,42 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
-	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
-    <!-- POOL配置 -->
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- redis POOL配置 -->
     <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
-        <property name="maxTotal" value="${redis.pool.maxActive}"/>
-        <property name="maxIdle" value="${redis.pool.maxIdle}"/>
-        <property name="maxWaitMillis" value="${redis.pool.maxWait}"/>
-        <property name="testOnBorrow" value="${redis.pool.testOnBorrow}"/>
-        <property name="testOnReturn" value="${redis.pool.testOnReturn}"/>
-    </bean>
-    <bean id="jedisPool" class="redis.clients.jedis.JedisPool">
-        <constructor-arg name="poolConfig" ref="jedisPoolConfig"/>
-        <constructor-arg name="host" value="${redis.ip}"/>
-        <constructor-arg name="port" value="${redis.port}" type="int"/>
-        <constructor-arg name="timeout" value="${redis.timeout}" type="int"/>
-        <constructor-arg name="password" value="${redis.password}"/>
-    </bean>
-    <bean id="redisUtil" class="com.lanwei.haq.comm.util.RedisUtil">
-        <constructor-arg name="jedisPool" ref="jedisPool"/>
+        <property name="maxTotal" value="${redis.maxTotal}"/>
+        <property name="maxIdle" value="${redis.maxIdle}"/>
+        <property name="maxWaitMillis" value="${redis.maxWait}"/>
+        <property name="testWhileIdle" value="true"/>
+        <property name="testOnBorrow" value="true"/>
     </bean>
 
+    <!-- 单独使用此pool的时候，需要显式调用jedis.close() -->
+    <bean id="saveJedisPool" class="redis.clients.jedis.JedisPool">
+        <constructor-arg index="0" ref="jedisPoolConfig"/>
+        <constructor-arg index="1" name="host" value="${redis_host}"/>
+        <constructor-arg index="2" name="port" value="${redis_port}"/>
+        <constructor-arg index="3" name="timeout" value="${redis_timeout}"/>
+        <constructor-arg index="4" name="password" value="#{'${redis_password}'!=''?'${redis_password}':null}"/>
+        <constructor-arg index="5" name="database" value="${redis_save_database}"/>
+    </bean>
+    <!-- 封装了jedis，无需显式调用jedis.close() -->
+    <bean id="saveJedisService" class="com.lanwei.haq.comm.jdbc.MyJedisService">
+        <constructor-arg index="0" ref="saveJedisPool"/>
+    </bean>
+
+    <!-- 单独使用此pool的时候，需要显式调用jedis.close() -->
+    <bean id="statisJedisPool" class="redis.clients.jedis.JedisPool">
+        <constructor-arg index="0" ref="jedisPoolConfig"/>
+        <constructor-arg index="1" name="host" value="${redis_host}"/>
+        <constructor-arg index="2" name="port" value="${redis_port}"/>
+        <constructor-arg index="3" name="timeout" value="${redis_timeout}"/>
+        <constructor-arg index="4" name="password" value="#{'${redis_password}'!=''?'${redis_password}':null}"/>
+        <constructor-arg index="5" name="database" value="${redis_statis_database}"/>
+    </bean>
+    <!-- 封装了jedis，无需显式调用jedis.close() -->
+    <bean id="statisJedisService" class="com.lanwei.haq.comm.jdbc.MyJedisService">
+        <constructor-arg index="0" ref="statisJedisPool"/>
+    </bean>
 </beans>

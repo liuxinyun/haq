@@ -1,5 +1,3 @@
-import com.alibaba.fastjson.JSONObject;
-import com.lanwei.haq.comm.entity.ImgPath;
 import com.lanwei.haq.comm.util.DownPicUtil;
 import com.lanwei.haq.comm.util.PropertiesUtil;
 import org.jsoup.Jsoup;
@@ -11,7 +9,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @作者：刘新运

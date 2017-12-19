@@ -68,7 +68,7 @@ public class SpiderTest implements Callable {
                 .ignoreContentType(false)//解析响应是忽略文档类型
                 .ignoreHttpErrors(false)  //响应时是否忽略错误，404等
                 .validateTLSCertificates(false)//关闭证书验证
-                .timeout(500).get();
+                .timeout(3000).get();
     }
 
 }
