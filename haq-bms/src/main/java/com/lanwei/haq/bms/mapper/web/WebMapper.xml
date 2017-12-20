@@ -3,7 +3,7 @@
 <mapper namespace="com.lanwei.haq.bms.dao.web.WebDao">
 
     <sql id="comField">
-        webname,weburl,seedUrls,titleSelect,contentSelect,regex,areaId,creater,created,modifier,modified,isDel
+        webname,weburl,titleSelect,contentSelect,regex,areaId,creater,created,modifier,modified,isDel
     </sql>
 
     <select id="getAll" resultType="com.lanwei.haq.bms.entity.web.WebEntity">
@@ -53,7 +53,7 @@
         <trim prefix="(" suffix=")">
             <include refid="comField"/>
         </trim>
-        VALUES (#{webname},#{weburl},#{seedUrls},#{titleSelect},#{contentSelect},#{regex},#{areaId},#{creater},NOW(),#{modifier},Now(),'F')
+        VALUES (#{webname},#{weburl},#{titleSelect},#{contentSelect},#{regex},#{areaId},#{creater},NOW(),#{modifier},Now(),'F')
     </insert>
 
     <!-- 更新用户 -->
@@ -66,9 +66,6 @@
         </if>
         <if test="null != weburl and ''!= weburl">
             weburl = #{weburl},
-        </if>
-        <if test="null != seedUrls and ''!= seedUrls">
-            seedUrls = #{seedUrls},
         </if>
         <if test="null != titleSelect and ''!= titleSelect">
             titleSelect = #{titleSelect},

@@ -1,9 +1,7 @@
 package com.lanwei.haq.bms.service.web;
 
-import com.lanwei.haq.bms.dao.web.AreaDao;
 import com.lanwei.haq.bms.dao.web.WebDao;
 import com.lanwei.haq.bms.dao.web.WebSeedDao;
-import com.lanwei.haq.bms.entity.web.AreaEntity;
 import com.lanwei.haq.bms.entity.web.WebEntity;
 import com.lanwei.haq.bms.entity.web.WebSeedEntity;
 import com.lanwei.haq.comm.enums.ResponseEnum;
