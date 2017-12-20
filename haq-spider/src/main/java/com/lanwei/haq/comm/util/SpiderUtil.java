@@ -109,10 +109,7 @@ public class SpiderUtil {
     public static boolean matchUrl(String regex, String input) {
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(input);
-        if (matcher.find()) {
-            return true;
-        }
-        return false;
+        return matcher.find();
     }
 
     /**
@@ -134,7 +131,7 @@ public class SpiderUtil {
         if (contentElements==null || contentElements.isEmpty()){
             result.setContent("");
         }else {
-            result.setContent(contentElements.first().html());
+            result.setContent(contentElements.first().text());
         }
         return result;
     }

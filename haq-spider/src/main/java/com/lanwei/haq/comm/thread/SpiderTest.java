@@ -50,10 +50,14 @@ public class SpiderTest implements Callable {
                 continue;
             }
             NewsEntity newsByDoc = SpiderUtil.getNewsByDoc(document, webEntity.getTitleSelect(), webEntity.getContentSelect());
+            sb.append("其中一个符合正则表达式的爬取内容为：&#13;&#10;");
             sb.append("网站:").append(suburl).append("&#13;&#10;&#13;&#10;")
                     .append("标题:").append(newsByDoc.getTitle()).append("&#13;&#10;&#13;&#10;")
                     .append("内容:").append(newsByDoc.getContent()).append("&#13;&#10;&#13;&#10;");
             flag = true;
+        }
+        if (noRegex.size() == suburls.size()){
+            sb.append("网页所有连接均不符合正则表达式，请检查。&#13;&#10;");
         }
         sb.append("&#13;&#10;&#13;&#10;不符合正则表达式:&#13;&#10;");
         for (String s : noRegex) {
