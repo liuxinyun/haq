@@ -131,14 +131,10 @@ public class WebService {
         }
         StringBuilder sb = new StringBuilder();
         for (WebSeedEntity seedEntity : webSeedEntities) {
-            sb.append("{")
-                    .append(seedEntity.getSeedurl())
-                    .append(":")
-                    .append(seedEntity.getClassName())
-                    .append("}")
-                    .append(",");
+            sb.append(seedEntity.getSeedurl()).append(",");
         }
-        webEntity.setSeedUrls(sb.substring(0, sb.length()-1));
+        sb.deleteCharAt(sb.length()-1);
+        webEntity.setSeedUrls(sb.toString());
     }
 
 }

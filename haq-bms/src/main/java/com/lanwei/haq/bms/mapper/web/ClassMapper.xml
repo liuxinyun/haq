@@ -13,6 +13,15 @@
         AND tc.id > 1;
     </select>
 
+    <select id="queryByIds" resultType="java.lang.String">
+        SELECT tc.name FROM t_class tc
+        WHERE tc.isDel = 'F'
+        AND tc.id IN
+        <foreach collection="ids" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </select>
+
     <select id="query" parameterType="com.lanwei.haq.bms.entity.web.ClassEntity" resultType="com.lanwei.haq.bms.entity.web.ClassEntity">
         SELECT tc.*
         FROM t_class tc

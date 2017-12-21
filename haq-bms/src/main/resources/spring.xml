@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <import resource="spring-context.xml"/>
+    <import resource="spring-mysql.xml"/>
+    <import resource="spring-redis.xml"/>
+    <import resource="spring-mybatis.xml"/>
+
+    <!-- 添加一个监听器，当Application初始化结束或者刷新的时候会执行的方法，用于初始化系统 -->
+    <bean id="initBean" class="com.lanwei.haq.bms.listener.InitListener">
+        <property name="ip" value="${app.listener.ip}"/>
+    </bean>
+
+</beans>

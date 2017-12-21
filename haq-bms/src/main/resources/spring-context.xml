@@ -20,24 +20,21 @@
         </property>
     </bean>
 
-    <!-- 引入 jdbc DataSource-->
-    <import resource="applicationContext-jdbc.xml"/>
-
-    <!-- 引入 redis -->
-    <import resource="applicationContext-redis.xml"/>
-
-    <!-- 引入 mybatis -->
-    <import resource="applicationContext-mybatis.xml"/>
-
-    <!-- 添加一个监听器，当Application初始化结束或者刷新的时候会执行的方法，用于初始化系统 -->
-    <bean id="initBean" class="com.lanwei.haq.bms.listener.InitListener">
-        <property name="ip" value="${app.listener.ip}"/>
-    </bean>
-
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <property name="defaultEncoding" value="utf-8"/>
         <property name="maxUploadSize" value="104857600"/>
         <property name="maxInMemorySize" value="40960"/>
+    </bean>
+
+    <!-- 线程池 -->
+    <bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <property name="corePoolSize" value="5" />
+        <property name="keepAliveSeconds" value="200" />
+        <property name="maxPoolSize" value="10" />
+        <property name="queueCapacity" value="200" />
+        <property name="rejectedExecutionHandler">
+            <bean class="java.util.concurrent.ThreadPoolExecutor$AbortPolicy" />
+        </property>
     </bean>
 
 </beans>

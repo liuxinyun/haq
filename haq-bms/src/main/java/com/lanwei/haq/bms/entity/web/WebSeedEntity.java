@@ -3,6 +3,7 @@ package com.lanwei.haq.bms.entity.web;
 import com.lanwei.haq.bms.entity.BaseEntity;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 /**
  * @作者：刘新运
@@ -41,11 +42,15 @@ public class WebSeedEntity extends BaseEntity implements Serializable{
     /**
      * 类别id
      */
-    private int classId;
+    private String classId;
+    /**
+     * 与前端对接，以逗号形式拼接成classId
+     */
+    private int[] classIds;
     /**
      * 类别名称
      */
-    private String className;
+    private String classNames;
 
     public int getWebId() {
         return webId;
@@ -95,31 +100,42 @@ public class WebSeedEntity extends BaseEntity implements Serializable{
         this.regex = regex;
     }
 
-    public int getClassId() {
+    public String getClassId() {
         return classId;
     }
 
-    public void setClassId(int classId) {
+    public void setClassId(String classId) {
         this.classId = classId;
     }
 
-    public String getClassName() {
-        return className;
+    public int[] getClassIds() {
+        return classIds;
     }
 
-    public void setClassName(String className) {
-        this.className = className;
+    public void setClassIds(int[] classIds) {
+        this.classIds = classIds;
+    }
+
+    public String getClassNames() {
+        return classNames;
+    }
+
+    public void setClassNames(String classNames) {
+        this.classNames = classNames;
     }
 
     @Override
     public String toString() {
         return "WebSeedEntity{" +
-                "webName='" + webName + '\'' +
+                "webId=" + webId +
+                ", webName='" + webName + '\'' +
                 ", seedurl='" + seedurl + '\'' +
                 ", titleSelect='" + titleSelect + '\'' +
                 ", contentSelect='" + contentSelect + '\'' +
                 ", regex='" + regex + '\'' +
-                ", className='" + className + '\'' +
-                "} " ;
+                ", classId='" + classId + '\'' +
+                ", classIds=" + Arrays.toString(classIds) +
+                ", classNames='" + classNames + '\'' +
+                '}';
     }
 }

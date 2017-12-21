@@ -7,9 +7,8 @@
     </sql>
 
     <select id="queryByWebId" parameterType="java.lang.Integer" resultType="com.lanwei.haq.bms.entity.web.WebSeedEntity">
-        SELECT tws.*,tc.name AS className
+        SELECT tws.*
         FROM t_web_seed tws
-        LEFT JOIN t_class tc ON tc.id=tws.classId
         WHERE tws.isDel = 'F'
         <if test="webId!=null and webId!=0">
             AND tws.webId = #{webId}
@@ -17,9 +16,8 @@
     </select>
 
     <select id="query" parameterType="com.lanwei.haq.bms.entity.web.WebSeedEntity" resultType="com.lanwei.haq.bms.entity.web.WebSeedEntity">
-        SELECT tws.*,tc.name AS className,tw.webname AS webName
+        SELECT tws.*,tw.webname AS webName
         FROM t_web_seed tws
-        LEFT JOIN t_class tc ON tc.id=tws.classId
         LEFT JOIN t_web tw ON tw.id=tws.webId
         WHERE tws.isDel = 'F'
         <if test="id!=null and id!=0">
@@ -80,7 +78,7 @@
         <if test="null != regex and ''!= regex">
             regex = #{regex},
         </if>
-        <if test="classId!=null and classId!=0">
+        <if test="null != classId and '' != classId">
             classId = #{classId},
         </if>
         `modifier` = #{modifier},

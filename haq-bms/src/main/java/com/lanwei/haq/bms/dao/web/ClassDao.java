@@ -2,6 +2,7 @@ package com.lanwei.haq.bms.dao.web;
 
 import com.lanwei.haq.bms.dao.CommonDao;
 import com.lanwei.haq.bms.entity.web.ClassEntity;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -15,4 +16,10 @@ public interface ClassDao extends CommonDao<ClassEntity>{
 
     List<ClassEntity> getAll();
 
+    /**
+     * 根据ids获取类别名称
+     * @param ids
+     * @return
+     */
+    List<String> queryByIds(@Param("ids") int[] ids);
 }
