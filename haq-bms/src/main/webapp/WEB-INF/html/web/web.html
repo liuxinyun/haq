@@ -195,16 +195,12 @@
                         <div class="form-group">
                             <input type="hidden" name="webId" placeholder="所属网站" value="{{=it.webId}}">
                         </div>
-                        <div class="form-group  row">
+                        <div class="form-group">
                             <label class="col-sm-2 control-label">所属类别</label>
-                            <!--<div class="col-sm-9">
-                                <select name="classId" class="form-control">
-                                    {{for(var key in it.classList){ }}
-                                    <option value="{{=it.classList[key].id }}" {{? it.classList[key].id == 5 }} selected {{? }}>{{=it.classList[key].name }}</option>
-                                    {{ } }}
-                                </select>
-                            </div>-->
+                        </div>
+                        <div class="form-group  row">
                             {{for(var key in it.classList){ }}
+                            <label class="col-sm-1 control-label"></label>
                             <div class="col-sm-5">
                                 <input type="checkbox" class="validate[required]" name="classIds" value="{{=it.classList[key].id}}"><label class="th label" style="vertical-align:top;">{{=it.classList[key].name}}</label>
                             </div>
