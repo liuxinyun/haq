@@ -16,10 +16,6 @@ public class Constant {
     //年月日时
     public static final String YYYY_MM_DD_HH = "yyyy-MM-dd HH:00:00";
 
-    //爬虫存储库
-    public static final Integer REDIS_SAVE_INDEX = 0;
-    //爬虫统计库
-    public static final Integer REDIS_STATIS_INDEX = 1;
     //统计各网站接入量web_news.sina.com.cn
     public static final String REDIS_WEB_PREFIX = "web_";
     //统计网站接入总量total_webcount
@@ -30,17 +26,9 @@ public class Constant {
     public static final String REDIS_SUBJECT_PREFIX = "subject_";
     //统计各地域area_areaId
     public static final String REDIS_AREA_PREFIX = "area_";
-
-    //新闻类别
-    public static final class NewsClass{
-        //政治
-        public static final int GOV  = 2;
-        //军事
-        public static final int WAR = 3;
-        //科技
-        public static final int TECH = 4;
-        //其他
-        public static final int OTHER = 5;
-    }
+    /**
+     * 默认新闻类别其他
+     */
+    public static final String NEWS_CLASS_OTHER = "5";
 
 }

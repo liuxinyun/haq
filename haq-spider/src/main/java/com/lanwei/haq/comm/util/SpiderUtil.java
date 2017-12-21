@@ -171,24 +171,14 @@ public class SpiderUtil {
         String subject = sb.toString().trim();//去除前后空格
         result.setSubject(subject);
         //接下来获取新闻分类
-        /*Integer classify = Constant.NewsClass.OTHER;//默认分类其他
-        List<WebClassEntity> webClassEntities = mysqlDao.getClassByWebId(webEntity.getId());
-        for (WebClassEntity webClassEntity : webClassEntities) {
-            Elements elements = doc.select(webClassEntity.getClassSelect());
-            if (elements==null || elements.isEmpty()){
-                continue;
-            }
-            String temp = elements.first().text();
-            //能找到分类就进行比较，看该新闻的分类和数据库里存的原分类名称是否一致
-            if (temp.indexOf(webClassEntity.getSourceName()) >= 0) {
-                classify = webClassEntity.getClassId();
-                break;
-            }
-        }
-        result.setClassify(classify);*/
-        result.setClassify(webSeedEntity.getClassId());
+        String classId = webSeedEntity.getClassId();
+        result.setClassify(classId);
         //统计分类
-        statisJedisService.hincrBy(Constant.REDIS_CLASS_PREFIX + webSeedEntity.getClassId(), String.valueOf(hour), 1);
+        String[] classIds = classId.split(" ");
+        for (String id : classIds) {
+            statisJedisService.hincrBy(Constant.REDIS_CLASS_PREFIX + id, String.valueOf(hour), 1);
+        }
+
         return result;
     }
 

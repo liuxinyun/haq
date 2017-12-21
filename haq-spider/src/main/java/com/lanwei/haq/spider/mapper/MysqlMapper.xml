@@ -23,7 +23,10 @@
     </select>
 
     <select id="getSeedByWebId" parameterType="java.lang.Integer" resultType="com.lanwei.haq.spider.entity.web.WebSeedEntity">
-        SELECT * FROM t_web_seed WHERE isDel = 'F' AND webId = #{webId};
+        SELECT tws.*,tw.webname AS webName
+        FROM t_web_seed tws
+        LEFT JOIN t_web tw ON tw.id=tws.webId
+        WHERE tws.isDel = 'F' AND tws.webId = #{webId};
     </select>
 
     <select id="getCurrentConfig" resultType="com.lanwei.haq.spider.entity.web.WebConfigEntity">

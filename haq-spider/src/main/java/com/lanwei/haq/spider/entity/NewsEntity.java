@@ -41,9 +41,9 @@ public class NewsEntity implements Serializable{
      */
     private String subject;
     /**
-     * 系统分类的id
+     * 系统分类的id用空格拼接
      */
-    private Integer classify;
+    private String classify;
 
     public String getWebsite() {
         return website;
@@ -101,11 +101,11 @@ public class NewsEntity implements Serializable{
         this.subject = subject;
     }
 
-    public Integer getClassify() {
+    public String getClassify() {
         return classify;
     }
 
-    public void setClassify(Integer classify) {
+    public void setClassify(String classify) {
         this.classify = classify;
     }
 
@@ -119,7 +119,7 @@ public class NewsEntity implements Serializable{
                 ", datetime='" + datetime + '\'' +
                 ", img_path='" + img_path + '\'' +
                 ", subject='" + subject + '\'' +
-                ", classify=" + classify +
+                ", classify='" + classify + '\'' +
                 '}';
     }
 }

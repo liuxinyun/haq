@@ -169,11 +169,12 @@ public class ResourceManager {
                 // 没有种子网址，那就用该网站的
                 WebSeedEntity webSeedEntity = new WebSeedEntity();
                 webSeedEntity.setId(0);
+                webSeedEntity.setWebName(webEntity.getWebname());
                 webSeedEntity.setSeedurl(webEntity.getWeburl());
                 webSeedEntity.setRegex(webEntity.getRegex());
                 webSeedEntity.setTitleSelect(webEntity.getTitleSelect());
                 webSeedEntity.setContentSelect(webEntity.getContentSelect());
-                webSeedEntity.setClassId(Constant.NewsClass.OTHER);
+                webSeedEntity.setClassId(Constant.NEWS_CLASS_OTHER);
                 webSeeds.add(webSeedEntity);
             }
             for (WebSeedEntity webSeed : webSeeds) {

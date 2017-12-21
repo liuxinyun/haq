@@ -40,15 +40,11 @@ public class WebSeedEntity implements Serializable{
     /**
      * 所属类别id
      */
-    private Integer classId;
+    private String classId;
     /**
      * 所属地域
      */
     private Integer areaId;
-    /**
-     * 所属类别名称
-     */
-    private Integer className;
 
     public Integer getId() {
         return id;
@@ -106,11 +102,11 @@ public class WebSeedEntity implements Serializable{
         this.regex = regex;
     }
 
-    public Integer getClassId() {
+    public String getClassId() {
         return classId;
     }
 
-    public void setClassId(Integer classId) {
+    public void setClassId(String classId) {
         this.classId = classId;
     }
 
@@ -120,14 +116,6 @@ public class WebSeedEntity implements Serializable{
 
     public void setAreaId(Integer areaId) {
         this.areaId = areaId;
-    }
-
-    public Integer getClassName() {
-        return className;
-    }
-
-    public void setClassName(Integer className) {
-        this.className = className;
     }
 
     @Override
@@ -140,9 +128,8 @@ public class WebSeedEntity implements Serializable{
                 ", titleSelect='" + titleSelect + '\'' +
                 ", contentSelect='" + contentSelect + '\'' +
                 ", regex='" + regex + '\'' +
-                ", classId=" + classId +
+                ", classId='" + classId + '\'' +
                 ", areaId=" + areaId +
-                ", className=" + className +
                 '}';
     }
 }
