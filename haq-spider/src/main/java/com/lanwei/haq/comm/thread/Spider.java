@@ -43,7 +43,7 @@ public class Spider implements Runnable {
 
     @Override
     public void run() {
-        String websiteKey = Constant.REDIS_WEB_PREFIX + WebUtil.getHost(webSeedEntity.getSeedurl());
+        String websiteKey = Constant.REDIS_WEB_PREFIX + WebUtil.getDomain(webSeedEntity.getSeedurl());
         //每个链接可爬取的最大子链接数量
         final int maxCount = PropertiesUtil.getInt("spider.max");
         while (queue!=null && !queue.isEmpty()) {
@@ -62,10 +62,12 @@ public class Spider implements Runnable {
             try {
                 document = Jsoup.connect(weburl)
                         .proxy(PropertiesUtil.get("proxy.host"), PropertiesUtil.getInt("proxy.port"))
+                        .userAgent(Constant.USER_AGENT)
+                        .header("User-Agent", Constant.USER_AGENT)
                         .ignoreContentType(false)//解析响应是忽略文档类型
                         .ignoreHttpErrors(false)  //响应时是否忽略错误，404等
                         .validateTLSCertificates(false)//关闭证书验证
-                        .timeout(10000).get();
+                        .timeout(6000).get();
             } catch (IOException e) {
                 saveJedis.del(weburl);//出现异常未爬取的网址从redis中删除，下次还可以再爬
                 logger.error("Get " + weburl + " failed for ", e);

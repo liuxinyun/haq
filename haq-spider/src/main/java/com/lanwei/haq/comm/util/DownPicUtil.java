@@ -193,29 +193,15 @@ public class DownPicUtil {
         try {
             // 构造URL
             URL uri = new URL(imgUrl);
-            // 打开连接
-            URLConnection con = uri.openConnection();
-            //设置请求超时为3s
-            con.setConnectTimeout(3*1000);
-            // 输入流
-            InputStream is = con.getInputStream();
-            // 1K的数据缓冲
-            byte[] bs = new byte[1024];
-            // 读取到的数据长度
-            int len;
-            // 输出的文件流
-            File sf=new File(path);
-            if(!sf.exists()){
-                sf.mkdirs();
+            BufferedInputStream bin = new BufferedInputStream(uri.openStream());
+            FileUtil.mkdirs(path);
+            BufferedOutputStream bout = new BufferedOutputStream(new FileOutputStream(new File(path + "/" + imgName)));
+            int r;
+            while ((r = bin.read()) != -1){
+                bout.write(r);
             }
-            OutputStream os = new FileOutputStream(sf.getPath()+"/"+imgName);
-            // 开始读取
-            while ((len = is.read(bs)) != -1) {
-                os.write(bs, 0, len);
-            }
-            // 完毕，关闭所有链接
-            os.close();
-            is.close();
+            bin.close();
+            bout.close();
         } catch (Exception e) {
             logger.error("saveImgToLocal failed for "+e.getMessage(), e);
         }

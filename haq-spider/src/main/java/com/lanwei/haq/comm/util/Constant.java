@@ -8,6 +8,9 @@ package com.lanwei.haq.comm.util;
 
 public class Constant {
 
+    //爬虫伪装浏览器使用
+    public static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36";
+
     //年月日时分秒
     public static final String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
     //年月日

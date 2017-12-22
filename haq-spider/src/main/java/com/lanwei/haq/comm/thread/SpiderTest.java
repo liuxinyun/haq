@@ -1,5 +1,6 @@
 package com.lanwei.haq.comm.thread;
 
+import com.lanwei.haq.comm.util.Constant;
 import com.lanwei.haq.comm.util.PropertiesUtil;
 import com.lanwei.haq.comm.util.SpiderUtil;
 import com.lanwei.haq.spider.entity.NewsEntity;
@@ -31,7 +32,7 @@ public class SpiderTest implements Callable {
         Document document = null;
         document = getDocument(webEntity.getWeburl());
         if (null == document) {
-            sb.append("网址:").append(webEntity.getWeburl()).append("连接有误，获取不到页面.");
+            return sb.append("网址:").append(webEntity.getWeburl()).append("连接有误，获取不到页面.");
         }
         //获取所有子链接
         Set<String> suburls = SpiderUtil.getLinks(document);
@@ -58,6 +59,9 @@ public class SpiderTest implements Callable {
         }
         if (noRegex.size() == suburls.size()){
             sb.append("网页所有连接均不符合正则表达式，请检查。&#13;&#10;");
+        }else {
+            sb.append("&#13;&#10;&#13;&#10;总连接数：").append(suburls.size())
+                    .append("&#13;&#10;不符合正则表达式的数量是：").append(noRegex.size());
         }
         sb.append("&#13;&#10;&#13;&#10;不符合正则表达式:&#13;&#10;");
         for (String s : noRegex) {
@@ -69,6 +73,8 @@ public class SpiderTest implements Callable {
     private Document getDocument(String url) throws IOException {
         return Jsoup.connect(url)
                 .proxy(PropertiesUtil.get("proxy.host"), PropertiesUtil.getInt("proxy.port"))
+                .userAgent(Constant.USER_AGENT)
+                .header("User-Agent", Constant.USER_AGENT)
                 .ignoreContentType(false)//解析响应是忽略文档类型
                 .ignoreHttpErrors(false)  //响应时是否忽略错误，404等
                 .validateTLSCertificates(false)//关闭证书验证
