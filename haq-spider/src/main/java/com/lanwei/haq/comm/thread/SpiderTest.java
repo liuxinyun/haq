@@ -72,7 +72,7 @@ public class SpiderTest implements Callable {
 
     private Document getDocument(String url) throws IOException {
         return Jsoup.connect(url)
-                .proxy(Constant.getProxy())
+                .proxy(Constant.PROXY)
                 .userAgent(Constant.USER_AGENT)
                 .header("User-Agent", Constant.USER_AGENT)
                 .ignoreContentType(false)//解析响应是忽略文档类型

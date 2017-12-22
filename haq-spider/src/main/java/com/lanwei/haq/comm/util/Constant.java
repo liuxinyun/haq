@@ -15,11 +15,7 @@ public class Constant {
     //爬虫伪装浏览器使用
     public static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36";
     //代理
-    public static Proxy getProxy(){
-        SocketAddress address = new InetSocketAddress(PropertiesUtil.get("proxy.host"), PropertiesUtil.getInt("proxy.port"));
-        Proxy proxy = new Proxy(Proxy.Type.HTTP, address);
-        return proxy;
-    }
+    public static final Proxy PROXY = new Proxy(Proxy.Type.HTTP, InetSocketAddress.createUnresolved(PropertiesUtil.get("proxy.host"), PropertiesUtil.getInt("proxy.port")));
 
 
     //年月日时分秒

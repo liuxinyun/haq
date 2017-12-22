@@ -1,3 +1,4 @@
+import com.lanwei.haq.comm.util.Constant;
 import com.lanwei.haq.comm.util.DownPicUtil;
 import com.lanwei.haq.comm.util.PropertiesUtil;
 import org.jsoup.Jsoup;
@@ -23,7 +24,7 @@ public class SpiderTest {
     public void spider(){
         try {
             Document document = Jsoup.connect("https://cn.nytimes.com/china/20170929/taiwan-autonomous-bus-test/")
-                    .proxy(PropertiesUtil.get("proxy.host"), PropertiesUtil.getInt("proxy.port"))
+                    .proxy(Constant.PROXY)
                     .ignoreContentType(false)//解析响应是忽略文档类型
                     .ignoreHttpErrors(false)  //响应时是否忽略错误，404等
                     .validateTLSCertificates(false)//关闭证书验证

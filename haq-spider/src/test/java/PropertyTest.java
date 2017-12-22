@@ -16,7 +16,7 @@ public class PropertyTest {
 
     @Test
     public void hostPort(){
-        System.out.println(Constant.getProxy().toString());
+        System.out.println(Constant.PROXY.toString());
         System.out.println(PropertiesUtil.get("proxy.host"));
         System.out.println(PropertiesUtil.getInt("proxy.port"));
     }
