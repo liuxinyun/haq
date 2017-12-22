@@ -192,7 +192,7 @@ public class DownPicUtil {
         try {
             // 构造URL
             URL uri = new URL(imgUrl);
-            URLConnection urlConnection = uri.openConnection(Constant.getProxy());
+            URLConnection urlConnection = uri.openConnection();
             urlConnection.setReadTimeout(5000);
             BufferedInputStream bin = new BufferedInputStream(urlConnection.getInputStream());
             FileUtil.mkdirs(path);

@@ -36,7 +36,7 @@ public class WebUtil {
     public static String getDomain(String url){
         Pattern p = Pattern.compile(REGEX);
         Matcher m = p.matcher(url);
-        String domain = UNKNOWN;
+        String domain = null;
         //获取一级域名
         while(m.find()){
             domain = m.group();

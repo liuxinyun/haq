@@ -43,7 +43,11 @@ public class Spider implements Runnable {
 
     @Override
     public void run() {
-        String websiteKey = Constant.REDIS_WEB_PREFIX + WebUtil.getDomain(webSeedEntity.getSeedurl());
+        String domain = WebUtil.getDomain(webSeedEntity.getSeedurl());
+        if (null == domain){
+            domain = WebUtil.getHost(webSeedEntity.getSeedurl());
+        }
+        String websiteKey = Constant.REDIS_WEB_PREFIX + domain;
         //每个链接可爬取的最大子链接数量
         final int maxCount = PropertiesUtil.getInt("spider.max");
         while (queue!=null && !queue.isEmpty()) {
