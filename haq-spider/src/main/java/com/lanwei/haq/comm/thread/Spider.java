@@ -61,13 +61,13 @@ public class Spider implements Runnable {
             Document document = null;
             try {
                 document = Jsoup.connect(weburl)
-                        .proxy(PropertiesUtil.get("proxy.host"), PropertiesUtil.getInt("proxy.port"))
+                        .proxy(Constant.getProxy())
                         .userAgent(Constant.USER_AGENT)
                         .header("User-Agent", Constant.USER_AGENT)
                         .ignoreContentType(false)//解析响应是忽略文档类型
                         .ignoreHttpErrors(false)  //响应时是否忽略错误，404等
                         .validateTLSCertificates(false)//关闭证书验证
-                        .timeout(6000).get();
+                        .timeout(12000).get();
             } catch (IOException e) {
                 saveJedis.del(weburl);//出现异常未爬取的网址从redis中删除，下次还可以再爬
                 logger.error("Get " + weburl + " failed for ", e);

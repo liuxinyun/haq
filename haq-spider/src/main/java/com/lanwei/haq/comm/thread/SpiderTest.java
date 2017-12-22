@@ -72,13 +72,13 @@ public class SpiderTest implements Callable {
 
     private Document getDocument(String url) throws IOException {
         return Jsoup.connect(url)
-                .proxy(PropertiesUtil.get("proxy.host"), PropertiesUtil.getInt("proxy.port"))
+                .proxy(Constant.getProxy())
                 .userAgent(Constant.USER_AGENT)
                 .header("User-Agent", Constant.USER_AGENT)
                 .ignoreContentType(false)//解析响应是忽略文档类型
                 .ignoreHttpErrors(false)  //响应时是否忽略错误，404等
                 .validateTLSCertificates(false)//关闭证书验证
-                .timeout(3000).get();
+                .timeout(5000).get();
     }
 
 }

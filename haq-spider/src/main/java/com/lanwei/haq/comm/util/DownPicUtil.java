@@ -8,8 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
-import java.net.URL;
-import java.net.URLConnection;
+import java.net.*;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -193,7 +192,9 @@ public class DownPicUtil {
         try {
             // 构造URL
             URL uri = new URL(imgUrl);
-            BufferedInputStream bin = new BufferedInputStream(uri.openStream());
+            URLConnection urlConnection = uri.openConnection(Constant.getProxy());
+            urlConnection.setReadTimeout(5000);
+            BufferedInputStream bin = new BufferedInputStream(urlConnection.getInputStream());
             FileUtil.mkdirs(path);
             BufferedOutputStream bout = new BufferedOutputStream(new FileOutputStream(new File(path + "/" + imgName)));
             int r;

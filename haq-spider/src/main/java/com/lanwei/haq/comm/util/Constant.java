@@ -1,5 +1,9 @@
 package com.lanwei.haq.comm.util;
 
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import java.net.SocketAddress;
+
 /**
  * @作者：刘新运
  * @日期：2017/7/9 10:39
@@ -10,6 +14,13 @@ public class Constant {
 
     //爬虫伪装浏览器使用
     public static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36";
+    //代理
+    public static Proxy getProxy(){
+        SocketAddress address = new InetSocketAddress(PropertiesUtil.get("proxy.host"), PropertiesUtil.getInt("proxy.port"));
+        Proxy proxy = new Proxy(Proxy.Type.HTTP, address);
+        return proxy;
+    }
+
 
     //年月日时分秒
     public static final String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";

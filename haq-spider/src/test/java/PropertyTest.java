@@ -1,3 +1,4 @@
+import com.lanwei.haq.comm.util.Constant;
 import com.lanwei.haq.comm.util.PropertiesUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +16,7 @@ public class PropertyTest {
 
     @Test
     public void hostPort(){
+        System.out.println(Constant.getProxy().toString());
         System.out.println(PropertiesUtil.get("proxy.host"));
         System.out.println(PropertiesUtil.getInt("proxy.port"));
     }
