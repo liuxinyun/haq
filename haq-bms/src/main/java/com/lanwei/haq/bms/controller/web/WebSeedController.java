@@ -129,6 +129,9 @@ public class WebSeedController {
     @RequestMapping(value = "/delBatch", method = RequestMethod.POST)
     @SysLog(description = "批量删除种子网址")
     public Map<String, Object> delBatch(int[] id, @CurrentUser UserEntity currentUser){
+        if(null==id || id.length==0){
+            return ResponseEnum.PARAM_ERROR.getResultMap();
+        }
         return webSeedService.delBatch(id, currentUser.getId());
 
     }

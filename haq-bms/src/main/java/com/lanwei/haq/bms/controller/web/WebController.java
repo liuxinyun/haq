@@ -126,6 +126,9 @@ public class WebController {
     @RequestMapping(value = "/delBatch", method = RequestMethod.POST)
     @SysLog(description = "批量删除网站")
     public Map<String, Object> delBatch(int[] id, @CurrentUser UserEntity currentUser){
+        if(null==id || id.length==0){
+            return ResponseEnum.PARAM_ERROR.getResultMap();
+        }
         return webService.delBatch(id, currentUser.getId());
 
     }

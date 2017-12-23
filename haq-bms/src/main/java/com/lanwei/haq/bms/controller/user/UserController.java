@@ -217,6 +217,9 @@ public class UserController {
     @RequestMapping(value = "/delUser", method = RequestMethod.POST)
     @SysLog(description = "批量删除用户")
     public Map<String, Object> delUser(int[] id, @CurrentUser UserEntity currentUser){
+        if(null==id || id.length==0){
+            return ResponseEnum.PARAM_ERROR.getResultMap();
+        }
         return userService.deleteList(id, currentUser.getId());
 
     }

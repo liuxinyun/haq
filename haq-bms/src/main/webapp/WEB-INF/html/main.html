@@ -246,7 +246,8 @@
                             <div class="row">
                                 {{for(var key in it.list){ }}
                                 <div class="col-sm-4">
-                                    <p class="alert alert-danger"><span>{{=it.list[key].name}}</span>
+                                    <p class="alert alert-danger">
+                                        <span title="{{=it.list[key].name}}">{{=it.list[key].name}}</span>
                                         <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                                         <input type="hidden" name="id" value="{{=it.list[key].id}}">
                                     </p>

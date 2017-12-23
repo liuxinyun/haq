@@ -73,18 +73,14 @@ public class LogController {
     @RequestMapping(value = "/delBatch", method = RequestMethod.POST)
     @SysLog(description = "批量删除日志")
     public Map<String, Object> del(int[] id, @CurrentUser UserEntity userEntity){
-        Map<String, Object> resultMap;
         if (userEntity.getRoleType() != 3){
-            resultMap = ResponseEnum.NOT_MANAGER.getResultMap();
-            return resultMap;
+            return ResponseEnum.NOT_MANAGER.getResultMap();
         }
         if (null == id || id.length == 0) {
-            resultMap = ResponseEnum.PARAM_NULL.getResultMap();
-            return resultMap;
+            return ResponseEnum.PARAM_NULL.getResultMap();
         }
         sysLogService.delBatch(id);
-        resultMap = ResponseEnum.SUCCESS.getResultMap();
-        return resultMap;
+        return ResponseEnum.SUCCESS.getResultMap();
     }
 
     /**
