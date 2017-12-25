@@ -1,5 +1,6 @@
 package com.lanwei.haq.bms.service.web;
 
+import com.lanwei.haq.bms.dao.web.ClassDao;
 import com.lanwei.haq.bms.dao.web.WebDao;
 import com.lanwei.haq.bms.dao.web.WebSeedDao;
 import com.lanwei.haq.bms.entity.web.WebEntity;
@@ -22,14 +23,15 @@ import java.util.Map;
 @Service
 public class WebService {
 
-    private final WebDao webDao;
-    private final WebSeedDao webSeedDao;
-
     @Autowired
-    public WebService(WebDao webDao, WebSeedDao webSeedDao) {
-        this.webDao = webDao;
-        this.webSeedDao = webSeedDao;
-    }
+    private WebDao webDao;
+    @Autowired
+    private WebSeedDao webSeedDao;
+    @Autowired
+    private ClassDao classDao;
+    @Autowired
+    private WebSeedService webSeedService;
+
 
     /**
      * 获取网站数量
@@ -131,7 +133,11 @@ public class WebService {
         }
         StringBuilder sb = new StringBuilder();
         for (WebSeedEntity seedEntity : webSeedEntities) {
-            sb.append(seedEntity.getSeedurl()).append(",");
+            webSeedService.dealClass(seedEntity);
+            sb.append("{").append(seedEntity.getSeedurl())
+                    .append(":")
+                    .append(seedEntity.getClassNames())
+                    .append("},");
         }
         sb.deleteCharAt(sb.length()-1);
         webEntity.setSeedUrls(sb.toString());

@@ -9,7 +9,8 @@
     <select id="getAll" resultType="com.lanwei.haq.bms.entity.web.AreaEntity">
         SELECT sa.*
         FROM sys_area sa
-        WHERE sa.isDel = 'F';
+        WHERE sa.isDel = 'F'
+        ORDER BY sa.created desc;
     </select>
 
     <select id="query" parameterType="com.lanwei.haq.bms.entity.web.AreaEntity" resultType="com.lanwei.haq.bms.entity.web.AreaEntity">

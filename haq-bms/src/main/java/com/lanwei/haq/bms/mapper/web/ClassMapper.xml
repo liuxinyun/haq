@@ -10,7 +10,8 @@
         SELECT tc.*
         FROM t_class tc
         WHERE tc.isDel = 'F'
-        AND tc.id > 1;
+        AND tc.id > 1
+        ORDER BY tc.created desc;
     </select>
 
     <select id="queryByIds" resultType="java.lang.String">

@@ -122,7 +122,7 @@ public class WebSeedService {
     /**
      * 处理种子网站多个类别名称显示问题
      */
-    private void dealClass(WebSeedEntity webSeedEntity){
+    public void dealClass(WebSeedEntity webSeedEntity){
         String classId = webSeedEntity.getClassId();
         String[] temp = classId.split(" ");
         int[] classIds = new int[temp.length];
