@@ -65,7 +65,7 @@ public class Spider implements Runnable {
             Document document = null;
             try {
                 document = Jsoup.connect(weburl)
-                        .proxy(Constant.PROXY)
+                        //.proxy(Constant.PROXY)
                         .userAgent(Constant.USER_AGENT)
                         .header("User-Agent", Constant.USER_AGENT)
                         .ignoreContentType(false)//解析响应是忽略文档类型
