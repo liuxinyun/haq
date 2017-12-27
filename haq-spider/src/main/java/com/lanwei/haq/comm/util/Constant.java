@@ -12,6 +12,11 @@ import java.net.SocketAddress;
 
 public class Constant {
 
+    //tomcat路径
+    public static final String LOCALURL = "http://172.16.2.11:28080/img/images/";
+    //tomcat本地路径
+    public static final String LOCALPATH = "/home/haqteam/install/tomcat28080/webapps/img/images/";
+
     //爬虫伪装浏览器使用
     public static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36";
     //代理

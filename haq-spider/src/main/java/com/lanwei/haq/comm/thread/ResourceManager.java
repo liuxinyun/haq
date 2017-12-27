@@ -175,6 +175,7 @@ public class ResourceManager {
                 webSeedEntity.setTitleSelect(webEntity.getTitleSelect());
                 webSeedEntity.setContentSelect(webEntity.getContentSelect());
                 webSeedEntity.setClassId(Constant.NEWS_CLASS_OTHER);
+                webSeedEntity.setAreaId(webEntity.getAreaId());
                 webSeeds.add(webSeedEntity);
             }
             for (WebSeedEntity webSeed : webSeeds) {

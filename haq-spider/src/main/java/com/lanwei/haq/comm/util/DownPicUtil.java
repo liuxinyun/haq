@@ -23,13 +23,6 @@ public class DownPicUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(DownPicUtil.class);
 
-    //tomcat路径
-    private static final String LOCALURL = "http://172.16.1.12:28081/img/images/";
-    //tomcat本地路径
-    private static final String LOCALPATH = "/home/haqteam/install/tomcat28081/webapps/img/images/";
-
-    // 编码
-    private static final String ENCODING = "UTF-8";
     // 获取img标签正则
     private static final String IMGURL_REG = "<[\\s]{0,3}img.*src=(.*?)[^>]*?>";
     // 获取src路径的正则
@@ -166,14 +159,14 @@ public class DownPicUtil {
                 temp = temp.substring(0, temp.indexOf("?"));
             }
             String imageName = temp.substring(temp.lastIndexOf("/") + 1, temp.length());
-            html = html.replace(url, LOCALURL+date+"/"+imageName);//替换原地址到本地网址
+            html = html.replace(url, Constant.LOCALURL+date+"/"+imageName);//替换原地址到本地网址
             ImgPath imgPath = new ImgPath();
             imgPath.setName(imageName);
             imgPath.setSource(url);
-            imgPath.setLocal(LOCALURL+date+"/"+imageName);
+            imgPath.setLocal(Constant.LOCALURL+date+"/"+imageName);
             imgPaths.add(imgPath);
             //下面将图片保存到本地
-            saveImgToLocal(url, LOCALPATH+date+"/", imageName);
+            saveImgToLocal(url, Constant.LOCALPATH+date+"/", imageName);
         }
         String img_path = JSONObject.toJSONString(imgPaths);
         Map<String, String> result = new HashMap<>();
