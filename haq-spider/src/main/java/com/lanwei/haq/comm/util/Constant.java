@@ -36,6 +36,11 @@ public class Constant {
     public static final String REDIS_SUBJECT_PREFIX = "subject_";
     //统计各地域area_areaId
     public static final String REDIS_AREA_PREFIX = "area_";
+    // 保存每个种子网站当天的链接总数total_20180111
+    public static final String REDIS_TOTAL = "total_";
+    // 保存每个种子网站当天的爬取失败数fail_20180111
+    public static final String REDIS_FAIL = "fail_";
+
     /**
      * 默认新闻类别其他
      */

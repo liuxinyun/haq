@@ -9,7 +9,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import redis.clients.jedis.Jedis;
 
 import java.io.IOException;
 import java.util.*;
@@ -30,6 +29,9 @@ public class Spider implements Runnable {
     private MyJedisService saveJedis;
     private MyJedisService statisJedis;
 
+    private String totalKey;
+    private String failKey;
+
     public Spider(WebSeedEntity webSeedEntity, Queue<UrlDepth> queue,
                   SpiderUtil spiderUtil, EsUtil esUtil,
                   MyJedisService saveJedis, MyJedisService statisJedis) {
@@ -39,10 +41,15 @@ public class Spider implements Runnable {
         this.esUtil = esUtil;
         this.saveJedis = saveJedis;
         this.statisJedis = statisJedis;
+        String day = DateUtil.format(new Date(), Constant.YYYYMMDD);
+        this.totalKey = Constant.REDIS_TOTAL + day;
+        this.failKey = Constant.REDIS_FAIL + day;
     }
 
     @Override
     public void run() {
+        int totalCount = 0; //总数
+        int successCount = 0; //成功数
         String domain = WebUtil.getDomain(webSeedEntity.getSeedurl());
         if (null == domain){
             domain = WebUtil.getHost(webSeedEntity.getSeedurl());
@@ -94,6 +101,7 @@ public class Spider implements Runnable {
                             }
                         }
                     }
+                    totalCount += total;
                 }
                 //如果是种子网址就不进行下面的操作了
                 if (weburl.equals(webSeedEntity.getSeedurl())){
@@ -111,6 +119,9 @@ public class Spider implements Runnable {
                             weburl, webSeedEntity.getTitleSelect(), webSeedEntity.getContentSelect());
                     continue;//当标签选择器跟该网址对应不上时获取不到标题内容等，认为不是所要的新闻。
                 }
+
+                successCount++; //走到这一步爬取成功数加1
+
                 String content = news.getContent();
                 //根据HTML内容替换图片地址为本服务器地址
                 Map<String, String> map = DownPicUtil.htmlToFtp(content);
@@ -122,6 +133,7 @@ public class Spider implements Runnable {
                 news.setDatetime(DateUtil.format(new Date()));
                 esUtil.insertObject("haqqq", "news_test", news);
                 //logger.info("news={} stored into Elasticsearch.", news.toString());
+
                 //下面开始进行统计
                 long hour = DateUtil.getCurrentHour();
                 //网站统计自增1
@@ -132,6 +144,13 @@ public class Spider implements Runnable {
                 statisJedis.hincrBy(Constant.REDIS_AREA_PREFIX + webSeedEntity.getAreaId(), String.valueOf(hour), 1);
             }
         }
+        //保存当天符合正则表达式的连接总数和失败数
+        statisJedis.zincrby(totalKey, totalCount, webSeedEntity.getSeedurl());
+        int failCount = (totalCount-successCount) < 0 ? 0 : (totalCount-successCount);
+        statisJedis.zincrby(failKey, failCount, webSeedEntity.getSeedurl());
+        //只保存5天的
+        statisJedis.expire(totalKey, 5*24*3600);
+        statisJedis.expire(failKey, 5*24*3600);
     }
 
 }
