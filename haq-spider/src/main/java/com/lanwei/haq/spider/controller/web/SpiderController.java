@@ -56,28 +56,55 @@ public class SpiderController {
     }
 
     /**
-     * 爬虫测试接口
+     * 网站、种子网址爬虫测试
      * @param webEntity
      * @return
      */
     @RequestMapping(value = "/test", method = RequestMethod.POST)
-    public Map<String, Object> spiderTest(WebEntity webEntity){
+    public Map<String, Object> webTest(WebEntity webEntity){
         Map<String, Object> resultMap = ResponseEnum.SUCCESS.getResultMap();
         if (webEntity == null || StringUtils.isBlank(webEntity.getWeburl())
                 || StringUtils.isBlank(webEntity.getTitleSelect())
                 || StringUtils.isBlank(webEntity.getContentSelect())
                 || StringUtils.isBlank(webEntity.getRegex())){
-            logger.error("spider test param is error");
+            logger.error("web spider test param is error");
             resultMap = ResponseEnum.PARAM_ERROR.getResultMap();
             return resultMap;
         }
         // 调用爬虫测试函数
-        Future future = taskExecutor.submit(new SpiderTest(webEntity));
+        Future future = taskExecutor.submit(new SpiderTest(webEntity, Boolean.FALSE));
         try {
             Object o = future.get();
             resultMap.put("param", o.toString());
         } catch (Exception e) {
-            logger.error("spiderTest error and param is {}", webEntity);
+            logger.error("web spider test error and param is {}", webEntity);
+            resultMap.put("param", e.getMessage());
+        }
+        return resultMap;
+    }
+
+    /**
+     * 单个网址的测试
+     * @param webEntity
+     * @return
+     */
+    @RequestMapping(value = "/url/test", method = RequestMethod.POST)
+    public Map<String, Object> urlTest(WebEntity webEntity){
+        Map<String, Object> resultMap = ResponseEnum.SUCCESS.getResultMap();
+        if (webEntity == null || StringUtils.isBlank(webEntity.getWeburl())
+                || StringUtils.isBlank(webEntity.getTitleSelect())
+                || StringUtils.isBlank(webEntity.getContentSelect())){
+            logger.error("url spider test param is error");
+            resultMap = ResponseEnum.PARAM_ERROR.getResultMap();
+            return resultMap;
+        }
+        // 调用爬虫测试函数
+        Future future = taskExecutor.submit(new SpiderTest(webEntity, Boolean.TRUE));
+        try {
+            Object o = future.get();
+            resultMap.put("param", o.toString());
+        } catch (Exception e) {
+            logger.error("url spider test error and param is {}", webEntity);
             resultMap.put("param", e.getMessage());
         }
         return resultMap;

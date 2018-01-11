@@ -21,9 +21,11 @@ import java.util.concurrent.Callable;
 public class SpiderTest implements Callable {
 
     private WebEntity webEntity;
+    private Boolean singleUrl;
 
-    public SpiderTest(WebEntity webEntity) {
+    public SpiderTest(WebEntity webEntity, Boolean singleUrl) {
         this.webEntity = webEntity;
+        this.singleUrl = singleUrl;
     }
 
     @Override
@@ -34,7 +36,15 @@ public class SpiderTest implements Callable {
         if (null == document) {
             return sb.append("网址:").append(webEntity.getWeburl()).append("连接有误，获取不到页面.");
         }
-        //获取所有子链接
+        //单个网址测试
+        if (singleUrl){
+            NewsEntity newsByDoc = SpiderUtil.getNewsByDoc(document, webEntity.getTitleSelect(), webEntity.getContentSelect());
+            sb.append("标题:").append(newsByDoc.getTitle()).append("&#13;&#10;&#13;&#10;")
+                    .append("内容:").append(newsByDoc.getContent()).append("&#13;&#10;&#13;&#10;");
+            return sb;
+        }
+
+        //网站测试需要获取所有子链接
         Set<String> suburls = SpiderUtil.getLinks(document);
         Set<String> noRegex = new HashSet<>(); //存储不符合正则表达式
         boolean flag = false; //标记，爬取到一个符合正则表达式的即可
