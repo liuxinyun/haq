@@ -57,7 +57,7 @@ public class StatisService {
             count = statisJedisService.zcard(failKey).intValue();
             if(count > 0){
                 long start = statisEntity.getPageStart();
-                long end = statisEntity.getPageStart()+statisEntity.getPageSize();
+                long end = statisEntity.getPageStart()+statisEntity.getPageSize()-1;
                 if (end >= count){
                     end = -1;
                 }
