@@ -7,11 +7,10 @@ import com.lanwei.haq.comm.annotation.CurrentUser;
 import com.lanwei.haq.comm.annotation.SysLog;
 import com.lanwei.haq.comm.enums.ResponseEnum;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
@@ -20,7 +19,7 @@ import java.util.Map;
  * @日期: 2017/6/15 16:49
  * @描述:
  */
-@Controller
+@RestController
 @RequestMapping(value = "/log")
 public class LogController {
 
@@ -36,7 +35,6 @@ public class LogController {
      * @param sysLogEntity
      * @return
      */
-    @ResponseBody
     @RequestMapping(value = "/list", method = RequestMethod.POST)
     public Map<String, Object> query(SysLogEntity sysLogEntity){
         return sysLogService.logList(sysLogEntity);
@@ -47,7 +45,6 @@ public class LogController {
      * @param sysLogEntity
      * @return
      */
-    @ResponseBody
     @RequestMapping(value = "/del", method = RequestMethod.POST)
     public Map<String, Object> del(SysLogEntity sysLogEntity, @CurrentUser UserEntity userEntity){
         Map<String, Object> resultMap;
@@ -69,7 +66,6 @@ public class LogController {
      * @param id
      * @return
      */
-    @ResponseBody
     @RequestMapping(value = "/delBatch", method = RequestMethod.POST)
     @SysLog(description = "批量删除日志")
     public Map<String, Object> del(int[] id, @CurrentUser UserEntity userEntity){
@@ -88,7 +84,6 @@ public class LogController {
      * @param id
      * @return
      */
-    @ResponseBody
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
     public Map<String, Object> getBranchById(@PathVariable("id") int id) {
         Map<String, Object> resultMap = ResponseEnum.SUCCESS.getResultMap();

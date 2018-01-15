@@ -8,8 +8,10 @@ import com.lanwei.haq.comm.annotation.CurrentUser;
 import com.lanwei.haq.comm.annotation.SysLog;
 import com.lanwei.haq.comm.enums.ResponseEnum;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
@@ -19,7 +21,7 @@ import java.util.Map;
  * @author liuxinyun
  * @date 2016/12/19 22:30
  */
-@Controller
+@RestController
 @RequestMapping(value = "/webclass")
 public class ClassController {
 
@@ -33,7 +35,6 @@ public class ClassController {
     /**
      * 新增
      */
-    @ResponseBody
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @SysLog(description = "新增网站类别")
     public Map<String, Object> insert(@AddEntity ClassEntity classEntity){
@@ -43,7 +44,6 @@ public class ClassController {
     /**
      * 更新
      */
-    @ResponseBody
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     @SysLog(description = "更新网站类别")
     public Map<String, Object> update(ClassEntity classEntity, @CurrentUser UserEntity currentUser){
@@ -60,7 +60,6 @@ public class ClassController {
     /**
      * 删除
      */
-    @ResponseBody
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     @SysLog(description = "删除网站类别")
     public Map<String, Object> delete(ClassEntity classEntity, @CurrentUser UserEntity currentUser){
@@ -78,7 +77,6 @@ public class ClassController {
     /**
      * 查询列表
      */
-    @ResponseBody
     @RequestMapping(value = "/list", method = RequestMethod.POST)
     public Map<String, Object> getList(ClassEntity classEntity){
         return classService.getList(classEntity);
@@ -87,7 +85,6 @@ public class ClassController {
     /**
      * 查询所有系统分类
      */
-    @ResponseBody
     @RequestMapping(value = "/all", method = RequestMethod.POST)
     public Map<String, Object> getAll(){
         Map<String, Object> resultMap = ResponseEnum.SUCCESS.getResultMap();
@@ -98,7 +95,6 @@ public class ClassController {
     /**
      * 批量删除
      */
-    @ResponseBody
     @RequestMapping(value = "/delBatch", method = RequestMethod.POST)
     @SysLog(description = "批量删除网站类别")
     public Map<String, Object> delBatch(int[] id, @CurrentUser UserEntity currentUser){
@@ -114,7 +110,6 @@ public class ClassController {
      * @param id
      * @return
      */
-    @ResponseBody
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
     public Map<String, Object> getById(@PathVariable("id") int id) {
         Map<String, Object> resultMap = ResponseEnum.SUCCESS.getResultMap();

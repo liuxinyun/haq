@@ -11,10 +11,9 @@ import com.lanwei.haq.comm.annotation.CurrentUser;
 import com.lanwei.haq.comm.annotation.SysLog;
 import com.lanwei.haq.comm.enums.ResponseEnum;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
@@ -24,7 +23,7 @@ import java.util.Map;
  * @author liuxinyun
  * @date 2016/12/21 19:04
  */
-@Controller
+@RestController
 @RequestMapping("/dev")
 public class DevController {
 
@@ -46,7 +45,6 @@ public class DevController {
      * @return
      */
     @RequestMapping("/menu/list")
-    @ResponseBody
     public Map<String, Object> menuList(MenuEntity menuEntity) {
         return menuService.menuList(menuEntity);
     }
@@ -58,7 +56,6 @@ public class DevController {
      * @return
      */
     @RequestMapping(value = "/menu/add", method = RequestMethod.POST)
-    @ResponseBody
     @SysLog(description = "新增菜单")
     public Map<String, Object> addMenu(@AddEntity() MenuEntity menuEntity) {
         Map<String, Object> resultMap;
@@ -77,7 +74,6 @@ public class DevController {
      * @return
      */
     @RequestMapping(value = "/menu/update", method = RequestMethod.POST)
-    @ResponseBody
     @SysLog(description = "更新菜单")
     public Map<String, Object> updateMenu(@AddEntity MenuEntity menuEntity) {
         Map<String, Object> resultMap;
@@ -97,7 +93,6 @@ public class DevController {
      * @param userEntity 当前用户
      * @return
      */
-    @ResponseBody
     @RequestMapping(value = "/menu/del", method = RequestMethod.POST)
     @SysLog(description = "删除菜单")
     public Map<String, Object> delMenu(int[] id, @CurrentUser UserEntity userEntity) {
@@ -115,7 +110,6 @@ public class DevController {
      *
      * @return
      */
-    @ResponseBody
     @RequestMapping("/system/tables")
     public Map<String, Object> desc() {
         Map<String, Object> resultMap = ResponseEnum.SUCCESS.getResultMap();
@@ -130,7 +124,6 @@ public class DevController {
      * @param roleEntity
      * @return
      */
-    @ResponseBody
     @RequestMapping("/role/list")
     public Map<String, Object> roleList(RoleEntity roleEntity) {
         return roleService.roleList(roleEntity);
@@ -142,7 +135,6 @@ public class DevController {
      * @param roleEntity
      * @return
      */
-    @ResponseBody
     @RequestMapping("/role/add")
     @SysLog(description = "新增权限组")
     public Map<String, Object> addRole(@AddEntity RoleEntity roleEntity, @CurrentUser UserEntity userEntity) {
@@ -157,7 +149,6 @@ public class DevController {
      * @param userEntity 当前用户
      * @return
      */
-    @ResponseBody
     @RequestMapping(value = "/role/del", method = RequestMethod.POST)
     public Map<String, Object> delRole(int[] id, @CurrentUser UserEntity userEntity) {
         Map<String, Object> resultMap;
@@ -175,7 +166,6 @@ public class DevController {
      * @param id 权限id
      * @return
      */
-    @ResponseBody
     @RequestMapping("/role/menu")
     public Map<String, Object> getRoleMenu(int id) {
         return roleService.getRoleMenu(id);
@@ -188,7 +178,6 @@ public class DevController {
      * @param roleId 角色id
      * @return
      */
-    @ResponseBody
     @RequestMapping("/role/config")
     @SysLog(description = "设置权限所属菜单")
     public Map<String, Object> roleConfig(int[] menuId, int roleId, @CurrentUser UserEntity userEntity) {
