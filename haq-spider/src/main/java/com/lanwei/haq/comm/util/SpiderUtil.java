@@ -1,5 +1,6 @@
 package com.lanwei.haq.comm.util;
 
+import com.github.stuxuhai.jpinyin.ChineseHelper;
 import com.lanwei.haq.comm.entity.SpiderConfig;
 import com.lanwei.haq.comm.enums.ConfigEnum;
 import com.lanwei.haq.comm.jdbc.MyJedisService;
@@ -126,12 +127,14 @@ public class SpiderUtil {
         if (titleElements==null || titleElements.isEmpty()){
             result.setTitle("");
         }else {
-            result.setTitle(titleElements.first().text());
+            String title = titleElements.first().text();
+            result.setTitle(ChineseHelper.convertToSimplifiedChinese(title));
         }
         if (contentElements==null || contentElements.isEmpty()){
             result.setContent("");
         }else {
-            result.setContent(contentElements.first().text());
+            String content = contentElements.first().text();
+            result.setContent(ChineseHelper.convertToSimplifiedChinese(content));
         }
         return result;
     }
@@ -153,11 +156,15 @@ public class SpiderUtil {
         NewsEntity result = new NewsEntity();
         String titleResult = titleElements.first().text();//标题
         String contentResult = contentElements.first().html();//带HTML标签的内容
+        //繁体转简体
+        titleResult = ChineseHelper.convertToSimplifiedChinese(titleResult);
+        contentResult = ChineseHelper.convertToSimplifiedChinese(contentResult);
         result.setTitle(titleResult);
         result.setContent(contentResult);
         //接下来获取新闻所属专题
         StringBuilder sb = new StringBuilder(" ");
         String content = contentElements.first().text();//纯文本内容
+        content = ChineseHelper.convertToSimplifiedChinese(content);//转简体
         List<SubjectEntity> subjectEntities = mysqlDao.getAllSubject();
         for (SubjectEntity subjectEntity : subjectEntities) {
             Pattern pattern = Pattern.compile(subjectEntity.getKeywords());
