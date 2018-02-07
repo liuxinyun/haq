@@ -5,11 +5,10 @@ import com.lanwei.haq.bms.service.menu.MenuService;
 import com.lanwei.haq.comm.enums.MenuEnum;
 import com.lanwei.haq.comm.enums.ResponseEnum;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
@@ -19,7 +18,7 @@ import java.util.Map;
  * @author liuxinyun
  * @date 2016/12/21 19:04
  */
-@Controller
+@RestController
 @RequestMapping(value = "/menu")
 public class MenuController {
 
@@ -36,7 +35,6 @@ public class MenuController {
      * @param menuEntity
      * @return
      */
-    @ResponseBody
     @RequestMapping(value = "/get", method = RequestMethod.POST)
     public Map<String, Object> getMenu(MenuEntity menuEntity) {
         Map<String, Object> resultMap = ResponseEnum.SUCCESS.getResultMap();
@@ -50,7 +48,6 @@ public class MenuController {
      * @param id
      * @return
      */
-    @ResponseBody
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
     public Map<String, Object> getMenuById(@PathVariable("id") int id) {
         Map<String, Object> resultMap = ResponseEnum.SUCCESS.getResultMap();

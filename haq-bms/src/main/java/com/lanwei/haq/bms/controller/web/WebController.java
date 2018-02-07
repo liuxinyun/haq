@@ -13,11 +13,12 @@ import com.lanwei.haq.comm.annotation.AddEntity;
 import com.lanwei.haq.comm.annotation.CurrentUser;
 import com.lanwei.haq.comm.annotation.SysLog;
 import com.lanwei.haq.comm.enums.ResponseEnum;
-import com.lanwei.haq.comm.util.*;
+import com.lanwei.haq.comm.util.Constant;
+import com.lanwei.haq.comm.util.HttpUtil;
+import com.lanwei.haq.comm.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ import java.util.Map;
  * @author liuxinyun
  * @date 2016/12/19 22:30
  */
-@Controller
+@RestController
 @RequestMapping(value = "/web")
 public class WebController {
 
@@ -54,7 +55,6 @@ public class WebController {
     /**
      * 新增
      */
-    @ResponseBody
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @SysLog(description = "新增网站")
     public Map<String, Object> insert(@AddEntity WebEntity webEntity){
@@ -64,7 +64,6 @@ public class WebController {
     /**
      * 更新
      */
-    @ResponseBody
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     @SysLog(description = "更新网站")
     public Map<String, Object> update(WebEntity webEntity, @CurrentUser UserEntity currentUser){
@@ -81,7 +80,6 @@ public class WebController {
     /**
      * 删除
      */
-    @ResponseBody
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     @SysLog(description = "删除网站")
     public Map<String, Object> delete(WebEntity webEntity, @CurrentUser UserEntity currentUser){
@@ -99,7 +97,6 @@ public class WebController {
     /**
      * 查询列表
      */
-    @ResponseBody
     @RequestMapping(value = "/list", method = RequestMethod.POST)
     public Map<String, Object> getList(WebEntity webEntity){
         Map<String, Object> resultMap = webService.getList(webEntity);
@@ -122,7 +119,6 @@ public class WebController {
     /**
      * 批量删除
      */
-    @ResponseBody
     @RequestMapping(value = "/delBatch", method = RequestMethod.POST)
     @SysLog(description = "批量删除网站")
     public Map<String, Object> delBatch(int[] id, @CurrentUser UserEntity currentUser){
@@ -138,7 +134,6 @@ public class WebController {
      * @param id
      * @return
      */
-    @ResponseBody
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
     public Map<String, Object> getById(@PathVariable("id") int id) {
         Map<String, Object> resultMap = ResponseEnum.SUCCESS.getResultMap();
@@ -152,7 +147,6 @@ public class WebController {
      * @param id
      * @return
      */
-    @ResponseBody
     @RequestMapping(value = "/getClass/{id}", method = RequestMethod.POST)
     public Map<String, Object> getClass(@PathVariable("id") int id) {
         Map<String, Object> resultMap = ResponseEnum.SUCCESS.getResultMap();
@@ -166,7 +160,6 @@ public class WebController {
      * @param id
      * @return
      */
-    @ResponseBody
     @RequestMapping(value = "/test/{id}", method = RequestMethod.POST)
     public Map<String, Object> testSpider(@PathVariable("id") int id) {
         WebEntity webEntity = webService.getById(id);
@@ -177,7 +170,36 @@ public class WebController {
         params.put("contentSelect", webEntity.getContentSelect());
         params.put("regex", webEntity.getRegex());
         String jsonStr = HttpUtil.postForm(Constant.SPIDER_TEST, params);
-        logger.info("http return {}", jsonStr);
+        logger.info("testSpider return {}", jsonStr);
+        JSONObject object = JSON.parseObject(jsonStr);
+        String code = object.getString("code");
+        if (code.equals("200")){
+            Map<String, Object> resultMap = ResponseEnum.SUCCESS.getResultMap();
+            resultMap.put("param", object.get("param"));
+            return resultMap;
+        }
+        return ResponseEnum.SYSTEM_ERROR.getResultMap();
+    }
+
+    /**
+     * 爬虫测试
+     * @param webEntity
+     * @return
+     */
+    @RequestMapping(value = "/test", method = RequestMethod.POST)
+    public Map<String, Object> test(WebEntity webEntity) {
+        if(null==webEntity || StringUtils.isBlank(webEntity.getWeburl())
+            || StringUtils.isBlank(webEntity.getTitleSelect())
+            || StringUtils.isBlank(webEntity.getContentSelect())){
+            return ResponseEnum.PARAM_ERROR.getResultMap();
+        }
+        // 参数
+        Map<String, String> params = new HashMap<>();
+        params.put("weburl", webEntity.getWeburl());
+        params.put("titleSelect", webEntity.getTitleSelect());
+        params.put("contentSelect", webEntity.getContentSelect());
+        String jsonStr = HttpUtil.postForm(Constant.SPIDER_URL_TEST, params);
+        logger.info("test return {}", jsonStr);
         JSONObject object = JSON.parseObject(jsonStr);
         String code = object.getString("code");
         if (code.equals("200")){
@@ -192,7 +214,6 @@ public class WebController {
      * 立即开始爬虫
      * @return
      */
-    @ResponseBody
     @RequestMapping(value = "/now/{id}", method = RequestMethod.POST)
     public Map<String, Object> spiderByNow(@PathVariable("id") int id, @RequestParam(value = "configIds[]",required = false) int[] configIds) {
         if (id == 0){//配置立即生效

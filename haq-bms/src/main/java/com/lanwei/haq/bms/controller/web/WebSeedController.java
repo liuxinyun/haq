@@ -17,11 +17,10 @@ import com.lanwei.haq.comm.util.HttpUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +31,7 @@ import java.util.Map;
  * @author liuxinyun
  * @date 2016/12/19 22:30
  */
-@Controller
+@RestController
 @RequestMapping(value = "/webseed")
 public class WebSeedController {
 
@@ -53,7 +52,6 @@ public class WebSeedController {
     /**
      * 新增
      */
-    @ResponseBody
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @SysLog(description = "新增种子网址")
     public Map<String, Object> insert(@AddEntity WebSeedEntity webSeedEntity){
@@ -73,7 +71,6 @@ public class WebSeedController {
     /**
      * 更新
      */
-    @ResponseBody
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     @SysLog(description = "更新网站")
     public Map<String, Object> update(WebSeedEntity webSeedEntity, @CurrentUser UserEntity currentUser){
@@ -98,7 +95,6 @@ public class WebSeedController {
     /**
      * 删除
      */
-    @ResponseBody
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     @SysLog(description = "删除网站")
     public Map<String, Object> delete(WebSeedEntity webSeedEntity, @CurrentUser UserEntity currentUser){
@@ -116,7 +112,6 @@ public class WebSeedController {
     /**
      * 查询列表
      */
-    @ResponseBody
     @RequestMapping(value = "/list", method = RequestMethod.POST)
     public Map<String, Object> getList(WebSeedEntity webSeedEntity){
         return webSeedService.getList(webSeedEntity);
@@ -125,7 +120,6 @@ public class WebSeedController {
     /**
      * 批量删除
      */
-    @ResponseBody
     @RequestMapping(value = "/delBatch", method = RequestMethod.POST)
     @SysLog(description = "批量删除种子网址")
     public Map<String, Object> delBatch(int[] id, @CurrentUser UserEntity currentUser){
@@ -141,7 +135,6 @@ public class WebSeedController {
      * @param id
      * @return
      */
-    @ResponseBody
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
     public Map<String, Object> getById(@PathVariable("id") int id) {
         Map<String, Object> resultMap = ResponseEnum.SUCCESS.getResultMap();
@@ -155,7 +148,6 @@ public class WebSeedController {
      * 获取所有添加需要的
      * @return
      */
-    @ResponseBody
     @RequestMapping(value = "/allNeed", method = RequestMethod.POST)
     public Map<String, Object> getAllNeed() {
         Map<String, Object> resultMap = ResponseEnum.SUCCESS.getResultMap();
@@ -169,7 +161,6 @@ public class WebSeedController {
      * @param id
      * @return
      */
-    @ResponseBody
     @RequestMapping(value = "/test/{id}", method = RequestMethod.POST)
     public Map<String, Object> testSpider(@PathVariable("id") int id) {
         WebSeedEntity webSeedEntity = webSeedService.getById(id);

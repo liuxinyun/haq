@@ -1,0 +1,78 @@
+<div class="col-md-12">
+    <div class="box border lite">
+        <div class="box-title">
+            <h4><i class="fa fa-navicon"></i>爬虫测试</h4>
+            <div class="tools">
+                <!--<a href="javascript:;" class="reload">
+                    <i title="刷新" class="fa fa-refresh"></i>
+                </a>-->
+            </div>
+        </div>
+        <div class="box-body">
+            <div class="container-fluid">
+                <form class="form-horizontal" role="form" action="/haq-bms/web/test" method="post">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">网址</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="weburl" class="validate[required] form-control" placeholder="网址">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">标题选择器</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="titleSelect" class="validate[required] form-control" placeholder="标题选择器">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">内容选择器</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="contentSelect" class="validate[required] form-control" placeholder="内容选择器">
+                        </div>
+                    </div>
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-success">测试</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script language="JavaScript" type="text/javascript">
+    require(['jquery', 'app'], function ($, app) {
+        // 构建bootstrap模态框
+        function buildModal($obj) {
+            var opt = {
+                keyboard: false,
+                backdrop: 'static',
+                show: true
+            };
+            $obj.modal(opt).on('hidden.bs.modal', function () {
+                app.loadModule(null, true);
+                // 隐藏的时候移除
+                $obj.remove();
+            });
+        }
+        $("body").on('click','.pull-right .btn-success',function () {
+            var $t = $(this);
+            var $form = $t.parents('form');
+            // 校验
+            if (!$form.validationEngine('validate'))
+                return;
+            app.block();
+            //表单提交
+            $form.ajaxSubmit(function (data) {
+                app.unblock();
+                if (data.code === 200) {
+                    var text = $("#template-spider-test").html();
+                    buildModal($(app.template(text, data)))
+                } else {
+                    app.showMsg(data.msg);
+                }
+            });
+            return false;
+
+        });
+    })
+</script>
+

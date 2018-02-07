@@ -16,16 +16,16 @@ import com.lanwei.haq.comm.annotation.SysLog;
 import com.lanwei.haq.comm.enums.ResponseEnum;
 import com.lanwei.haq.comm.enums.RoleTypeEnum;
 import com.lanwei.haq.comm.enums.SexEnum;
-import com.lanwei.haq.comm.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Map;
 
 /**
  * 用户管理Controller
@@ -33,7 +33,7 @@ import java.util.*;
  * @author liuxinyun
  * @date 2016/12/19 22:30
  */
-@Controller
+@RestController
 @RequestMapping(value = "/user")
 public class UserController {
 
@@ -63,7 +63,6 @@ public class UserController {
      * @param request
      * @return
      */
-    @ResponseBody
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public Map<String, Object> login(UserEntity userEntity, HttpServletRequest request) {
         Map<String, Object> resultMap;
@@ -106,7 +105,6 @@ public class UserController {
      * @param userEntity
      * @return
      */
-    @ResponseBody
     @RequestMapping(value = "/detail", method = RequestMethod.POST)
     public Map<String, Object> detail(@CurrentUser UserEntity userEntity) {
         Map<String, Object> resultMap = ResponseEnum.SUCCESS.getResultMap();
@@ -133,7 +131,6 @@ public class UserController {
     /**
      * 新增用户
      */
-    @ResponseBody
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @SysLog(description = "新增用户")
     public Map<String, Object> insertUser(@AddEntity UserEntity userEntity){
@@ -151,7 +148,6 @@ public class UserController {
     /**
      * 更新用户
      */
-    @ResponseBody
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     @SysLog(description = "更新用户")
     public Map<String, Object> updateUser(UserEntity userEntity, @CurrentUser UserEntity currentUser){
@@ -168,7 +164,6 @@ public class UserController {
     /**
      * 删除用户
      */
-    @ResponseBody
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     @SysLog(description = "删除用户")
     public Map<String, Object> deleteUser(UserEntity userEntity, @CurrentUser UserEntity currentUser){
@@ -186,7 +181,6 @@ public class UserController {
     /**
      * 修改密码
      */
-    @ResponseBody
     @RequestMapping(value = "/updatePassword", method = RequestMethod.POST)
     @SysLog(description = "修改密码")
     public Map<String, Object> updatePassword(UserEntity userEntity, @CurrentUser UserEntity currentUser){
@@ -204,7 +198,6 @@ public class UserController {
     /**
      * 查询用户列表
      */
-    @ResponseBody
     @RequestMapping(value = "/list", method = RequestMethod.POST)
     public Map<String, Object> getAllUser(UserEntity userEntity){
         return userService.getAllUser(userEntity);
@@ -213,7 +206,6 @@ public class UserController {
     /**
      * 批量删除用户
      */
-    @ResponseBody
     @RequestMapping(value = "/delUser", method = RequestMethod.POST)
     @SysLog(description = "批量删除用户")
     public Map<String, Object> delUser(int[] id, @CurrentUser UserEntity currentUser){
@@ -229,7 +221,6 @@ public class UserController {
      * @param
      * @return
      */
-    @ResponseBody
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
     public Map<String, Object> getUserById(@PathVariable("id") int id) {
         Map<String, Object> resultMap = ResponseEnum.SUCCESS.getResultMap();
@@ -242,7 +233,6 @@ public class UserController {
      * @param
      * @return
      */
-    @ResponseBody
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.POST)
     public Map<String, Object> getUserByIdForEdit(@PathVariable("id") int id) {
         Map<String, Object> resultMap = ResponseEnum.SUCCESS.getResultMap();
@@ -257,7 +247,6 @@ public class UserController {
      * 查询所有机构，不分页
      * @return
      */
-    @ResponseBody
     @RequestMapping(value = "/get", method = RequestMethod.POST)
     public Map<String, Object> get(){
         Map<String, Object> resultMap = ResponseEnum.SUCCESS.getResultMap();
