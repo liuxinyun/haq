@@ -1,5 +1,6 @@
 package com.lanwei.haq.spider.listener;
 
+import com.lanwei.haq.comm.thread.DownloadImage;
 import com.lanwei.haq.comm.thread.ResourceManager;
 import com.lanwei.haq.comm.util.SpiderUtil;
 import org.slf4j.Logger;
@@ -20,6 +21,8 @@ public class InitListener implements ApplicationListener<ContextRefreshedEvent> 
 
     @Autowired
     private SpiderUtil spiderUtil;
+    @Autowired
+    private DownloadImage downloadImage;
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -29,7 +32,20 @@ public class InitListener implements ApplicationListener<ContextRefreshedEvent> 
             log.info("spring初始化完成");
             try {
                 ResourceManager.init();
-                spiderUtil.spiderAll();
+                log.info("开始爬虫");
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        spiderUtil.spiderAll();
+                    }
+                }).start();
+                log.info("开始下载图片");
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        downloadImage.download();
+                    }
+                }).start();
             } catch (Exception e) {
                 log.error("系统初始化失败："+e.getMessage(), e);
             }

@@ -4,6 +4,7 @@ import com.lanwei.haq.comm.entity.SpiderConfig;
 import com.lanwei.haq.comm.entity.UrlDepth;
 import com.lanwei.haq.comm.jdbc.MyJedisService;
 import com.lanwei.haq.comm.util.Constant;
+import com.lanwei.haq.comm.util.DownPicUtil;
 import com.lanwei.haq.comm.util.EsUtil;
 import com.lanwei.haq.comm.util.SpiderUtil;
 import com.lanwei.haq.spider.dao.web.MysqlDao;
@@ -36,6 +37,8 @@ public class ResourceManager {
     private MyJedisService saveJedisService;
     @Resource
     private MyJedisService statisJedisService;
+    @Autowired
+    private DownPicUtil downPicUtil;
 
     private static final int MAX_QUEUE_SIZE = 2000;
 
@@ -184,7 +187,7 @@ public class ResourceManager {
                 ConcurrentLinkedQueue<UrlDepth> queue = new ConcurrentLinkedQueue<>();
                 queue.add(new UrlDepth(webSeed.getSeedurl(),0));
                 unit.queueMap.put(webSeed.getId(), queue);
-                unit.threadpool.execute(new Spider(webSeed, queue, spiderUtil, esUtil, saveJedisService, statisJedisService));
+                unit.threadpool.execute(new Spider(webSeed, queue, spiderUtil, esUtil, saveJedisService, statisJedisService, downPicUtil));
             }
             logger.info("Website " + unit.webId + " started "+unit.tnum+" threads.");
         }

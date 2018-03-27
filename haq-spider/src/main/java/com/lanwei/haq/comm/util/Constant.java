@@ -40,6 +40,8 @@ public class Constant {
     public static final String REDIS_TOTAL = "total_";
     // 保存每个种子网站当天的爬取失败数fail_20180111
     public static final String REDIS_FAIL = "fail_";
+    // 保存图片链接的信息
+    public static final String REDIS_IMG_INFO = "img_info";
 
     /**
      * 默认新闻类别其他

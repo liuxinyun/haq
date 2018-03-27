@@ -1,12 +1,8 @@
 import com.lanwei.haq.comm.util.Constant;
 import com.lanwei.haq.comm.util.DownPicUtil;
-import com.lanwei.haq.comm.util.PropertiesUtil;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.IOException;
 import java.util.List;
@@ -16,9 +12,7 @@ import java.util.List;
  * @日期：2017/8/12 20:19
  * @描述：类
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:spring.xml")
-public class SpiderTest {
+public class SpiderTest extends BaseTest {
 
     @Test
     public void spider(){

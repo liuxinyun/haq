@@ -2,11 +2,14 @@ package com.lanwei.haq.comm.util;
 
 import com.alibaba.fastjson.JSONObject;
 import com.lanwei.haq.comm.entity.ImgPath;
+import com.lanwei.haq.comm.jdbc.MyJedisService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -18,7 +21,7 @@ import java.util.regex.Pattern;
  * @日期：2017/7/2 15:12
  * @描述：类
  */
-
+@Component
 public class DownPicUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(DownPicUtil.class);
@@ -35,6 +38,10 @@ public class DownPicUtil {
     // 获取src路径的正则
     private static final String IMGSRC_REG = "http:\"?(.*?)(\"|>|\\s+)";
 
+    @Resource
+    private MyJedisService statisJedisService;
+
+
     /**
      * 爬取网页上的图片并保存在指定路径
      * @param path
@@ -45,11 +52,11 @@ public class DownPicUtil {
         String html = getHtml(url);
         if (null != html) {
             // 获取图片标签
-            List<String> imgUrl = DownPicUtil.getImageUrl(html);
+            List<String> imgUrl = getImageUrl(html);
             // 获取图片src地址
-            List<String> imgSrc = DownPicUtil.getImageSrc(imgUrl);
+            List<String> imgSrc = getImageSrc(imgUrl);
             // 下载图片并保存到本地
-            DownPicUtil.downloadToLocal(path,imgSrc);
+            downloadToLocal(path,imgSrc);
         }
     }
 
@@ -61,25 +68,26 @@ public class DownPicUtil {
     public static void htmlToLocal(String path, String html) {
         if (null != html && !"".equals(html)) {
             // 获取图片标签
-            List<String> imgUrl = DownPicUtil.getImageUrl(html);
+            List<String> imgUrl = getImageUrl(html);
             // 获取图片src地址
-            List<String> imgSrc = DownPicUtil.getImageSrc(imgUrl);
+            List<String> imgSrc = getImageSrc(imgUrl);
             // 下载图片
-            DownPicUtil.downloadToLocal(path,imgSrc);
+            downloadToLocal(path,imgSrc);
         }
     }
 
     /**
      * 获取给定html标签内的图片并保存到Ftp
      * @param html
+     * @return html中的图片源地址，以及替换地址后的内容
      */
-    public static Map<String, String> htmlToFtp(String html) {
+    public Map<String, String> htmlToFtp(String html) {
         // 获取图片标签
-        List<String> imgUrl = DownPicUtil.getImageUrl(html);
+        List<String> imgUrl = getImageUrl(html);
         // 获取图片src地址
-        List<String> imgSrc = DownPicUtil.getImageSrc(imgUrl);
+        List<String> imgSrc = getImageSrc(imgUrl);
         // 下载图片
-        return DownPicUtil.downloadToFtp(html, imgSrc);
+        return downloadToFtp(html, imgSrc);
 
     }
 
@@ -157,7 +165,7 @@ public class DownPicUtil {
      * 下载并保存到本地tomcat路径下
      * @param listImgSrc
      */
-    private static Map<String, String> downloadToFtp(String html, List<String> listImgSrc) {
+    private Map<String, String> downloadToFtp(String html, List<String> listImgSrc) {
         String date = DateUtil.format(new Date(), Constant.YYYYMMDD);
         List<ImgPath> imgPaths = new LinkedList<>();
         for (String url : listImgSrc) {
@@ -167,13 +175,11 @@ public class DownPicUtil {
             }
             String imageName = temp.substring(temp.lastIndexOf("/") + 1, temp.length());
             html = html.replace(url, LOCALURL+date+"/"+imageName);//替换原地址到本地网址
-            ImgPath imgPath = new ImgPath();
-            imgPath.setName(imageName);
-            imgPath.setSource(url);
-            imgPath.setLocal(LOCALURL+date+"/"+imageName);
-            imgPaths.add(imgPath);
-            //下面将图片保存到本地
-            saveImgToLocal(url, LOCALPATH+date+"/", imageName);
+            ImgPath urlPath = new ImgPath(imageName, url, LOCALURL+date+"/"+imageName);
+            imgPaths.add(urlPath);
+            //将要保存的图片信息存入redis-list，由另一个线程专门读取存入本地
+            ImgPath path = new ImgPath(imageName, url, LOCALPATH+date+"/");
+            statisJedisService.lpush(Constant.REDIS_IMG_INFO, JSONObject.toJSONString(path));
         }
         String img_path = JSONObject.toJSONString(imgPaths);
         Map<String, String> result = new HashMap<>();
@@ -188,7 +194,7 @@ public class DownPicUtil {
      * @param path
      * @param imgName
      */
-    private static void saveImgToLocal(String imgUrl, String path, String imgName){
+    public static void saveImgToLocal(String imgUrl, String path, String imgName){
         try {
             // 构造URL
             URL uri = new URL(imgUrl);

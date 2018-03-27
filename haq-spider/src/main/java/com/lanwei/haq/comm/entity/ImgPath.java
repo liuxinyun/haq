@@ -21,6 +21,18 @@ public class ImgPath {
      */
     private String local;
 
+    /**
+     * json转化使用，开发人员禁止使用
+     */
+    public ImgPath() {
+    }
+
+    public ImgPath(String name, String source, String local) {
+        this.name = name;
+        this.source = source;
+        this.local = local;
+    }
+
     public String getName() {
         return name;
     }

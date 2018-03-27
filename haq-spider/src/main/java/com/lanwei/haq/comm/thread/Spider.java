@@ -28,19 +28,23 @@ public class Spider implements Runnable {
     private EsUtil esUtil;
     private MyJedisService saveJedis;
     private MyJedisService statisJedis;
+    private DownPicUtil downPicUtil;
 
     private String totalKey;
     private String failKey;
 
     public Spider(WebSeedEntity webSeedEntity, Queue<UrlDepth> queue,
                   SpiderUtil spiderUtil, EsUtil esUtil,
-                  MyJedisService saveJedis, MyJedisService statisJedis) {
+                  MyJedisService saveJedis, MyJedisService statisJedis,
+                  DownPicUtil downPicUtil) {
         this.webSeedEntity = webSeedEntity;
         this.queue = queue;
         this.spiderUtil = spiderUtil;
         this.esUtil = esUtil;
         this.saveJedis = saveJedis;
         this.statisJedis = statisJedis;
+        this.downPicUtil = downPicUtil;
+
         String day = DateUtil.format(new Date(), Constant.YYYYMMDD);
         this.totalKey = Constant.REDIS_TOTAL + day;
         this.failKey = Constant.REDIS_FAIL + day;
@@ -124,7 +128,7 @@ public class Spider implements Runnable {
 
                 String content = news.getContent();
                 //根据HTML内容替换图片地址为本服务器地址
-                Map<String, String> map = DownPicUtil.htmlToFtp(content);
+                Map<String, String> map = downPicUtil.htmlToFtp(content);
                 news.setContent(map.get("html"));//替换后的内容
                 news.setImg_path(map.get("img"));//图片地址
                 //填充其他属性
