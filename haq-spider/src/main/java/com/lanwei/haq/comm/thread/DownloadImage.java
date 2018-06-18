@@ -43,13 +43,12 @@ public class DownloadImage {
             }else {
                 String imgInfo = brpop.get(1);
                 ImgPath path = JSONObject.parseObject(imgInfo, ImgPath.class);
-                Thread thread = new Thread(new Runnable() {
+                taskExecutor.execute(new Runnable() {
                     @Override
                     public void run() {
                         DownPicUtil.saveImgToLocal(path.getSource(), path.getLocal(), path.getName());
                     }
                 });
-                taskExecutor.execute(thread);
             }
         }
     }
