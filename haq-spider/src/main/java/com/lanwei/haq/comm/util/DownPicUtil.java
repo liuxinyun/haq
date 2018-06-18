@@ -200,17 +200,26 @@ public class DownPicUtil {
             URL uri = new URL(imgUrl);
             URLConnection urlConnection = uri.openConnection(Constant.PROXY);
             urlConnection.setReadTimeout(15000);
-            BufferedInputStream bin = new BufferedInputStream(urlConnection.getInputStream());
+            InputStream is = urlConnection.getInputStream();
             FileUtil.mkdirs(path);
-            BufferedOutputStream bout = new BufferedOutputStream(new FileOutputStream(new File(path + "/" + imgName)));
-            int r;
-            while ((r = bin.read()) != -1){
-                bout.write(r);
-            }
-            bin.close();
-            bout.close();
+            File file = new File(path + "/" + imgName);
+            saveData(is, file);
         } catch (Exception e) {
             logger.error("saveImgToLocal failed for "+e.getMessage(), e);
+        }
+    }
+
+    private static void saveData(InputStream is, File file){
+        try (BufferedInputStream bis = new BufferedInputStream(is);
+             BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));) {
+            byte[] buffer = new byte[1024];
+            int len;
+            while ((len = bis.read(buffer)) != -1) {
+                bos.write(buffer, 0, len);
+                bos.flush();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
