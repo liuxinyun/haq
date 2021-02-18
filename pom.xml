@@ -214,7 +214,7 @@
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
-                <version>2.10.4</version>
+                <version>2.10.5.1</version>
             </dependency>
 
             <!-- MyBatis 自动生成代码的插件jar -->
